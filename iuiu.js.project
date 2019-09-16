@@ -1,0 +1,40 @@
+<Project ProjectName="iuiu.js" GuidToken="ff350852-5d7b-4f27-9002-ce50b82bf074" Version="0.0" Startup="" PropertyGroup="Debug">
+  <PropertyGroups>
+    <PropertyGroup Condition="Debug">
+      <OutputPath>E:\git\iuiu.js\iuiu.js\bin</OutputPath>
+      <DefineConstants>Debug</DefineConstants>
+    </PropertyGroup>
+  </PropertyGroups>
+  <Content Include=".gitattributes" />
+  <Content Include="build.bat" />
+  <Content Include="build.py" />
+  <Folder Include="src">
+    <Content Include="src\animation.js" />
+    <Content Include="src\bitmap.js" />
+    <Content Include="src\color.js" />
+    <Content Include="src\common.js" />
+    <Content Include="src\component.js" />
+    <Content Include="src\delaunay.js" />
+    <Content Include="src\font.js" />
+    <Content Include="src\HTMLAudio.js" />
+    <Content Include="src\io.js" />
+    <Content Include="src\keyboard.js" />
+    <Content Include="src\keys.js" />
+    <Content Include="src\level.js" />
+    <Content Include="src\loader.js" />
+    <Content Include="src\main.js" />
+    <Content Include="src\math.js" />
+    <Content Include="src\matrix.js" />
+    <Content Include="src\md5.js" />
+    <Content Include="src\mesh.js" />
+    <Content Include="src\module.js" />
+    <Content Include="src\pointer.js" />
+    <Content Include="src\raytracer.js" />
+    <Content Include="src\shader.js" />
+    <Content Include="src\texture.js" />
+    <Content Include="src\trigger.js" />
+    <Content Include="src\vector.js" />
+    <Content Include="src\WebAudio.js" />
+    <Content Include="src\WebSound.js" />
+  </Folder>
+</Project>
