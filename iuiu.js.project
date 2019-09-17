@@ -19,7 +19,6 @@
     <Content Include="src\HTMLAudio.js" />
     <Content Include="src\io.js" />
     <Content Include="src\keyboard.js" />
-    <Content Include="src\keys.js" />
     <Content Include="src\level.js" />
     <Content Include="src\loader.js" />
     <Content Include="src\main.js" />
