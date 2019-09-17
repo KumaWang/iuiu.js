@@ -37,8 +37,11 @@
     <Content Include="src\WebSound.js" />
   </Folder>
   <Folder Include="demo">
-    <Compile Include="demo\draw.js" />
+    <Compile Include="demo\demo0-1.js" />
   </Folder>
   <Compile Include="iuiu.js" />
   <Content Include="index.html" />
+  <Folder Include="res">
+    <Content Include="res\demo0-1.map" />
+  </Folder>
 </Project>
