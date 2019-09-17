@@ -22,9 +22,10 @@ AnimationState.prototype = {
 			}
 		}
 		
+		var frameRate = Math.max(24, this.animation.frameRate);
 		this.elaspedTime = this.elaspedTime + inv;
-		this.frame = this.frame + parseInt(this.elaspedTime / this.animation.frameRate);
-		this.elaspedTime = this.elaspedTime % this.animation.frameRate;
+		this.frame = this.frame + parseInt(this.elaspedTime / frameRate);
+		this.elaspedTime = this.elaspedTime % frameRate;
 		
 		if(this.frame > this.animation.getMaxFrame()) {	
 			this.frame = this._state != null && this.animation.staties && this.animation.staties[this._state] ? this.animation.staties[this._state] : 0;

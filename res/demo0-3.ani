@@ -1,0 +1,185 @@
+﻿{
+    "framerate": 0.0,
+    "loop": false,
+    "states": {},
+    "items": [
+        {
+            "name": "test",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "brush": "res\\demo0-1.img&test",
+            "vertices": [
+                {
+                    "keyframes": [
+                        {
+                            "frame": 0.0,
+                            "value": 1.0,
+                            "location": "3,2",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        },
+                        {
+                            "frame": 22.0,
+                            "value": 1.0,
+                            "location": "3,2",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "false"
+                        },
+                        {
+                            "frame": 12.0,
+                            "value": 1.0,
+                            "location": "3,2",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        }
+                    ]
+                },
+                {
+                    "keyframes": [
+                        {
+                            "frame": 0.0,
+                            "value": 1.0,
+                            "location": "383,2",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        },
+                        {
+                            "frame": 22.0,
+                            "value": 1.0,
+                            "location": "383,2",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "false"
+                        },
+                        {
+                            "frame": 12.0,
+                            "value": 1.0,
+                            "location": "398,-41",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        }
+                    ]
+                },
+                {
+                    "keyframes": [
+                        {
+                            "frame": 0.0,
+                            "value": 1.0,
+                            "location": "384,231",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        },
+                        {
+                            "frame": 22.0,
+                            "value": 1.0,
+                            "location": "384,231",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "false"
+                        },
+                        {
+                            "frame": 12.0,
+                            "value": 1.0,
+                            "location": "418,280",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        }
+                    ]
+                },
+                {
+                    "keyframes": [
+                        {
+                            "frame": 0.0,
+                            "value": 1.0,
+                            "location": "3,232",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        },
+                        {
+                            "frame": 22.0,
+                            "value": 1.0,
+                            "location": "3,232",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "false"
+                        },
+                        {
+                            "frame": 12.0,
+                            "value": 1.0,
+                            "location": "3,232",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        }
+                    ]
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "location": "-142,-128",
+                    "scale": "1,1",
+                    "origin": "190.5,115",
+                    "angle": 0.0,
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 22.0,
+                    "value": 1.0,
+                    "location": "-142,-128",
+                    "scale": "1,1",
+                    "origin": "190.5,115",
+                    "angle": 0.0,
+                    "color": "255,255,255,255",
+                    "smooth": "false"
+                },
+                {
+                    "frame": 12.0,
+                    "value": 1.0,
+                    "location": "-142,-128",
+                    "scale": "1,1",
+                    "origin": "190.5,115",
+                    "angle": 0.0,
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ]
+        }
+    ]
+}

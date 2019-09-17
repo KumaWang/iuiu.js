@@ -1,5 +1,5 @@
-﻿// 通过加载器读取图片资源
-var img = IUIU.Loader.load("res/demo0-1.img");
+﻿// 通过加载器读取动画资源
+var ani = IUIU.Loader.load("res/demo0-3.ani");
 
 // 新建渲染器
 var gl = IUIU.create(null, { hittest : false, useGL : true });
@@ -11,8 +11,8 @@ gl.onupdate = function(inv) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.begin();
  
-    // 绘制图片
-    gl.image(img, "test", new IUIU.Vector(100, 100), IUIU.Vector.one);
+    // 绘制动画指定帧
+    gl.animate(ani, 12);
     
     gl.end();
 };

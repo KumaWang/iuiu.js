@@ -38,11 +38,15 @@
   </Folder>
   <Folder Include="demo">
     <Compile Include="demo\demo0-1.js" />
+    <Compile Include="demo\demo0-2.js" />
+    <Compile Include="demo\demo0-3.js" />
+    <Compile Include="demo\demo0-4.js" />
   </Folder>
   <Compile Include="iuiu.js" />
   <Content Include="index.html" />
   <Folder Include="res">
-    <Content Include="res\demo0-3.map" />
+    <Content Include="res\demo0-5.map" />
     <Content Include="res\demo0-1.img" />
+    <Content Include="res\demo0-3.ani" />
   </Folder>
 </Project>
