@@ -4,9 +4,9 @@ var state = ani.newState();
 
 // 新建渲染器
 var gl = IUIU.create(null, { hittest : false, useGL : true });
-
+gl.
 // 设置每帧更新
-gl.onupdate = function(inv) {
+gl.onupdate = function(inv) {    
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
