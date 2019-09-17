@@ -4,7 +4,7 @@ var state = ani.newState();
 
 // 新建渲染器
 var gl = IUIU.create(null, { hittest : false, useGL : true });
-gl.
+
 // 设置每帧更新
 gl.onupdate = function(inv) {    
     gl.enable(gl.BLEND);
