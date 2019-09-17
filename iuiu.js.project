@@ -40,4 +40,5 @@
     <Compile Include="demo\draw.js.js" />
   </Folder>
   <Compile Include="iuiu.js" />
+  <Content Include="index.html" />
 </Project>
