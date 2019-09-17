@@ -37,4 +37,8 @@
     <Content Include="src\WebAudio.js" />
     <Content Include="src\WebSound.js" />
   </Folder>
+  <Folder Include="demo">
+    <Compile Include="demo\draw.js.js" />
+  </Folder>
+  <Compile Include="iuiu.js" />
 </Project>
