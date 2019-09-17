@@ -9,228 +9,228 @@ var IUIU = (function() {
 
 // src/animation.js
 function AnimationState(animation) {
-	this.frame = 0;
-	this.elaspedTime = 0;
-	this.isPlaying = true;
-	this.animation = animation;
-	this._init = false;
-	this._state = null;
+    this.frame = 0;
+    this.elaspedTime = 0;
+    this.isPlaying = true;
+    this.animation = animation;
+    this._init = false;
+    this._state = null;
 }
 
 AnimationState.prototype = {
-	update : function(inv) {
-		if(!this.isPlaying) return;
-		
-		if(!this._init) {
-			if(this.animation.staties != null) {
-				this.frame = this.animation.staties[this.state];
-				this.elaspedTime = 0;
-				this._init = true;
-			}
-			else if(this.state == null) {
-				this._init = true;
-			}
-		}
-		
-		this.elaspedTime = this.elaspedTime + inv;
-		this.frame = this.frame + parseInt(this.elaspedTime / this.animation.frameRate);
-		this.elaspedTime = this.elaspedTime % this.animation.frameRate;
-		
-		if(this.frame > this.animation.getMaxFrame()) {	
-			this.frame = this._state != null && this.animation.staties && this.animation.staties[this._state] ? this.animation.staties[this._state] : 0;
-		}
-	},
-	play : function() {
-		this.isPlaying = true;
-	},
-	stop : function() {
-		this.isPlaying = false;
-	},
-	get state() {
-		return this._state;
-	},
-	set state(value) {
-		if(this._state != value) {
-			this._state = value;
-			this._init = false;
-		}
-	}
+    update : function(inv) {
+        if(!this.isPlaying) return;
+        
+        if(!this._init) {
+            if(this.animation.staties != null) {
+                this.frame = this.animation.staties[this.state];
+                this.elaspedTime = 0;
+                this._init = true;
+            }
+            else if(this.state == null) {
+                this._init = true;
+            }
+        }
+        
+        this.elaspedTime = this.elaspedTime + inv;
+        this.frame = this.frame + parseInt(this.elaspedTime / this.animation.frameRate);
+        this.elaspedTime = this.elaspedTime % this.animation.frameRate;
+        
+        if(this.frame > this.animation.getMaxFrame()) { 
+            this.frame = this._state != null && this.animation.staties && this.animation.staties[this._state] ? this.animation.staties[this._state] : 0;
+        }
+    },
+    play : function() {
+        this.isPlaying = true;
+    },
+    stop : function() {
+        this.isPlaying = false;
+    },
+    get state() {
+        return this._state;
+    },
+    set state(value) {
+        if(this._state != value) {
+            this._state = value;
+            this._init = false;
+        }
+    }
 }
 
 function Animation() {
-	this.isVisual = true;
+    this.isVisual = true;
 }
 
 Animation.prototype  = {
-	getMaxFrame : function() {
-		var maxFrame = 0;
-		for(var i = 0; i < this.items.length; i++) {
-			if(this.items[i].maxFrame > maxFrame) {
-				maxFrame = this.items[i].maxFrame;
-			}
-		}
-		return maxFrame;
-	},
-	
-	newState : function() {
-		return new AnimationState(this);
-	}
+    getMaxFrame : function() {
+        var maxFrame = 0;
+        for(var i = 0; i < this.items.length; i++) {
+            if(this.items[i].maxFrame > maxFrame) {
+                maxFrame = this.items[i].maxFrame;
+            }
+        }
+        return maxFrame;
+    },
+    
+    newState : function() {
+        return new AnimationState(this);
+    }
 }
 
 function readKeyframe(json) {
-	var locStr = json.location.split(',');
-	var scaleStr = json.scale.split(',');
-	var originStr = json.origin.split(',');
-	var colorStr = json.color.split(',');
-	
-	var frame = { 
-		frame : json.frame,
-		value : json.value,
-		x : parseFloat(locStr[0]),
-		y : parseFloat(locStr[1]),
-		originX : parseFloat(originStr[0]),
-		originY : parseFloat(originStr[1]),
-		angle : json.angle,
-		r : parseFloat(colorStr[0]),
-		g : parseFloat(colorStr[1]),
-		b : parseFloat(colorStr[2]),
-		a : parseFloat(colorStr[3]),
-		smooth : json.smooth,
-		scaleX : parseFloat(scaleStr[0]),
-		scaleY : parseFloat(scaleStr[1]),
-	};
-	
-	return frame;
+    var locStr = json.location.split(',');
+    var scaleStr = json.scale.split(',');
+    var originStr = json.origin.split(',');
+    var colorStr = json.color.split(',');
+    
+    var frame = { 
+        frame : json.frame,
+        value : json.value,
+        x : parseFloat(locStr[0]),
+        y : parseFloat(locStr[1]),
+        originX : parseFloat(originStr[0]),
+        originY : parseFloat(originStr[1]),
+        angle : json.angle,
+        r : parseFloat(colorStr[0]),
+        g : parseFloat(colorStr[1]),
+        b : parseFloat(colorStr[2]),
+        a : parseFloat(colorStr[3]),
+        smooth : json.smooth,
+        scaleX : parseFloat(scaleStr[0]),
+        scaleY : parseFloat(scaleStr[1]),
+    };
+    
+    return frame;
 }
 
 Animation.create = function() {
-	var ani = new Animation();
-	ani.items = [];
-	ani.frameRate = 24;
-	ani.loop = true;
-	return ani;
+    var ani = new Animation();
+    ani.items = [];
+    ani.frameRate = 24;
+    ani.loop = true;
+    return ani;
 }
 
 Animation.fromJson = function(json, params, entry) {
-	var ani = entry;
-	ani.staties = {};
-	ani.frameRate = parseFloat(json.framerate);
-	ani.loop = Boolean(json.loop);
-	
-	for(var index = 0; index < json.states.length; index++) {
-		ani.staties[json.states[index].name] = json.states[index].frame;
-	}
-		
-	for(var index = 0; index < json.items.length; index++) {
-		var item = json.items[index];
-		var baseItem = null;
-		
-		// 添加属性
-		switch(item.type) {
-			case "mesh":
-				var mesh = new AnimationItemMesh();
-				mesh.keypoints = [];
-				mesh.brush = new VoidBrush();
+    var ani = entry;
+    ani.staties = {};
+    ani.frameRate = parseFloat(json.framerate);
+    ani.loop = Boolean(json.loop);
+    
+    for(var index = 0; index < json.states.length; index++) {
+        ani.staties[json.states[index].name] = json.states[index].frame;
+    }
+        
+    for(var index = 0; index < json.items.length; index++) {
+        var item = json.items[index];
+        var baseItem = null;
+        
+        // 添加属性
+        switch(item.type) {
+            case "mesh":
+                var mesh = new AnimationItemMesh();
+                mesh.keypoints = [];
+                mesh.brush = new VoidBrush();
 
-				Bitmap.fromName(item.brush, { mesh : mesh }, function(sheet, userToken) {
-					var mesh2 = userToken.mesh;
-				 	mesh2.brush = sheet;
-				 	var tb = mesh2.brush;
-				 	var minX = Number.MAX_VALUE;
-				 	var minY = Number.MAX_VALUE;
-					for(var index2 = 0; index2 < tb.keypoints.length; index2++) {
-						var drawOffset = { x : tb.keypoints[index2].x, y : tb.keypoints[index2].y };
-						mesh2.keypoints[index2].drawOffset = drawOffset;
-						mesh2.keypoints[index2].bindingUV = [ tb.keypoints[index2].x / tb.texture.image.width, tb.keypoints[index2].y / tb.texture.image.height ];
-						
-						if(minX > drawOffset.x) minX = drawOffset.x;
-						if(minY > drawOffset.y) minY = drawOffset.y;
-					}
-					mesh2.drawOffset = { x : minX, y : minY };			
-					mesh2.triangulate();
-				});
-						
-				for(var index2 = 0; index2 < item.vertices.length; index2++) {
-					var keypoint = item.vertices[index2];
-					var key = {};
-					key.parent = mesh;
-					key.keyframes = [];
-					// 添加方法
-					addAnimationItemFunctions(key);
-					for(var index3 = 0; index3 < keypoint.keyframes.length; index3++) {
-						var keyframe = keypoint.keyframes[index3];
-						key.keyframes.push(readKeyframe(keyframe));
-					}
-					mesh.keypoints.push(key);
-					
-				}
-			
-				baseItem = mesh;
-				baseItem.type = "mesh";
-				break;
-				
-			case "text":
-				var label = new AnimationItemLabel();
-				label.text = json.text;
-				label.size = parseFloat(json.size);
+                Bitmap.fromName(item.brush, { mesh : mesh }, function(sheet, userToken) {
+                    var mesh2 = userToken.mesh;
+                    mesh2.brush = sheet;
+                    var tb = mesh2.brush;
+                    var minX = Number.MAX_VALUE;
+                    var minY = Number.MAX_VALUE;
+                    for(var index2 = 0; index2 < tb.keypoints.length; index2++) {
+                        var drawOffset = { x : tb.keypoints[index2].x, y : tb.keypoints[index2].y };
+                        mesh2.keypoints[index2].drawOffset = drawOffset;
+                        mesh2.keypoints[index2].bindingUV = [ tb.keypoints[index2].x / tb.texture.image.width, tb.keypoints[index2].y / tb.texture.image.height ];
+                        
+                        if(minX > drawOffset.x) minX = drawOffset.x;
+                        if(minY > drawOffset.y) minY = drawOffset.y;
+                    }
+                    mesh2.drawOffset = { x : minX, y : minY };          
+                    mesh2.triangulate();
+                });
+                        
+                for(var index2 = 0; index2 < item.vertices.length; index2++) {
+                    var keypoint = item.vertices[index2];
+                    var key = {};
+                    key.parent = mesh;
+                    key.keyframes = [];
+                    // 添加方法
+                    addAnimationItemFunctions(key);
+                    for(var index3 = 0; index3 < keypoint.keyframes.length; index3++) {
+                        var keyframe = keypoint.keyframes[index3];
+                        key.keyframes.push(readKeyframe(keyframe));
+                    }
+                    mesh.keypoints.push(key);
+                    
+                }
+            
+                baseItem = mesh;
+                baseItem.type = "mesh";
+                break;
+                
+            case "text":
+                var label = new AnimationItemLabel();
+                label.text = json.text;
+                label.size = parseFloat(json.size);
 
-				IUIU.loader.load(item.inculde, { label : label }, function(c) {
-					c.userToken.label.font = c.content;
-				});
-				
-				baseItem = label;
-				baseItem.type = "text";
-				break;
-				
-			case "collide":
-			 	var collide = AnimationItemCollideBox();
-				collide.points = [];
-				for(var index2 = 0; index2 < item.points.length; index2++) {
-					var point = item.points[index2];
-					var pointStr = point.split(',');
-					var x = parseFloat(pointStr[0]);
-					var y = parseFloat(pointStr[1]);
-					collide.points.push({ x : x, y : y });
-				}
-				
-				baseItem = collide;
-				baseItem.type = "collide";
-				break;
-				
-			default:
-				throw "not support data type";
-		}
-		
-		baseItem.isVisual = Boolean(item.visual);
-		baseItem.isLocked = Boolean(item.locked);
-		baseItem.keyframes = [];
-		for(var index2 = 0; index2 < item.keyframes.length; index2++) {
-			var keyframe = item.keyframes[index2];
-			baseItem.keyframes.push(readKeyframe(keyframe));
-		}
-		
-		// 查找最大帧
-		var maxFrame = 0;
-		for(var i = 0; i < baseItem.keyframes.length; i++) {
-			if(maxFrame < baseItem.keyframes[i].frame) {
-				maxFrame = baseItem.keyframes[i].frame;
-			}
-		}
-		baseItem.maxFrame = maxFrame;
-		
-		// 添加方法
-		addAnimationItemFunctions(baseItem);
-		
-		ani.items.push(baseItem);
-	}
-	return ani;
+                IUIU.loader.load(item.inculde, { label : label }, function(c) {
+                    c.userToken.label.font = c.content;
+                });
+                
+                baseItem = label;
+                baseItem.type = "text";
+                break;
+                
+            case "collide":
+                var collide = AnimationItemCollideBox();
+                collide.points = [];
+                for(var index2 = 0; index2 < item.points.length; index2++) {
+                    var point = item.points[index2];
+                    var pointStr = point.split(',');
+                    var x = parseFloat(pointStr[0]);
+                    var y = parseFloat(pointStr[1]);
+                    collide.points.push({ x : x, y : y });
+                }
+                
+                baseItem = collide;
+                baseItem.type = "collide";
+                break;
+                
+            default:
+                throw "not support data type";
+        }
+        
+        baseItem.isVisual = Boolean(item.visual);
+        baseItem.isLocked = Boolean(item.locked);
+        baseItem.keyframes = [];
+        for(var index2 = 0; index2 < item.keyframes.length; index2++) {
+            var keyframe = item.keyframes[index2];
+            baseItem.keyframes.push(readKeyframe(keyframe));
+        }
+        
+        // 查找最大帧
+        var maxFrame = 0;
+        for(var i = 0; i < baseItem.keyframes.length; i++) {
+            if(maxFrame < baseItem.keyframes[i].frame) {
+                maxFrame = baseItem.keyframes[i].frame;
+            }
+        }
+        baseItem.maxFrame = maxFrame;
+        
+        // 添加方法
+        addAnimationItemFunctions(baseItem);
+        
+        ani.items.push(baseItem);
+    }
+    return ani;
 }
 
 function addAnimationItemFunctions(baseItem) {
-	baseItem.getFirst = function() {
-		var frame = Number.MAX_VALUE;
-		var first = null;
-		for (var i = 0; i < this.keyframes.length; i++) {
+    baseItem.getFirst = function() {
+        var frame = Number.MAX_VALUE;
+        var first = null;
+        for (var i = 0; i < this.keyframes.length; i++) {
             var item = this.keyframes[i];
             if (item.frame < frame) {
                 first = item;
@@ -238,10 +238,10 @@ function addAnimationItemFunctions(baseItem) {
             }
         }
         return first;
-	},
-	baseItem.evaluate = function(frame) {
-		var first = null;  
-		for (var i = 0; i < this.keyframes.length; i++) 
+    },
+    baseItem.evaluate = function(frame) {
+        var first = null;  
+        for (var i = 0; i < this.keyframes.length; i++) 
         {
             var item = this.keyframes[i];
             if (item.frame < frame && (first == null || item.frame > first.frame)) 
@@ -279,47 +279,47 @@ function addAnimationItemFunctions(baseItem) {
         {
             return 0;
         }
-	};
-	
-	baseItem.getState = function(frame) {
-		for(var i = 0; i < this.keyframes.length; i++) {
-			if(this.keyframes[i].frame == frame) {
-				return this.keyframes[i];
-			}
-		}
-	};
-	
-	baseItem.getLastState = function(frame) {
-		var result = -1;
-		var state = null;
-		for(var i = 0; i < this.keyframes.length; i++) {
-			var keyframe = this.keyframes[i];
-			if(keyframe.frame < frame && keyframe.frame > result) {
-				result = keyframe.frame;
-				state = keyframe;
-			}
-		}
-		
-		return state;
-	};
-	
-	baseItem.getNextState = function(frame) {
-		var result = Number.MAX_VALUE;
-		var state = null;
-		for(var i = this.keyframes.length - 1; i > 0; i--) {
-			var keyframe = this.keyframes[i];
-			if(keyframe.frame > frame && keyframe.frame < result) {
-				result = keyframe.frame;
-				state = keyframe;
-			}
-		}
-		
-		return state;
-	};
-	
-	baseItem.getRealState = function(frame) {
-		var lastState = this.getState(frame) || this.getLastState(frame);
-		if (lastState == null || (lastState.frame != frame && !lastState.smooth))
+    };
+    
+    baseItem.getState = function(frame) {
+        for(var i = 0; i < this.keyframes.length; i++) {
+            if(this.keyframes[i].frame == frame) {
+                return this.keyframes[i];
+            }
+        }
+    };
+    
+    baseItem.getLastState = function(frame) {
+        var result = -1;
+        var state = null;
+        for(var i = 0; i < this.keyframes.length; i++) {
+            var keyframe = this.keyframes[i];
+            if(keyframe.frame < frame && keyframe.frame > result) {
+                result = keyframe.frame;
+                state = keyframe;
+            }
+        }
+        
+        return state;
+    };
+    
+    baseItem.getNextState = function(frame) {
+        var result = Number.MAX_VALUE;
+        var state = null;
+        for(var i = this.keyframes.length - 1; i > 0; i--) {
+            var keyframe = this.keyframes[i];
+            if(keyframe.frame > frame && keyframe.frame < result) {
+                result = keyframe.frame;
+                state = keyframe;
+            }
+        }
+        
+        return state;
+    };
+    
+    baseItem.getRealState = function(frame) {
+        var lastState = this.getState(frame) || this.getLastState(frame);
+        if (lastState == null || (lastState.frame != frame && !lastState.smooth))
             return null;
         
         var nextState = this.getNextState(frame);
@@ -383,8 +383,8 @@ function addAnimationItemFunctions(baseItem) {
             var ps = this.parent.getRealState(frame);
             if (ps != null) {
                 return {
-                	frame : frame,
-                	value : value,
+                    frame : frame,
+                    value : value,
                     x : x + ps.x,
                     y : y + ps.y,
                     scaleX : scalex * ps.scaleX,
@@ -399,9 +399,9 @@ function addAnimationItemFunctions(baseItem) {
                 };
             }
         }
-    	else {
-    		return {
-            	frame : frame,
+        else {
+            return {
+                frame : frame,
                 value : value,
                 x : x,
                 y : y,
@@ -415,260 +415,260 @@ function addAnimationItemFunctions(baseItem) {
                 originX : originX,
                 originY : originY
             };
-    	}
-	};
+        }
+    };
 }
 
 function VoidBrush() {
-	return {
-		onupdate : function(frame, g) {
-		}
-	};
+    return {
+        onupdate : function(frame, g) {
+        }
+    };
 }
 
 function MeshVertexTrackerDefault(position) {
-	return {
-		position : { x : position[0], y : position[1] },
-		getPostion : function(frame) {
-			return this.position;
-		}
-	};
+    return {
+        position : { x : position[0], y : position[1] },
+        getPostion : function(frame) {
+            return this.position;
+        }
+    };
 }
 
 function MeshVertexTrackerKeyPoint(key, offset) {
-	return {
-		key : key,
-		offset : offset,
-		getPostion : function(frame) {
-			var ps = this.key.parent.getRealState(frame);
+    return {
+        key : key,
+        offset : offset,
+        getPostion : function(frame) {
+            var ps = this.key.parent.getRealState(frame);
             var state = this.key.getRealState(frame);
             if (state != null) {
-				return { x : state.x - ps.x - this.offset.x, y : state.y - ps.y - this.offset.y };
+                return { x : state.x - ps.x - this.offset.x, y : state.y - ps.y - this.offset.y };
             }
             else {
-        		return { x : 0, y : 0 };
+                return { x : 0, y : 0 };
             }
-		}
-	};
+        }
+    };
 }
 
 function AnimationItemCollideBox() {
-	return {};
+    return {};
 }
 
 function AnimationItemLabel() {
-	return {};
+    return {};
 }
 
 function AnimationItemMesh() {
-	return {
-		triangles : null,
-		fixedUVs : {},
-		triangulate : function() {
-			var vertices = [];
-			this.fixedUVs = [];
-			for(var i = 0; i < this.keypoints.length; i++) {
-				var keypoint = this.keypoints[i];
-				vertices.push([ keypoint.drawOffset.x - this.drawOffset.x, keypoint.drawOffset.y - this.drawOffset.y ]);
-			}
-			
-			this.triangles = [];
-			var delau_triangles = Delaunay.triangulate(vertices);
-			for(var x = 0; x < delau_triangles.length; x += 3) {
-				
-				var v1 = vertices[delau_triangles[x]];
-				var v2 = vertices[delau_triangles[x + 1]];
-				var v3 = vertices[delau_triangles[x + 2]];
-	
-				var p1 = new MeshVertexTrackerDefault(v1);
-				var p2 = new MeshVertexTrackerDefault(v2);
-				var p3 = new MeshVertexTrackerDefault(v3);
-				
-				for(var i = 0; i < this.keypoints.length; i++) {
-					var keypoint = this.keypoints[i];
-					var real = { x : keypoint.drawOffset.x - this.drawOffset.x, y : keypoint.drawOffset.y - this.drawOffset.y };
+    return {
+        triangles : null,
+        fixedUVs : {},
+        triangulate : function() {
+            var vertices = [];
+            this.fixedUVs = [];
+            for(var i = 0; i < this.keypoints.length; i++) {
+                var keypoint = this.keypoints[i];
+                vertices.push([ keypoint.drawOffset.x - this.drawOffset.x, keypoint.drawOffset.y - this.drawOffset.y ]);
+            }
+            
+            this.triangles = [];
+            var delau_triangles = Delaunay.triangulate(vertices);
+            for(var x = 0; x < delau_triangles.length; x += 3) {
+                
+                var v1 = vertices[delau_triangles[x]];
+                var v2 = vertices[delau_triangles[x + 1]];
+                var v3 = vertices[delau_triangles[x + 2]];
+    
+                var p1 = new MeshVertexTrackerDefault(v1);
+                var p2 = new MeshVertexTrackerDefault(v2);
+                var p3 = new MeshVertexTrackerDefault(v3);
+                
+                for(var i = 0; i < this.keypoints.length; i++) {
+                    var keypoint = this.keypoints[i];
+                    var real = { x : keypoint.drawOffset.x - this.drawOffset.x, y : keypoint.drawOffset.y - this.drawOffset.y };
 
-					if (v1[0] == real.x && v1[1] == real.y) p1 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
-				 	if (v2[0] == real.x && v2[1] == real.y) p2 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
-				 	if (v3[0] == real.x && v3[1] == real.y) p3 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
-				}
-				
-				this.triangles.push({
+                    if (v1[0] == real.x && v1[1] == real.y) p1 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
+                    if (v2[0] == real.x && v2[1] == real.y) p2 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
+                    if (v3[0] == real.x && v3[1] == real.y) p3 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
+                }
+                
+                this.triangles.push({
                     p1 : { tracker : p1, uv : { x : (v1[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v1[1] + this.drawOffset.y) / this.brush.texture.image.height } },
                     p2 : { tracker : p2, uv : { x : (v2[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v2[1] + this.drawOffset.y) / this.brush.texture.image.height } },
-                	p3 : { tracker : p3, uv : { x : (v3[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v3[1] + this.drawOffset.y) / this.brush.texture.image.height } },
+                    p3 : { tracker : p3, uv : { x : (v3[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v3[1] + this.drawOffset.y) / this.brush.texture.image.height } },
                 });
-				
-			}
-		}
-	};
+                
+            }
+        }
+    };
 }
 // src/bitmap.js
 function Bitmap() {
-	this.isVisual = true;
+    this.isVisual = true;
 }
 Bitmap.items = {};
 Bitmap.callbacks = [];
 
 Bitmap.prototype.triangulate = function(name) {
-	var sheet = this.sheets[name];
-	if(sheet == null) return;
-	
-	var minX = Number.MAX_VALUE;
- 	var minY = Number.MAX_VALUE;
-	for(var index2 = 0; index2 < sheet.keypoints.length; index2++) {
-		var drawOffset = { x : sheet.keypoints[index2].x, y : sheet.keypoints[index2].y };
-		sheet.keypoints[index2].drawOffset = drawOffset;
-		sheet.keypoints[index2].bindingUV = [ sheet.keypoints[index2].x / this.image.width, sheet.keypoints[index2].y / this.image.height ];
-		
-		if(minX > drawOffset.x) minX = drawOffset.x;
-		if(minY > drawOffset.y) minY = drawOffset.y;
-	}
-	sheet.drawOffset = { x : minX, y : minY };
-	
-	this.triangles[name] = [];
-	var vertices = [];
-	this.fixedUVs = [];
-	for(var i = 0; i < sheet.keypoints.length; i++) {
-		var keypoint = sheet.keypoints[i];
-	 	vertices.push([ keypoint.drawOffset.x - sheet.drawOffset.x, keypoint.drawOffset.y - sheet.drawOffset.y ]);
-	}
-	
-	
-	var delau_triangles = Delaunay.triangulate(vertices);
-	for(var x = 0; x < delau_triangles.length; x += 3) {
-		
-		var v1 = vertices[delau_triangles[x]];
-		var v2 = vertices[delau_triangles[x + 1]];
-		var v3 = vertices[delau_triangles[x + 2]];
-		
-		var p1 = new MeshVertexTrackerDefault(v1);
-		var p2 = new MeshVertexTrackerDefault(v2);
-		var p3 = new MeshVertexTrackerDefault(v3);
-		
-		this.triangles[name].push({
+    var sheet = this.sheets[name];
+    if(sheet == null) return;
+    
+    var minX = Number.MAX_VALUE;
+    var minY = Number.MAX_VALUE;
+    for(var index2 = 0; index2 < sheet.keypoints.length; index2++) {
+        var drawOffset = { x : sheet.keypoints[index2].x, y : sheet.keypoints[index2].y };
+        sheet.keypoints[index2].drawOffset = drawOffset;
+        sheet.keypoints[index2].bindingUV = [ sheet.keypoints[index2].x / this.image.width, sheet.keypoints[index2].y / this.image.height ];
+        
+        if(minX > drawOffset.x) minX = drawOffset.x;
+        if(minY > drawOffset.y) minY = drawOffset.y;
+    }
+    sheet.drawOffset = { x : minX, y : minY };
+    
+    this.triangles[name] = [];
+    var vertices = [];
+    this.fixedUVs = [];
+    for(var i = 0; i < sheet.keypoints.length; i++) {
+        var keypoint = sheet.keypoints[i];
+        vertices.push([ keypoint.drawOffset.x - sheet.drawOffset.x, keypoint.drawOffset.y - sheet.drawOffset.y ]);
+    }
+    
+    
+    var delau_triangles = Delaunay.triangulate(vertices);
+    for(var x = 0; x < delau_triangles.length; x += 3) {
+        
+        var v1 = vertices[delau_triangles[x]];
+        var v2 = vertices[delau_triangles[x + 1]];
+        var v3 = vertices[delau_triangles[x + 2]];
+        
+        var p1 = new MeshVertexTrackerDefault(v1);
+        var p2 = new MeshVertexTrackerDefault(v2);
+        var p3 = new MeshVertexTrackerDefault(v3);
+        
+        this.triangles[name].push({
             p1 : { tracker : p1, uv : { x : (v1[0] + sheet.drawOffset.x) / this.image.width, y : (v1[1] + sheet.drawOffset.y) / this.image.height } },
             p2 : { tracker : p2, uv : { x : (v2[0] + sheet.drawOffset.x) / this.image.width, y : (v2[1] + sheet.drawOffset.y) / this.image.height } },
-        	p3 : { tracker : p3, uv : { x : (v3[0] + sheet.drawOffset.x) / this.image.width, y : (v3[1] + sheet.drawOffset.y) / this.image.height } },
-        });		
-	}
+            p3 : { tracker : p3, uv : { x : (v3[0] + sheet.drawOffset.x) / this.image.width, y : (v3[1] + sheet.drawOffset.y) / this.image.height } },
+        });     
+    }
 }
 
 Bitmap.fromName = function(fullName, userToken, callback) {
-	var inculde;
-	var name;
-	if(fullName.indexOf('&') != -1) {
-		var sd = fullName.split('&');
-		inculde = sd[0];
-		name = sd[1];
-	}
-	
-	if(!Bitmap.items[inculde]) {
-		Bitmap.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
-		IUIU.Loader.load(inculde, { inculde : inculde, name : name, userToken : userToken }, function(c) {
-			c.content.image.userToken = c.userToken.inculde;
-			c.content.image.onloaded = function(userToken) { 
-				for(var i = 0; i < Bitmap.callbacks.length; i++) {
-					var callback = Bitmap.callbacks[i];
-					if(callback.inculde == userToken) {
-						callback.func(c.content.sheets[callback.name], callback.userToken);
-						Bitmap.callbacks.splice(i, 1);
-						i--;
-					}
-				}
-			}
-			Bitmap.items[inculde] = c.content;
-			c.cotnent.isLoaded = true;
-		});		
-	} else {
-		callback(Bitmap.items[inculde].sheets[name], userToken);
-	}
+    var inculde;
+    var name;
+    if(fullName.indexOf('&') != -1) {
+        var sd = fullName.split('&');
+        inculde = sd[0];
+        name = sd[1];
+    }
+    
+    if(!Bitmap.items[inculde]) {
+        Bitmap.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
+        IUIU.Loader.load(inculde, { inculde : inculde, name : name, userToken : userToken }, function(c) {
+            c.content.image.userToken = c.userToken.inculde;
+            c.content.image.onloaded = function(userToken) { 
+                for(var i = 0; i < Bitmap.callbacks.length; i++) {
+                    var callback = Bitmap.callbacks[i];
+                    if(callback.inculde == userToken) {
+                        callback.func(c.content.sheets[callback.name], callback.userToken);
+                        Bitmap.callbacks.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+            Bitmap.items[inculde] = c.content;
+            c.cotnent.isLoaded = true;
+        });     
+    } else {
+        callback(Bitmap.items[inculde].sheets[name], userToken);
+    }
 }
 
 Bitmap.create = function() {
-	var data = new Bitmap();
-	data.sheets = {};
-	data.triangles = {};
-	return data;
+    var data = new Bitmap();
+    data.sheets = {};
+    data.triangles = {};
+    return data;
 }
 
 Bitmap.fromJson = function(json, param, entry) {
-	var data = entry;
-	var texture = new Texture.fromURL('data:image/png;base64,' + json.data);
-	texture.userToken = data;
-	texture.onloaded = function(userToken) {
-		userToken.isLoaded = true;
-	};
-	data.isLoaded = false;
-	data.image = texture;
-	var stringSheets = json.sheets.split('|');
-	for(var x = 0; x < stringSheets.length; x++) {
-		var sss = stringSheets[x];
-		var stringData = sss.split('&');
-		var name = stringData[0];
-		var outline = stringData[1].split(',');
-		var inline = stringData[2].split(',');
+    var data = entry;
+    var texture = new Texture.fromURL('data:image/png;base64,' + json.data);
+    texture.userToken = data;
+    texture.onloaded = function(userToken) {
+        userToken.isLoaded = true;
+    };
+    data.isLoaded = false;
+    data.image = texture;
+    var stringSheets = json.sheets.split('|');
+    for(var x = 0; x < stringSheets.length; x++) {
+        var sss = stringSheets[x];
+        var stringData = sss.split('&');
+        var name = stringData[0];
+        var outline = stringData[1].split(',');
+        var inline = stringData[2].split(',');
 
-		var keypoints = [];
-		if(outline.length > 1) for(var i = 0; i < outline.length; i += 2) keypoints.push({ x : parseFloat(outline[i]), y : parseFloat(outline[i + 1]) });
-	 	if(inline.length > 1) for(var i = 0; i < inline.length; i += 2) keypoints.push({ x : parseFloat(inline[i]), y : parseFloat(inline[i + 1]) });
-	  	
-		data.sheets[name] = { texture : data, keypoints : keypoints };
-	}
-	
-	return data;
+        var keypoints = [];
+        if(outline.length > 1) for(var i = 0; i < outline.length; i += 2) keypoints.push({ x : parseFloat(outline[i]), y : parseFloat(outline[i + 1]) });
+        if(inline.length > 1) for(var i = 0; i < inline.length; i += 2) keypoints.push({ x : parseFloat(inline[i]), y : parseFloat(inline[i + 1]) });
+        
+        data.sheets[name] = { texture : data, keypoints : keypoints };
+    }
+    
+    return data;
 }
 // src/color.js
 function Color(r, g, b, a) {
-	if (((((r | g) | b) | a) & -256) != 0) {
-    	r = r < 0 ? 0 : (r > 255 ? 255 : r);
+    if (((((r | g) | b) | a) & -256) != 0) {
+        r = r < 0 ? 0 : (r > 255 ? 255 : r);
         g = g < 0 ? 0 : (g > 255 ? 255 : g);
         b = b < 0 ? 0 : (b > 255 ? 255 : b);
         a = a < 0 ? 0 : (a > 255 ? 255 : a);
     } else {
-    	r = r / 255;
-    	g = g / 255;
-    	b = b / 255;
-    	a = a / 255;
-	}
-	
-	this.r = r;
-	this.g = g;
-	this.b = b;
-	this.a = a;
+        r = r / 255;
+        g = g / 255;
+        b = b / 255;
+        a = a / 255;
+    }
+    
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.a = a;
 }
 Color.prototype = {
-	toArray : function(n) {
-		return [this.r, this.g, this.b, this.a].slice(0, n || 4);
-	},
-	multiply : function multiply(other) {
-	    return new Color(
-	    	Math.floor(this.r * other.r / 255.0),
-	    	Math.floor(this.g * other.g / 255.0),
-	    	Math.floor(this.b * other.b / 255.0),
-	    	Math.floor(this.a * other.a / 255.0));
-	},
-	clone : function() {
-		var result = new Color();
-		result.r = this.r;
-		result.g = this.g;
-		result.b = this.b;
-		result.a = this.a;
-		return result;
-	}
+    toArray : function(n) {
+        return [this.r, this.g, this.b, this.a].slice(0, n || 4);
+    },
+    multiply : function multiply(other) {
+        return new Color(
+            Math.floor(this.r * other.r / 255.0),
+            Math.floor(this.g * other.g / 255.0),
+            Math.floor(this.b * other.b / 255.0),
+            Math.floor(this.a * other.a / 255.0));
+    },
+    clone : function() {
+        var result = new Color();
+        result.r = this.r;
+        result.g = this.g;
+        result.b = this.b;
+        result.a = this.a;
+        return result;
+    }
 };
 
 Color.multiply = function(value, scale) {
-	var r = value.r;
-	var g = value.g;
-	var b = value.b;
-	var a = value.a;
-	
- 	var value = scale*65536;
- 	var min = 0;
- 	var max = 0xffffff;
-	
-	value = (value > max) ? max : value;
+    var r = value.r;
+    var g = value.g;
+    var b = value.b;
+    var a = value.a;
+    
+    var value = scale*65536;
+    var min = 0;
+    var max = 0xffffff;
+    
+    value = (value > max) ? max : value;
     value = (value < min) ? min : value;
     var uintScale = value < 0 ? 0 : value;
     
@@ -686,26 +686,26 @@ Color.multiply = function(value, scale) {
 };
 
 Color.lerp = function(value1, value2, amount) {
-	var r1 = value1.r;
-	var g1 = valur1.g;
-	var b1 = value1.b;
-	var a1 = value1.a;
-	
-	var r2 = value2.r;
-	var g2 = valur2.g;
-	var b2 = value2.b;
-	var a2 = value2.a;
-	
-	amount *= 65536;
-	if(isNaN(amount) || amount < 0)
-		amount = 0
-	else if(amount == Number.POSITIVE_INFINITY)
-		amount = amount == Number.NEGATIVE_INFINITY ? 0 : 65536;
+    var r1 = value1.r;
+    var g1 = valur1.g;
+    var b1 = value1.b;
+    var a1 = value1.a;
+    
+    var r2 = value2.r;
+    var g2 = valur2.g;
+    var b2 = value2.b;
+    var a2 = value2.a;
+    
+    amount *= 65536;
+    if(isNaN(amount) || amount < 0)
+        amount = 0
+    else if(amount == Number.POSITIVE_INFINITY)
+        amount = amount == Number.NEGATIVE_INFINITY ? 0 : 65536;
 
-	return new Color(r1 + (((r2 - r1)*factor) >> 16),
-					 g1 + (((g2 - g1)*factor) >> 16),
-					 b1 + (((b2 - b1)*factor) >> 16),
-					 a1 + (((a2 - a1)*factor) >> 16));
+    return new Color(r1 + (((r2 - r1)*factor) >> 16),
+                     g1 + (((g2 - g1)*factor) >> 16),
+                     b1 + (((b2 - b1)*factor) >> 16),
+                     a1 + (((a2 - a1)*factor) >> 16));
 };
 
 Color.aliceBlue=new Color(240,248,255,255);
@@ -855,7 +855,7 @@ Array.prototype.insert = function (index, item) {
 };  
 
 Array.prototype.removeAt=function(index) {
-	this.splice(index, 1);
+    this.splice(index, 1);
 }
 
 function Common() {
@@ -889,7 +889,7 @@ function deepCopyObj(oldObj){
   var newObj={};
   if(oldObj &&  typeof oldObj=="object" ){
     for(var i in oldObj ) {
-    	
+        
       if(typeof oldObj[i]=="object"){//如果子还是对象那么循环调用值赋值
         newObj[i]=deepCopyObj(oldObj[i]);
       }else{//直接值赋值
@@ -910,15 +910,15 @@ String.prototype.format = function () {
 }
 // src/component.js
 function Component() {
-	this.components = {};
+    this.components = {};
 }
 
 Component.prototype.create = function(name) {
-	return this.components[name]();
+    return this.components[name]();
 }
 
 Component.prototype.define = function(name, createFunc) {
-	this.components[name] = createFunc;
+    this.components[name] = createFunc;
 }
 // src/delaunay.js
 var Delaunay;
@@ -1163,26 +1163,26 @@ function Font() {
 }
 
 Font.fromJson = function(json) {
-	var font = new Font();
-	for(var c in json.data) {
-		var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
-		font[c] = { vertices : [] };
-		var points = json.data[c].split(',');
-		for(var i = 0; i < points.length; i = i + 2) {
-			var x = parseFloat(points[i]);
-			var y = parseFloat(points[i + 1]);
-			font[c].vertices.push({ x : x, y : y });
-			
-			if(x < left) left = x;
-			if(x > right) right = x;
-			if(y < top) top = y;
-			if(y > bottom) bottom = y;
-		}
-		
-		font[c].size = { width : right - left, height : bottom - top };
-	}
-	
-	return font;
+    var font = new Font();
+    for(var c in json.data) {
+        var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
+        font[c] = { vertices : [] };
+        var points = json.data[c].split(',');
+        for(var i = 0; i < points.length; i = i + 2) {
+            var x = parseFloat(points[i]);
+            var y = parseFloat(points[i + 1]);
+            font[c].vertices.push({ x : x, y : y });
+            
+            if(x < left) left = x;
+            if(x > right) right = x;
+            if(y < top) top = y;
+            if(y > bottom) bottom = y;
+        }
+        
+        font[c].size = { width : right - left, height : bottom - top };
+    }
+    
+    return font;
 }
 // src/HTMLAudio.js
 /**
@@ -1193,253 +1193,253 @@ Font.fromJson = function(json) {
  * @module iuiu/HTMLAudio
  */
 function HTMLAudio(properties) {   
-	var obj = {
-	    src: null,
-	    loop: false,
-	    autoPlay: false,
-	    loaded: false,
-	    playing: false,
-	    duration: 0,
-	    volume: 1,
-	    muted: false,
+    var obj = {
+        src: null,
+        loop: false,
+        autoPlay: false,
+        loaded: false,
+        playing: false,
+        duration: 0,
+        volume: 1,
+        muted: false,
 
-	    _element: null, //HTMLAudioElement对象
-	    _listeners: null,
+        _element: null, //HTMLAudioElement对象
+        _listeners: null,
 
-	    /**
-	     * @language=zh
-	     * 增加一个事件监听。
-	     * @param {String} type 要监听的事件类型。
-	     * @param {Function} listener 事件监听回调函数。
-	     * @param {Boolean} once 是否是一次性监听，即回调函数响应一次后即删除，不再响应。
-	     * @returns {Object} 对象本身。链式调用支持。
-	     */
-	    on: function(type, listener, once){
-	        var listeners = (this._listeners = this._listeners || {});
-	        var eventListeners = (listeners[type] = listeners[type] || []);
-	        for(var i = 0, len = eventListeners.length; i < len; i++){
-	            var el = eventListeners[i];
-	            if(el.listener === listener) return;
-	        }
-	        eventListeners.push({listener:listener, once:once});
-	        return this;
-	    },
+        /**
+         * @language=zh
+         * 增加一个事件监听。
+         * @param {String} type 要监听的事件类型。
+         * @param {Function} listener 事件监听回调函数。
+         * @param {Boolean} once 是否是一次性监听，即回调函数响应一次后即删除，不再响应。
+         * @returns {Object} 对象本身。链式调用支持。
+         */
+        on: function(type, listener, once){
+            var listeners = (this._listeners = this._listeners || {});
+            var eventListeners = (listeners[type] = listeners[type] || []);
+            for(var i = 0, len = eventListeners.length; i < len; i++){
+                var el = eventListeners[i];
+                if(el.listener === listener) return;
+            }
+            eventListeners.push({listener:listener, once:once});
+            return this;
+        },
 
-	    /**
-	     * @language=zh
-	     * 删除一个事件监听。如果不传入任何参数，则删除所有的事件监听；如果不传入第二个参数，则删除指定类型的所有事件监听。
-	     * @param {String} type 要删除监听的事件类型。
-	     * @param {Function} listener 要删除监听的回调函数。
-	     * @returns {Object} 对象本身。链式调用支持。
-	     */
-	    off: function(type, listener){
-	        //remove all event listeners
-	        if(arguments.length == 0){
-	            this._listeners = null;
-	            return this;
-	        }
+        /**
+         * @language=zh
+         * 删除一个事件监听。如果不传入任何参数，则删除所有的事件监听；如果不传入第二个参数，则删除指定类型的所有事件监听。
+         * @param {String} type 要删除监听的事件类型。
+         * @param {Function} listener 要删除监听的回调函数。
+         * @returns {Object} 对象本身。链式调用支持。
+         */
+        off: function(type, listener){
+            //remove all event listeners
+            if(arguments.length == 0){
+                this._listeners = null;
+                return this;
+            }
 
-	        var eventListeners = this._listeners && this._listeners[type];
-	        if(eventListeners){
-	            //remove event listeners by specified type
-	            if(arguments.length == 1){
-	                delete this._listeners[type];
-	                return this;
-	            }
+            var eventListeners = this._listeners && this._listeners[type];
+            if(eventListeners){
+                //remove event listeners by specified type
+                if(arguments.length == 1){
+                    delete this._listeners[type];
+                    return this;
+                }
 
-	            for(var i = 0, len = eventListeners.length; i < len; i++){
-	                var el = eventListeners[i];
-	                if(el.listener === listener){
-	                    eventListeners.splice(i, 1);
-	                    if(eventListeners.length === 0) delete this._listeners[type];
-	                    break;
-	                }
-	            }
-	        }
-	        return this;
-	    },
+                for(var i = 0, len = eventListeners.length; i < len; i++){
+                    var el = eventListeners[i];
+                    if(el.listener === listener){
+                        eventListeners.splice(i, 1);
+                        if(eventListeners.length === 0) delete this._listeners[type];
+                        break;
+                    }
+                }
+            }
+            return this;
+        },
 
-	    /**
-	     * @language=zh
-	     * 发送事件。当第一个参数类型为Object时，则把它作为一个整体事件对象。
-	     * @param {String} type 要发送的事件类型。
-	     * @param {Object} detail 要发送的事件的具体信息，即事件随带参数。
-	     * @returns {Boolean} 是否成功调度事件。
-	     */
-	    fire: function(type, detail){
-	        var event, eventType;
-	        if(typeof type === 'string'){
-	            eventType = type;
-	        }else{
-	            event = type;
-	            eventType = type.type;
-	        }
+        /**
+         * @language=zh
+         * 发送事件。当第一个参数类型为Object时，则把它作为一个整体事件对象。
+         * @param {String} type 要发送的事件类型。
+         * @param {Object} detail 要发送的事件的具体信息，即事件随带参数。
+         * @returns {Boolean} 是否成功调度事件。
+         */
+        fire: function(type, detail){
+            var event, eventType;
+            if(typeof type === 'string'){
+                eventType = type;
+            }else{
+                event = type;
+                eventType = type.type;
+            }
 
-	        var listeners = this._listeners;
-	        if(!listeners) return false;
+            var listeners = this._listeners;
+            if(!listeners) return false;
 
-	        var eventListeners = listeners[eventType];
-	        if(eventListeners){
-	            var eventListenersCopy = eventListeners.slice(0);
-	            event = event || new EventObject(eventType, this, detail);
-	            if(event._stopped) return false;
+            var eventListeners = listeners[eventType];
+            if(eventListeners){
+                var eventListenersCopy = eventListeners.slice(0);
+                event = event || new EventObject(eventType, this, detail);
+                if(event._stopped) return false;
 
-	            for(var i = 0; i < eventListenersCopy.length; i++){
-	                var el = eventListenersCopy[i];
-	                el.listener.call(this, event);
-	                if(el.once) {
-	                    var index = eventListeners.indexOf(el);
-	                    if(index > -1){
-	                        eventListeners.splice(index, 1);
-	                    }
-	                }
-	            }
+                for(var i = 0; i < eventListenersCopy.length; i++){
+                    var el = eventListenersCopy[i];
+                    el.listener.call(this, event);
+                    if(el.once) {
+                        var index = eventListeners.indexOf(el);
+                        if(index > -1){
+                            eventListeners.splice(index, 1);
+                        }
+                    }
+                }
 
-	            if(eventListeners.length == 0) delete listeners[eventType];
-	            return true;
-	        }
-	        return false;
-	    },
-	    /**
-	     * @language=zh
-	     * 加载音频文件。
-	     */
-	    load: function(){
-	        if(!this._element){
-	            var elem;
-	            try{
-	                elem = this._element = new Audio();
-	                elem.addEventListener('canplaythrough', this._onAudioEvent, false);
-	                elem.addEventListener('ended', this._onAudioEvent, false);
-	                elem.addEventListener('error', this._onAudioEvent, false);
-	                elem.src = this.src;
-	                elem.volume = this.volume;
-	                elem.load();
-	            }
-	            catch(err){
-	                //ie9 某些版本有Audio对象，但是执行play,pause会报错！
-	                elem = this._element = {};
-	                elem.play = elem.pause = function(){
+                if(eventListeners.length == 0) delete listeners[eventType];
+                return true;
+            }
+            return false;
+        },
+        /**
+         * @language=zh
+         * 加载音频文件。
+         */
+        load: function(){
+            if(!this._element){
+                var elem;
+                try{
+                    elem = this._element = new Audio();
+                    elem.addEventListener('canplaythrough', this._onAudioEvent, false);
+                    elem.addEventListener('ended', this._onAudioEvent, false);
+                    elem.addEventListener('error', this._onAudioEvent, false);
+                    elem.src = this.src;
+                    elem.volume = this.volume;
+                    elem.load();
+                }
+                catch(err){
+                    //ie9 某些版本有Audio对象，但是执行play,pause会报错！
+                    elem = this._element = {};
+                    elem.play = elem.pause = function(){
 
-	                };
-	            }
-	        }
-	        return this;
-	    },
+                    };
+                }
+            }
+            return this;
+        },
 
-	    /**
-	     * @language=zh
-	     * @private
-	     */
-	    _onAudioEvent: function(e){
-	        // console.log('onAudioEvent:', e.type);
-	        var type = e.type;
+        /**
+         * @language=zh
+         * @private
+         */
+        _onAudioEvent: function(e){
+            // console.log('onAudioEvent:', e.type);
+            var type = e.type;
 
-	        switch(type){
-	            case 'canplaythrough':
-	                e.target.removeEventListener(type, this._onAudioEvent);
-	                this.loaded = true;
-	                this.duration = this._element.duration;
-	                this.fire('load');
-	                if(obj.autoPlay) this._doPlay();
-	                break;
-	            case 'ended':
-	                this.playing = false;
-	                this.fire('end');
-	                if(this.loop) this._doPlay();
-	                break;
-	            case 'error':
-	                this.fire('error');
-	                break;
-	        }
-	    },
+            switch(type){
+                case 'canplaythrough':
+                    e.target.removeEventListener(type, this._onAudioEvent);
+                    this.loaded = true;
+                    this.duration = this._element.duration;
+                    this.fire('load');
+                    if(obj.autoPlay) this._doPlay();
+                    break;
+                case 'ended':
+                    this.playing = false;
+                    this.fire('end');
+                    if(this.loop) this._doPlay();
+                    break;
+                case 'error':
+                    this.fire('error');
+                    break;
+            }
+        },
 
-	    /**
-	     * @language=zh
-	     * @private
-	     */
-	    _doPlay: function(){
-	        if(!this.playing){
-	            this._element.volume = this.muted ? 0 : this.volume;
-	            this._element.play();
-	            this.playing = true;
-	        }
-	    },
-	    /**
-	     * @language=zh
-	     * 播放音频。如果正在播放，则会重新开始。
-	     * 注意：为了避免第一次播放不成功，建议在load音频后再播放。
-	     */
-	    play: function(){
-	        if(this.playing) this.stop();
+        /**
+         * @language=zh
+         * @private
+         */
+        _doPlay: function(){
+            if(!this.playing){
+                this._element.volume = this.muted ? 0 : this.volume;
+                this._element.play();
+                this.playing = true;
+            }
+        },
+        /**
+         * @language=zh
+         * 播放音频。如果正在播放，则会重新开始。
+         * 注意：为了避免第一次播放不成功，建议在load音频后再播放。
+         */
+        play: function(){
+            if(this.playing) this.stop();
 
-	        if(!this._element){
-	            this.autoPlay = true;
-	            this.load();
-	        }else if(this.loaded){
-	            this._doPlay();
-	        }
+            if(!this._element){
+                this.autoPlay = true;
+                this.load();
+            }else if(this.loaded){
+                this._doPlay();
+            }
 
-	        return this;
-	    },
-	    /**
-	     * @language=zh
-	     * 暂停音频。
-	     */
-	    pause: function(){
-	        if(this.playing){
-	            this._element.pause();
-	            this.playing = false;
-	        }
-	        return this;
-	    },
-	    /**
-	     * @language=zh
-	     * 恢复音频播放。
-	     */
-	    resume: function(){
-	        if(!this.playing){
-	            this._doPlay();
-	        }
-	        return this;
-	    },
-	    /**
-	     * @language=zh
-	     * 停止音频播放。
-	     */
-	    stop: function(){
-	        if(this.playing){
-	            this._element.pause();
-	            this._element.currentTime = 0;
-	            this.playing = false;
-	        }
-	        return this;
-	    },
-	    /**
-	     * @language=zh
-	     * 设置音量。注意: iOS设备无法设置音量。
-	     */
-	    setVolume: function(volume){
-	        if(this.volume != volume){
-	            this.volume = volume;
-	            this._element.volume = volume;
-	        }
-	        return this;
-	    },
-	    /**
-	     * @language=zh
-	     * 设置静音模式。注意: iOS设备无法设置静音模式。
-	     */
-	    setMute: function(muted){
-	        if(this.muted != muted){
-	            this.muted = muted;
-	            this._element.volume = muted ? 0 : this.volume;
-	        }
-	        return this;
-	    }
-	};
-	
-	Common.copy(obj, properties, true);
+            return this;
+        },
+        /**
+         * @language=zh
+         * 暂停音频。
+         */
+        pause: function(){
+            if(this.playing){
+                this._element.pause();
+                this.playing = false;
+            }
+            return this;
+        },
+        /**
+         * @language=zh
+         * 恢复音频播放。
+         */
+        resume: function(){
+            if(!this.playing){
+                this._doPlay();
+            }
+            return this;
+        },
+        /**
+         * @language=zh
+         * 停止音频播放。
+         */
+        stop: function(){
+            if(this.playing){
+                this._element.pause();
+                this._element.currentTime = 0;
+                this.playing = false;
+            }
+            return this;
+        },
+        /**
+         * @language=zh
+         * 设置音量。注意: iOS设备无法设置音量。
+         */
+        setVolume: function(volume){
+            if(this.volume != volume){
+                this.volume = volume;
+                this._element.volume = volume;
+            }
+            return this;
+        },
+        /**
+         * @language=zh
+         * 设置静音模式。注意: iOS设备无法设置静音模式。
+         */
+        setMute: function(muted){
+            if(this.muted != muted){
+                this.muted = muted;
+                this._element.volume = muted ? 0 : this.volume;
+            }
+            return this;
+        }
+    };
+    
+    Common.copy(obj, properties, true);
        obj._onAudioEvent = obj._onAudioEvent.bind(obj);
        return obj;
 };
@@ -1449,133 +1449,133 @@ function DefaultDecoder() {
 }
 
 DefaultDecoder.prototype = {
-	getCharCode : function(charCode) {
-		return String.fromCharCode(charCode);
-	}
+    getCharCode : function(charCode) {
+        return String.fromCharCode(charCode);
+    }
 };
 
 function BinaryReader(dataView, start, length, decoder) {
-	if(!dataView)
-    	throw "data";
+    if(!dataView)
+        throw "data";
         
-	this.data = dataView;
-	this.position = start || 0;
-	var up = start + length;
+    this.data = dataView;
+    this.position = start || 0;
+    var up = start + length;
     this.length = up > dataView.byteLength ? dataView.byteLength - start : up;
     this.decoder = decoder || new DefaultDecoder();
 }
 
 BinaryReader.prototype = {
-	readByte : function() {
-		return this.data.getUint8(this.position++);
-	},
-	readSByte : function() {
-		return this.data.getInt8(this.position++);
-	},
-	readInt16 : function() {
-		var result = this.data.getInt16(this.position);
+    readByte : function() {
+        return this.data.getUint8(this.position++);
+    },
+    readSByte : function() {
+        return this.data.getInt8(this.position++);
+    },
+    readInt16 : function() {
+        var result = this.data.getInt16(this.position);
         this.position = this.position + 2;
         return result;
-	},
-	readUint16 : function() {
-		var result = this.data.getUint16(this.position);
+    },
+    readUint16 : function() {
+        var result = this.data.getUint16(this.position);
         this.position = this.position + 2;
         return result;
-	},
-	readInt32 : function() {
-		var result = this.data.getInt32(this.position);
+    },
+    readInt32 : function() {
+        var result = this.data.getInt32(this.position);
         this.position = this.position + 4;
         return result;
-	},
-	readUint32 : function() {
-		var result = this.data.getUint32(this.position);
+    },
+    readUint32 : function() {
+        var result = this.data.getUint32(this.position);
         this.position = this.position + 4;
         return result;
-	},
-	readSingle : function() {
-		var result = this.data.getFloat32(this.position);
+    },
+    readSingle : function() {
+        var result = this.data.getFloat32(this.position);
         this.position = this.position + 4;
         return result;
-	},
-	readDouble : function() {
-		var result = this.data.getFloat64(this.position);
+    },
+    readDouble : function() {
+        var result = this.data.getFloat64(this.position);
         this.position = this.position + 8;
         return result;
-	},
-	readBoolean : function() {
-		return this.data.getInt8(this.position++) == 1;
-	},
-	readChar : function() {
-		return this.decoder.getCharCode(this.readByte());
-	},
-	readString : function(length) {
-		var result = "";
+    },
+    readBoolean : function() {
+        return this.data.getInt8(this.position++) == 1;
+    },
+    readChar : function() {
+        return this.decoder.getCharCode(this.readByte());
+    },
+    readString : function(length) {
+        var result = "";
         var num = 0;        // int
         var capacity = length || this.read7BitEncodedInt();
         if (capacity < 0) {
-        	throw "IO.IO_InvalidStringLen_Len";
+            throw "IO.IO_InvalidStringLen_Len";
         }
         
         if (capacity == 0) {
-        	return result;
+            return result;
         }
         
         for(var i = 0; i < capacity; i++) {
-        	result += this.readChar();
+            result += this.readChar();
         }
         
         return result;
-	},
-	read7BitEncodedInt : function() {
-		var num3;           // byte
-       	var num = 0;        // int
-		var num2 = 0;       // int
-		do {
-			if (num2 == 0x23) {
-				throw "Format_Bad7BitInt32";
-			}
-			num3 = this.readByte();
-			num |= (num3 & 0x7f) << num2;
-			num2 += 7;
-		} while ((num3 & 0x80) != 0);
-		
-		this.position = this.position + 7;
-		return num;
-	},
-	readBytes : function(num) {
-		var result = [];
-		for (var i = 0; i < num; i++) {
-			result[i] = this.readByte();
-		}
-		
-		return result;
-	},
-	readFixed : function() {
-		var val = this.readInt32() / 65536.0;
-		return Math.ceil(val * 100000) / 100000;
-	},
-	readLongDateTime : function() {
-		// 1970.1.1 - 1904.1.1
-		var delta = -2080198800000;// (new Date(1904, 1, 1)).getTime();
-		var date = new Date();
-		this.position = this.position + 4;
-		date.setTime(this.readUint32());
-		return date;
-	},
-	getFixed : function(byteOffset) {
-		var temp = this.position;
-		this.position = byteOffset;
-		var result = this.readFixed();
-		this.position = temp;
-		return result;
-	},
-	getLongDateTime : function(byteOffset) {
-		var temp = this.position;
-		this.position = byteOffset;
-		var result = readLongDateTime();
-		this.position = temp;
-		return result;
-	}
+    },
+    read7BitEncodedInt : function() {
+        var num3;           // byte
+        var num = 0;        // int
+        var num2 = 0;       // int
+        do {
+            if (num2 == 0x23) {
+                throw "Format_Bad7BitInt32";
+            }
+            num3 = this.readByte();
+            num |= (num3 & 0x7f) << num2;
+            num2 += 7;
+        } while ((num3 & 0x80) != 0);
+        
+        this.position = this.position + 7;
+        return num;
+    },
+    readBytes : function(num) {
+        var result = [];
+        for (var i = 0; i < num; i++) {
+            result[i] = this.readByte();
+        }
+        
+        return result;
+    },
+    readFixed : function() {
+        var val = this.readInt32() / 65536.0;
+        return Math.ceil(val * 100000) / 100000;
+    },
+    readLongDateTime : function() {
+        // 1970.1.1 - 1904.1.1
+        var delta = -2080198800000;// (new Date(1904, 1, 1)).getTime();
+        var date = new Date();
+        this.position = this.position + 4;
+        date.setTime(this.readUint32());
+        return date;
+    },
+    getFixed : function(byteOffset) {
+        var temp = this.position;
+        this.position = byteOffset;
+        var result = this.readFixed();
+        this.position = temp;
+        return result;
+    },
+    getLongDateTime : function(byteOffset) {
+        var temp = this.position;
+        this.position = byteOffset;
+        var result = readLongDateTime();
+        this.position = temp;
+        return result;
+    }
 };
 // src/keyboard.js
 var isff = typeof navigator !== 'undefined' ? navigator.userAgent.toLowerCase().indexOf('firefox') > 0 : false;
@@ -1909,7 +1909,7 @@ function update() {
   const asterisk = _handlers['*'];
   
   if (!asterisk) return;
-	
+    
   // 获取范围 默认为all
   var scope = getScope();
 
@@ -1996,8 +1996,8 @@ function hotkeys(key, option, method) {
     addEvent(element, 'keydown', function(e) {
       dispatch(e);
       event.preventDefault();
-	  event.stopPropagation();
- 	  event.cancelBubble = true;
+      event.stopPropagation();
+      event.cancelBubble = true;
     });
     addEvent(window, 'focus', function() {
       _downKeys = [];
@@ -2040,143 +2040,143 @@ function Level() {
 }
 
 Level.create = function() {
-	var level = new Level();
-	level.objects = [];
-	return level;
+    var level = new Level();
+    level.objects = [];
+    return level;
 }
 
 Level.prototype.init = function() {
-	var json = this.json;
-	for(var i = 0; i < json.items.length; i++) {
-		var item = json.items[i];
-		
-	    IUIU.Module.load(item.fileName, function (sender) {
-	    	var json2 = sender.data;
-	    	var content = sender.src;
-	    	
-	        var obj = null;
-	    	for(var x = 0; x < content.objects.length; x++) {
-	    		var obj2 = content.objects[x];
-	    		if(obj2.name == item.name) {
-	    			obj = obj2;
-	    		}
-	    	}
-	        	    	
-			if(obj != null) {
-				try {
-	            	Common.copy(obj, IUIU.Component.create(json2.header), false);
-	    		}
-	        	catch(ex) {
-	            	//obj = createErrorObject();
-	    		}
-				
-		        obj.fileName = json2.fileName;
-		        obj.header = json2.header;
-		        
-		        for (var property in json2) {
-		            var value = json2[property];
-		            var type = typeof value;
-		            if (obj[property] && (type == "number" || type == "boolean" || type == "string")) {
-		                obj[property] = json2[property];
-		            }
-		        }
-		        
-		        content.objects.push(obj);
-		    }
+    var json = this.json;
+    for(var i = 0; i < json.items.length; i++) {
+        var item = json.items[i];
+        
+        IUIU.Module.load(item.fileName, function (sender) {
+            var json2 = sender.data;
+            var content = sender.src;
+            
+            var obj = null;
+            for(var x = 0; x < content.objects.length; x++) {
+                var obj2 = content.objects[x];
+                if(obj2.name == item.name) {
+                    obj = obj2;
+                }
+            }
+                        
+            if(obj != null) {
+                try {
+                    Common.copy(obj, IUIU.Component.create(json2.header), false);
+                }
+                catch(ex) {
+                    //obj = createErrorObject();
+                }
+                
+                obj.fileName = json2.fileName;
+                obj.header = json2.header;
+                
+                for (var property in json2) {
+                    var value = json2[property];
+                    var type = typeof value;
+                    if (obj[property] && (type == "number" || type == "boolean" || type == "string")) {
+                        obj[property] = json2[property];
+                    }
+                }
+                
+                content.objects.push(obj);
+            }
 
-	    }, { data : item, src : level });
-	}
-	
-	delete this.json;
+        }, { data : item, src : level });
+    }
+    
+    delete this.json;
 }
 
 Level.fromJson = function(json, params, entry) {
-	var level = entry;
-	
-	for(var i = 0; i < json.items.length; i++) {
-		level.objects.push({ name : json.items[i].name });
-	}
-	
-	level.json = json;
-		
-	for(var i = 0; i < json.trigger.length; i++) {
-		Trigger.load(level, json.trigger[i]);
-	}
+    var level = entry;
+    
+    for(var i = 0; i < json.items.length; i++) {
+        level.objects.push({ name : json.items[i].name });
+    }
+    
+    level.json = json;
+        
+    for(var i = 0; i < json.trigger.length; i++) {
+        Trigger.load(level, json.trigger[i]);
+    }
 
-	return level;
+    return level;
 }
 // src/loader.js
 var parseINIString = function (data){ 
-	var regex = { 
-		section: /^\s*\[\s*([^\]]*)\s*\]\s*$/, 
-		param: /^\s*([\w\.\-\_]+)\s*=\s*(.*?)\s*$/, 
-		comment: /^\s*;.*$/ 
-	}; 
-	var value = {}; 
-	var lines = data.split(/\r\n|\r|\n/); 
-	var section = null; 
-	lines.forEach(function(line){ 
-	if(regex.comment.test(line)){ 
-		return; 
-	}else if(regex.param.test(line)){ 
-		var match = line.match(regex.param); 
-		if(section){ 
-			value[section][match[1]] = match[2]; 
-		}else{ 
-			value[match[1]] = match[2]; 
-		} 
-	}else if(regex.section.test(line)){ 
-		var match = line.match(regex.section); 
-		value[match[1]] = {}; 
-		section = match[1]; 
-	}else if(line.length == 0 && section){ 
-		section = null; 
-	}; 
-	});
-	
-	return value; 
+    var regex = { 
+        section: /^\s*\[\s*([^\]]*)\s*\]\s*$/, 
+        param: /^\s*([\w\.\-\_]+)\s*=\s*(.*?)\s*$/, 
+        comment: /^\s*;.*$/ 
+    }; 
+    var value = {}; 
+    var lines = data.split(/\r\n|\r|\n/); 
+    var section = null; 
+    lines.forEach(function(line){ 
+    if(regex.comment.test(line)){ 
+        return; 
+    }else if(regex.param.test(line)){ 
+        var match = line.match(regex.param); 
+        if(section){ 
+            value[section][match[1]] = match[2]; 
+        }else{ 
+            value[match[1]] = match[2]; 
+        } 
+    }else if(regex.section.test(line)){ 
+        var match = line.match(regex.section); 
+        value[match[1]] = {}; 
+        section = match[1]; 
+    }else if(line.length == 0 && section){ 
+        section = null; 
+    }; 
+    });
+    
+    return value; 
 }
 
 function IniLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 };
 IniLoader.prototype = {
-	responseType : 'text',
-	load : function(buffer, params) {
-		return parseINIString(buffer);
-	}
+    responseType : 'text',
+    load : function(buffer, params) {
+        return parseINIString(buffer);
+    }
 };
 
 function TextureLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 TextureLoader.prototype = {
-	responseType : 'blob',
-	load : function(buffer, params) {
-		var image = new Image();
-		image.src = URL.createObjectURL(buffer);
-		return GL.Texture.fromImage(image);
-	}
+    responseType : 'blob',
+    load : function(buffer, params) {
+        var image = new Image();
+        image.src = URL.createObjectURL(buffer);
+        return GL.Texture.fromImage(image);
+    }
 };
 
 function FontLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 FontLoader.prototype = {
-	responseType : 'arraybuffer',
-	load : function(buffer, params) {
-		return GL.Font.fromStream(buffer, params);
-	}
+    responseType : 'arraybuffer',
+    load : function(buffer, params) {
+        return GL.Font.fromStream(buffer, params);
+    }
 };
 
 function ContentLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 ContentLoader.prototype = {
-	responseType : 'arraybuffer',
-	load : function(buffer, params) {
-		if(buffer) {
-			var content = {};
+    responseType : 'arraybuffer',
+    load : function(buffer, params) {
+        if(buffer) {
+            var content = {};
             var dataView = new DataView(buffer);
             var originalBuffer = readHeader(content, dataView);
             if(!originalBuffer) {
@@ -2219,252 +2219,252 @@ ContentLoader.prototype = {
             //content.valid = false;
             //content.errorMessage = '无效的资产源:' + content.src;
         }
-	},
-	readHeader : function(content, buffer) {
-    	var br = new BinaryReader(buffer);
-	    // 头校验
-	    var r = br.readChar();
-	    var e = br.readChar();
-		var s = br.readChar();
+    },
+    readHeader : function(content, buffer) {
+        var br = new BinaryReader(buffer);
+        // 头校验
+        var r = br.readChar();
+        var e = br.readChar();
+        var s = br.readChar();
 
-		if(r != 'r' || e != 'e' || s != 's') {
-			//content.errorMessage = '无效的资产头:' + content.src;
-			return false;
-		}
+        if(r != 'r' || e != 'e' || s != 's') {
+            //content.errorMessage = '无效的资产头:' + content.src;
+            return false;
+        }
 
-	    // 读取校验值
-	    content.checksum = br.readString(16);
+        // 读取校验值
+        content.checksum = br.readString(16);
 
-		// 检查校验值与当前资源列表中区别
-		if(content.checksum != this.checklist[content.src]) {
-	    	// 废弃的资源需要重新更新,将其状态标记为error则会重新下载
-	    	content.status = 'error';
-	        return;
-	    }
+        // 检查校验值与当前资源列表中区别
+        if(content.checksum != this.checklist[content.src]) {
+            // 废弃的资源需要重新更新,将其状态标记为error则会重新下载
+            content.status = 'error';
+            return;
+        }
 
-		// 读取作者
-		content.author = br.readString();
+        // 读取作者
+        content.author = br.readString();
 
-		// 版本读取
-		var major = br.readUint32();
-		var minor = br.readUint32();
-		var revision = br.readUint32();
-		var build = br.readUint32();
-		content.version = new CVersion(major, minor, revision, build);
+        // 版本读取
+        var major = br.readUint32();
+        var minor = br.readUint32();
+        var revision = br.readUint32();
+        var build = br.readUint32();
+        content.version = new CVersion(major, minor, revision, build);
 
-		// 原始大小读取
-		content.originalSize = br.readUint32();
+        // 原始大小读取
+        content.originalSize = br.readUint32();
 
-		// 判断是否压缩
-		content.isCompression = br.readBoolean();
+        // 判断是否压缩
+        content.isCompression = br.readBoolean();
 
-		// 返回压缩数据大小
-		return new BinaryReader(buffer, br.position, br.length());
-	},
-	readContent : function(content, buffer) {
-		// 校验内容
-		var nowChecksum = MD5.compute(buffer);
-		if(nowChecksum != content.checksum) {
-			//content.errorMessage = '无效的资产校验码';
-			return;
-		}
+        // 返回压缩数据大小
+        return new BinaryReader(buffer, br.position, br.length());
+    },
+    readContent : function(content, buffer) {
+        // 校验内容
+        var nowChecksum = MD5.compute(buffer);
+        if(nowChecksum != content.checksum) {
+            //content.errorMessage = '无效的资产校验码';
+            return;
+        }
 
-		content.content = eval(buffer.readString());
-	}
+        content.content = eval(buffer.readString());
+    }
 };
 
 function ScriptLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 ScriptLoader.prototype = {
-	sync : true,
-	responseType : 'text',
-	load : function(buffer, params, entry) {
-		return eval('\'' + Format(buffer, params) + '\'');
-	}
+    sync : true,
+    responseType : 'text',
+    load : function(buffer, params, entry) {
+        return eval('\'' + Format(buffer, params) + '\'');
+    }
 };
 
 function JsonLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 JsonLoader.prototype = {
-	responseType : 'text',
-	load : function(buffer, params, entry) {
-		var jsonObj = JSON.parse(buffer);
-		return jsonObj;
-	}
+    responseType : 'text',
+    load : function(buffer, params, entry) {
+        var jsonObj = JSON.parse(buffer);
+        return jsonObj;
+    }
 }
 
 function AnimationLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 AnimationLoader.prototype = {
-	responseType : 'text',
-	load : function(buffer, params, entry) {
-		var jsonObj = JSON.parse(buffer);
-		return Animation.fromJson(jsonObj, params, entry);
-	},
-	create : function() {
-		return Animation.create();
-	}
+    responseType : 'text',
+    load : function(buffer, params, entry) {
+        var jsonObj = JSON.parse(buffer);
+        return Animation.fromJson(jsonObj, params, entry);
+    },
+    create : function() {
+        return Animation.create();
+    }
 }
 
 function ImageLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 ImageLoader.prototype = {
-	responseType : 'text',
-	load : function(buffer, params, entry) {
-		var jsonObj = JSON.parse(buffer);
-		return Bitmap.fromJson(jsonObj, params, entry);
-	},
-	create : function() {
-		return Bitmap.create();
-	}
+    responseType : 'text',
+    load : function(buffer, params, entry) {
+        var jsonObj = JSON.parse(buffer);
+        return Bitmap.fromJson(jsonObj, params, entry);
+    },
+    create : function() {
+        return Bitmap.create();
+    }
 }
 
 function LevelLoader(loader) {
-	this.loader = loader;
+    this.loader = loader;
 }
 LevelLoader.prototype = {
-	responseType : 'text',
-	load : function(buffer, params, entry) {
-		var jsonObj = JSON.parse(buffer);
-		return Level.fromJson(jsonObj, params, entry);
-	},
-	create : function() {
-		return Level.create();
-	}
+    responseType : 'text',
+    load : function(buffer, params, entry) {
+        var jsonObj = JSON.parse(buffer);
+        return Level.fromJson(jsonObj, params, entry);
+    },
+    create : function() {
+        return Level.create();
+    }
 }
 
 function Loader(domain) {
-	this.domain = domain;
-	this.loadedContents = {};
-	//this.checklist = window.localStorage.domain
-	
-	// modes
-	this.loaders = {};
-	this.addMode('content', new ContentLoader(this));
-	this.addMode('ini', new IniLoader(this));
-	this.addMode('texture', new TextureLoader(this));
-	this.addMode('ttf', new FontLoader(this));
-	this.addMode('script', new ScriptLoader(this));
-	this.addMode('json', new JsonLoader(this));
-	this.addMode("ani", new AnimationLoader(this));
-	this.addMode("img", new ImageLoader(this));
-	this.addMode("level", new LevelLoader(this));
-	// load checklist
-	/*
-	var content = this.load('checklist.ini', 'ini', null, false);
-	content.onloaded = function(c) {
-		this.checklist = c.content;
-	};
-	content.onerror = function(c) {
-		// no cache
-	};
-	
-	// load entry
-	*/
+    this.domain = domain;
+    this.loadedContents = {};
+    //this.checklist = window.localStorage.domain
+    
+    // modes
+    this.loaders = {};
+    this.addMode('content', new ContentLoader(this));
+    this.addMode('ini', new IniLoader(this));
+    this.addMode('texture', new TextureLoader(this));
+    this.addMode('ttf', new FontLoader(this));
+    this.addMode('script', new ScriptLoader(this));
+    this.addMode('json', new JsonLoader(this));
+    this.addMode("ani", new AnimationLoader(this));
+    this.addMode("img", new ImageLoader(this));
+    this.addMode("level", new LevelLoader(this));
+    // load checklist
+    /*
+    var content = this.load('checklist.ini', 'ini', null, false);
+    content.onloaded = function(c) {
+        this.checklist = c.content;
+    };
+    content.onerror = function(c) {
+        // no cache
+    };
+    
+    // load entry
+    */
 }
 
 Loader.prototype = {
-	// ### .addMode(name, loader)
-	// @param loader
-	//			method load
-	addMode : function(name, loader) {
-		this.loaders[name] = loader;
-	},
-	
-	// ### .load(fileName[, type])
-	// @param type
-	//			content
-	//			ini 
-	//			image
-	load : function(fileName, userToken, callback, params) {
-		var scope = this;
+    // ### .addMode(name, loader)
+    // @param loader
+    //          method load
+    addMode : function(name, loader) {
+        this.loaders[name] = loader;
+    },
+    
+    // ### .load(fileName[, type])
+    // @param type
+    //          content
+    //          ini 
+    //          image
+    load : function(fileName, userToken, callback, params) {
+        var scope = this;
 
-		var fileNameExt = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度
-		var fileNameLength = fileName.length;//取到文件名长度
-		var fileFormat = fileName.substring(fileNameExt + 1, fileNameLength);//截
-		
-	 	var type = fileFormat;
-		var loader = this.loaders[type];
-		
-		// object cache
-		if(!this.loadedContents[fileName])
-			this.loadedContents[fileName] = { status : 'error', params : params, callbacks : [], content : loader.create() };
-		
-		var content = this.loadedContents[fileName];			
-		if(content.status == 'error') {
-     		if(loader) {
-     			if(callback) content.callbacks.push(callback);
-     			
-	            content.src = fileName;
-	            content.status = 'loading';
-	            content.userToken = userToken;
-	            content.type = type;
-	            if(loader.responseType) {
-		            var request = new XMLHttpRequest();
-					request.responseType = loader.responseType;
-					request.open("GET", (this.domain != null ? this.domain + '/' : '') + fileName); // + (cache ? '' : '?' + new Date().toString()), true);
-					request.content = content;
-					request.loader = loader;
-					if(!request.loader) {
-						throw 'no dencoder';
-					}
-					
-				 	request.onload = function(e) {
-				 		var loader = e.currentTarget.loader;
-				 		var content = e.currentTarget.content;
-				 		try {
-				 			//content.md5 = CryptoJS.MD5(e.currentTarget.response);
-					 		content.content = loader.load(e.currentTarget.response, content.params, content.content);
-							content.status = 'loaded';
-						}
-						catch(error) {
-							content.status = 'error';
-							if(content.onerror) 
-								content.onerror(content);
-						}
-							
-						if(content.status == 'loaded') {
-							for(var i = 0; i < content.callbacks.length; i++) {
-								content.callbacks[i](content);
-							}
-							content.callbacks = [];
-						}
-					};
-					request.onerror = function(e) {
-						var content = e.currentTarget.content;
-						content.status = 'error';
-						if(content.onerror) 
-							content.onerror(content);
-						//content.errorMessage = 'Error ' + e.target.status + ' occurred while receiving the document.'
-					};
-					request.send();
-					
-					// 如果是同步资源
-					if(request.loader.sync) {
-						// 暂停循环
-						
-					}
-				} else {
-					throw 'responseType';
-					//content.content = loader.load(fileName);
-				}
-			} else {
-				throw 'unkonwn response type';
-			}
+        var fileNameExt = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度
+        var fileNameLength = fileName.length;//取到文件名长度
+        var fileFormat = fileName.substring(fileNameExt + 1, fileNameLength);//截
+        
+        var type = fileFormat;
+        var loader = this.loaders[type];
+        
+        // object cache
+        if(!this.loadedContents[fileName])
+            this.loadedContents[fileName] = { status : 'error', params : params, callbacks : [], content : loader.create() };
+        
+        var content = this.loadedContents[fileName];            
+        if(content.status == 'error') {
+            if(loader) {
+                if(callback) content.callbacks.push(callback);
+                
+                content.src = fileName;
+                content.status = 'loading';
+                content.userToken = userToken;
+                content.type = type;
+                if(loader.responseType) {
+                    var request = new XMLHttpRequest();
+                    request.responseType = loader.responseType;
+                    request.open("GET", (this.domain != null ? this.domain + '/' : '') + fileName); // + (cache ? '' : '?' + new Date().toString()), true);
+                    request.content = content;
+                    request.loader = loader;
+                    if(!request.loader) {
+                        throw 'no dencoder';
+                    }
+                    
+                    request.onload = function(e) {
+                        var loader = e.currentTarget.loader;
+                        var content = e.currentTarget.content;
+                        try {
+                            //content.md5 = CryptoJS.MD5(e.currentTarget.response);
+                            content.content = loader.load(e.currentTarget.response, content.params, content.content);
+                            content.status = 'loaded';
+                        }
+                        catch(error) {
+                            content.status = 'error';
+                            if(content.onerror) 
+                                content.onerror(content);
+                        }
+                            
+                        if(content.status == 'loaded') {
+                            for(var i = 0; i < content.callbacks.length; i++) {
+                                content.callbacks[i](content);
+                            }
+                            content.callbacks = [];
+                        }
+                    };
+                    request.onerror = function(e) {
+                        var content = e.currentTarget.content;
+                        content.status = 'error';
+                        if(content.onerror) 
+                            content.onerror(content);
+                        //content.errorMessage = 'Error ' + e.target.status + ' occurred while receiving the document.'
+                    };
+                    request.send();
+                    
+                    // 如果是同步资源
+                    if(request.loader.sync) {
+                        // 暂停循环
+                        
+                    }
+                } else {
+                    throw 'responseType';
+                    //content.content = loader.load(fileName);
+                }
+            } else {
+                throw 'unkonwn response type';
+            }
         }
-    	else if(content.status == "loading") {
-    		if(callback) content.callbacks.push(callback);
-    	}
-    	else if(content.status == 'loaded') {
-    		if(callback) callback(content);
-    	}
+        else if(content.status == "loading") {
+            if(callback) content.callbacks.push(callback);
+        }
+        else if(content.status == 'loaded') {
+            if(callback) callback(content);
+        }
         
         return content.content;
-	}
+    }
 };
 
 // src/main.js
@@ -2473,11 +2473,11 @@ var gl;
 var IUIU = {
   /**
    * 创建画布
-   * @param		{Canvas}			canvas		所选中的画布，如果为null则新建一个画布
-   * @param		{object}			options		创建webgl时所用到的参数选项
-   * @return	GraphiceDevice
-   * @date		2019-9-4
-   * @author	KumaWang
+   * @param     {Canvas}            canvas      所选中的画布，如果为null则新建一个画布
+   * @param     {object}            options     创建webgl时所用到的参数选项
+   * @return    GraphiceDevice
+   * @date      2019-9-4
+   * @author    KumaWang
    */
   create: function(canvas, options) {
     options = options || {};
@@ -2485,8 +2485,8 @@ var IUIU = {
     if(!canvas) canvas2.width = 800;
     if(!canvas) canvas2.height = 600;
     if (!('alpha' in options)) options.alpha = false;
-	try { gl = canvas2.getContext('webgl', options); } catch (e) {}
-	try { gl = gl || canvas2.getContext('experimental-webgl', options); } catch (e) {}
+    try { gl = canvas2.getContext('webgl', options); } catch (e) {}
+    try { gl = gl || canvas2.getContext('experimental-webgl', options); } catch (e) {}
     if (!gl) throw new Error('WebGL not supported');
     //gl.HALF_FLOAT_OES = 0x8D61;
     addDisplayBatchMode();
@@ -2517,7 +2517,7 @@ var IUIU = {
    */
   Color: Color,
   //Level : Level,
-  	  
+      
   /**
    * 资源加载器
    */
@@ -2537,171 +2537,171 @@ var IUIU = {
 };
 
 function addDisplayBatchMode() {
-	var displayBatchMode = {
-		steps : [],
-		stepIndex : 0,
-		mesh : new Mesh({ coords: true, colors: true, triangles: true }),
-		blendState : 'none',
-		hasBegun: false,
-		hasClip : false,
-		clipRect : null,
-		transformMatrix: Matrix.identity(),
-		camera : {
-			position : { x: 0, y: 0 },
-			rotate : 0
-		},
-		shader: new Shader('\
-			uniform mat4 MatrixTransform;\
-			varying vec4 diffuseColor;\
-			varying vec4 diffuseTexCoord;\
-			void main( )\
-			{\
-				gl_Position = MatrixTransform * gl_Vertex;\
-			    diffuseTexCoord = gl_TexCoord;\
-			    diffuseColor = gl_Color;\
-			}\
-			', '\
-			uniform sampler2D Texture;\
-			varying vec4 diffuseColor;\
-			varying vec4 diffuseTexCoord;\
-			void main( )\
-			{\
-				gl_FragColor = texture2D(Texture, diffuseTexCoord.xy) * diffuseColor;\
-			}\
-			'
-		)
-	};
-	
-	Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
-	
-	gl.getStepIndex = function() {
-		return displayBatchMode.stepIndex;
-	};
-		
-	gl.getStep = function(index) {
-		return displayBatchMode.steps[index];
-	};
-		
-	/**
-	 * 通知渲染器开始接受命令，每次绘制前必须调用
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.begin = function(blendState) {
-		displayBatchMode.hasBegun = true;
-		displayBatchMode.blendState = blendState || 'none';
-		
-		// project matrix
-		if (displayBatchMode.cachedTransformMatrix == null				|| 
-			gl.drawingBufferWidth != displayBatchMode.viewportWidth 	||
-			gl.drawingBufferHeight != displayBatchMode.viewportHeight) {
-				
-		    displayBatchMode.viewportWidth = gl.drawingBufferWidth;
-		    displayBatchMode.viewportHeight = gl.drawingBufferHeight;
+    var displayBatchMode = {
+        steps : [],
+        stepIndex : 0,
+        mesh : new Mesh({ coords: true, colors: true, triangles: true }),
+        blendState : 'none',
+        hasBegun: false,
+        hasClip : false,
+        clipRect : null,
+        transformMatrix: Matrix.identity(),
+        camera : {
+            position : { x: 0, y: 0 },
+            rotate : 0
+        },
+        shader: new Shader('\
+            uniform mat4 MatrixTransform;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            void main( )\
+            {\
+                gl_Position = MatrixTransform * gl_Vertex;\
+                diffuseTexCoord = gl_TexCoord;\
+                diffuseColor = gl_Color;\
+            }\
+            ', '\
+            uniform sampler2D Texture;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            void main( )\
+            {\
+                gl_FragColor = texture2D(Texture, diffuseTexCoord.xy) * diffuseColor;\
+            }\
+            '
+        )
+    };
+    
+    Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
+    
+    gl.getStepIndex = function() {
+        return displayBatchMode.stepIndex;
+    };
+        
+    gl.getStep = function(index) {
+        return displayBatchMode.steps[index];
+    };
+        
+    /**
+     * 通知渲染器开始接受命令，每次绘制前必须调用
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.begin = function(blendState) {
+        displayBatchMode.hasBegun = true;
+        displayBatchMode.blendState = blendState || 'none';
+        
+        // project matrix
+        if (displayBatchMode.cachedTransformMatrix == null              || 
+            gl.drawingBufferWidth != displayBatchMode.viewportWidth     ||
+            gl.drawingBufferHeight != displayBatchMode.viewportHeight) {
+                
+            displayBatchMode.viewportWidth = gl.drawingBufferWidth;
+            displayBatchMode.viewportHeight = gl.drawingBufferHeight;
 
-		    displayBatchMode.cachedTransformMatrix = new Matrix();
-		    var m = displayBatchMode.cachedTransformMatrix.m;
-		    m[0] = 2 * (displayBatchMode.viewportWidth > 0 ? 1 / displayBatchMode.viewportWidth : 0);
-		    m[5] = 2 * (displayBatchMode.viewportHeight > 0 ? -1 / displayBatchMode.viewportHeight : 0);
-		    m[10] = 1;
-		    m[15] = 1;
-		    m[12] = -1;
-		    m[13] = 1;
-		    
-		 	displayBatchMode.cachedTransformMatrix.m[12] -= displayBatchMode.cachedTransformMatrix.m[0];
-			displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
-		}
-		
-		displayBatchMode.transformMatrix.m[12] = displayBatchMode.camera.position.x;
-		displayBatchMode.transformMatrix.m[13] = displayBatchMode.camera.position.y;
-		
-		//gl.matrixMode(gl.PROJECTION);
-		//gl.loadMatrix(displayBatchMode.transformMatrix);
-		//gl.matrixMode(gl.MODELVIEW);
-		//gl.loadMatrix(displayBatchMode.cachedTransformMatrix);
-		
-		displayBatchMode.shader.uniforms({ MatrixTransform: Matrix.multiply2(displayBatchMode.transformMatrix, displayBatchMode.cachedTransformMatrix) });
-		
-		if(gl.enableHitTest) {
-			gl.bindHitTestContext(displayBatchMode.steps);
-		}
-	};
-	
-	/**
-	 * 渲染场景
-	 * @param	{IUIU.Level}		level	渲染的场景
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.level = function(level) {
-		for(var i = 0; i < level.objects.length; i++) {
-			var obj = level.objects[i];
-			if(obj.paint) {
-				obj.paint(gl);
-			}
-		}
-	};
-	
-	/**
-	 * 渲染动画
-	 * @param	{IUIU.Animation}	ani			选中的动画
-	 * @param	{int}				frame		所渲染的帧数
-	 * @param	{IUIU.Vector}		point		渲染的坐标
-	 * @param	{IUIU.Vector}		scale		渲染时采用的拉伸值
-	 * @param	{IUIU.Vector}		origin		渲染时采用的旋转锚点
-	 * @param	{int}				angle		渲染时采用的旋转值
-	 * @param	{IUIU.Color}		color		渲染时采用的颜色过滤
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.animate = function(ani, frame, point, scale, origin, angle, color) {
-		for(var index = 0; index < ani.items.length; index++) {
-			var item = ani.items[index];
-			switch(item.type) {
-				case "mesh":
-					gl.mesh(item, frame, point, scale, origin, angle, color);
-					break;
-				case "collide":
-					break;
-				default:
-					throw "not yet support";
-			}
-		}
-	};
-	
-	/**
-	 * 渲染动画状态
-	 * @param	{IUIU.AnimationState}	state		所渲染的状态
-	 * @param	{IUIU.Vector}			point		渲染的坐标
-	 * @param	{IUIU.Vector}			scale		渲染时采用的拉伸值
-	 * @param	{IUIU.Vector}			origin		渲染时采用的旋转锚点
-	 * @param	{int}					angle		渲染时采用的旋转值
-	 * @param	{IUIU.Color}			color		渲染时采用的颜色过滤
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.state = function(state, point, scale, origin, angle, color) {
-		state.update(gl.elapsedTime);
-		gl.animate(state.animation, state.frame, point, scale, origin, angle, color);
-	};
-	
-	/**
-	 * 渲染模型
-	 * @param	{IUIU.Mesh}			mesh		渲染的模型
-	 * @param	{int}				frame		所渲染的帧数
-	 * @param	{IUIU.Vector}		point		渲染的坐标
-	 * @param	{IUIU.Vector}		scale		渲染时采用的拉伸值
-	 * @param	{IUIU.Vector}		origin		渲染时采用的旋转锚点
-	 * @param	{int}				angle		渲染时采用的旋转值
-	 * @param	{IUIU.Color}		color		渲染时采用的颜色过滤
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.mesh = function(mesh, frame, point, scale, origin, angle, color) {
-		var state = mesh.getRealState(frame);
-		if(mesh.brush.texture) {
-			var img = mesh.brush.texture.image;
-			if (img != null && state != null && mesh.triangles) {
+            displayBatchMode.cachedTransformMatrix = new Matrix();
+            var m = displayBatchMode.cachedTransformMatrix.m;
+            m[0] = 2 * (displayBatchMode.viewportWidth > 0 ? 1 / displayBatchMode.viewportWidth : 0);
+            m[5] = 2 * (displayBatchMode.viewportHeight > 0 ? -1 / displayBatchMode.viewportHeight : 0);
+            m[10] = 1;
+            m[15] = 1;
+            m[12] = -1;
+            m[13] = 1;
+            
+            displayBatchMode.cachedTransformMatrix.m[12] -= displayBatchMode.cachedTransformMatrix.m[0];
+            displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
+        }
+        
+        displayBatchMode.transformMatrix.m[12] = displayBatchMode.camera.position.x;
+        displayBatchMode.transformMatrix.m[13] = displayBatchMode.camera.position.y;
+        
+        //gl.matrixMode(gl.PROJECTION);
+        //gl.loadMatrix(displayBatchMode.transformMatrix);
+        //gl.matrixMode(gl.MODELVIEW);
+        //gl.loadMatrix(displayBatchMode.cachedTransformMatrix);
+        
+        displayBatchMode.shader.uniforms({ MatrixTransform: Matrix.multiply2(displayBatchMode.transformMatrix, displayBatchMode.cachedTransformMatrix) });
+        
+        if(gl.enableHitTest) {
+            gl.bindHitTestContext(displayBatchMode.steps);
+        }
+    };
+    
+    /**
+     * 渲染场景
+     * @param   {IUIU.Level}        level   渲染的场景
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.level = function(level) {
+        for(var i = 0; i < level.objects.length; i++) {
+            var obj = level.objects[i];
+            if(obj.paint) {
+                obj.paint(gl);
+            }
+        }
+    };
+    
+    /**
+     * 渲染动画
+     * @param   {IUIU.Animation}    ani         选中的动画
+     * @param   {int}               frame       所渲染的帧数
+     * @param   {IUIU.Vector}       point       渲染的坐标
+     * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
+     * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
+     * @param   {int}               angle       渲染时采用的旋转值
+     * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.animate = function(ani, frame, point, scale, origin, angle, color) {
+        for(var index = 0; index < ani.items.length; index++) {
+            var item = ani.items[index];
+            switch(item.type) {
+                case "mesh":
+                    gl.mesh(item, frame, point, scale, origin, angle, color);
+                    break;
+                case "collide":
+                    break;
+                default:
+                    throw "not yet support";
+            }
+        }
+    };
+    
+    /**
+     * 渲染动画状态
+     * @param   {IUIU.AnimationState}   state       所渲染的状态
+     * @param   {IUIU.Vector}           point       渲染的坐标
+     * @param   {IUIU.Vector}           scale       渲染时采用的拉伸值
+     * @param   {IUIU.Vector}           origin      渲染时采用的旋转锚点
+     * @param   {int}                   angle       渲染时采用的旋转值
+     * @param   {IUIU.Color}            color       渲染时采用的颜色过滤
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.state = function(state, point, scale, origin, angle, color) {
+        state.update(gl.elapsedTime);
+        gl.animate(state.animation, state.frame, point, scale, origin, angle, color);
+    };
+    
+    /**
+     * 渲染模型
+     * @param   {IUIU.Mesh}         mesh        渲染的模型
+     * @param   {int}               frame       所渲染的帧数
+     * @param   {IUIU.Vector}       point       渲染的坐标
+     * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
+     * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
+     * @param   {int}               angle       渲染时采用的旋转值
+     * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.mesh = function(mesh, frame, point, scale, origin, angle, color) {
+        var state = mesh.getRealState(frame);
+        if(mesh.brush.texture) {
+            var img = mesh.brush.texture.image;
+            if (img != null && state != null && mesh.triangles) {
                 point = point || IUIU.Vector.zero;
                 scale = scale || IUIU.Vector.one;
                 origin = origin || IUIU.Vector.zero;
@@ -2709,241 +2709,242 @@ function addDisplayBatchMode() {
                 color = color || IUIU.Color.white;
 
                 // 绘制内部填充
-				var offset = { x : state.x + point.x, y : state.y + point.y };
-				color = { r : state.r * color.r, g : state.g * color.g, b : state.b * color.b, a : state.a * color.a };
-				origin = { x : offset.x + state.originX + origin.x, y : offset.y + state.originY + origin.y };
-				angle = (state.angle + angle) % 360;
-				scale = { x : state.scaleX * scale.x, y : state.scaleY * scale.y };
-        		var size = { x : img.width, y : img.height };
-        		
+                var offset = { x : state.x + point.x, y : state.y + point.y };
+                color = { r : state.r * color.r, g : state.g * color.g, b : state.b * color.b, a : state.a * color.a };
+                origin = { x : offset.x + state.originX + origin.x, y : offset.y + state.originY + origin.y };
+                angle = (state.angle + angle) % 360;
+                scale = { x : state.scaleX * scale.x, y : state.scaleY * scale.y };
+                var size = { x : img.width, y : img.height };
+                
                 for (var i = 0; i < mesh.triangles.length; i++)
                 {
-                	var triangle = mesh.triangles[i];
-                	var p1 = triangle.p1.tracker.getPostion(frame);
-                	var p2 = triangle.p2.tracker.getPostion(frame);
-                	var p3 = triangle.p3.tracker.getPostion(frame);
-                	
-					var point1 = { x : p1.x * scale.x + offset.x, y : p1.y * scale.y + offset.y };
-            		var point2 = { x : p2.x * scale.x + offset.x, y : p2.y * scale.y + offset.y };
-            		var point3 = { x : p3.x * scale.x + offset.x, y : p3.y * scale.y + offset.y };
- 			
+                    var triangle = mesh.triangles[i];
+                    var p1 = triangle.p1.tracker.getPostion(frame);
+                    var p2 = triangle.p2.tracker.getPostion(frame);
+                    var p3 = triangle.p3.tracker.getPostion(frame);
+                    
+                    var point1 = { x : p1.x * scale.x + offset.x, y : p1.y * scale.y + offset.y };
+                    var point2 = { x : p2.x * scale.x + offset.x, y : p2.y * scale.y + offset.y };
+                    var point3 = { x : p3.x * scale.x + offset.x, y : p3.y * scale.y + offset.y };
+            
                     var point21 = MathTools.pointRotate(origin, point1, angle);
                     var point22 = MathTools.pointRotate(origin, point2, angle);
                     var point23 = MathTools.pointRotate(origin, point3, angle);
 
-					var uv1 = triangle.p1.uv;
-        			var uv2 = triangle.p2.uv;
-        			var uv3 = triangle.p3.uv;
+                    var uv1 = triangle.p1.uv;
+                    var uv2 = triangle.p2.uv;
+                    var uv3 = triangle.p3.uv;
 
-					gl.draw({
-						texture : mesh.brush.texture.image,
-						p1 : [ point21.x, point21.y ],
-						p2 : [ point22.x, point22.y ],
-						p3 : [ point23.x, point23.y ],
-						uv1: [ uv1.x, 1 - uv1.y ],
-						uv2: [ uv2.x, 1 - uv2.y ],
-						uv3: [ uv3.x, 1 - uv3.y ],
-						color: [ color.r / 255, color.g / 255, color.b / 255, color.a / 255 ]
-					});
+                    gl.draw({
+                        texture : mesh.brush.texture.image,
+                        p1 : [ point21.x, point21.y ],
+                        p2 : [ point22.x, point22.y ],
+                        p3 : [ point23.x, point23.y ],
+                        uv1: [ uv1.x, 1 - uv1.y ],
+                        uv2: [ uv2.x, 1 - uv2.y ],
+                        uv3: [ uv3.x, 1 - uv3.y ],
+                        color: [ color.r / 255, color.g / 255, color.b / 255, color.a / 255 ]
+                    });
                 }
             }
-    	}
-	};
-	
-	/**
-	 * 渲染图片
-	 * @param	{IUIU.Bitmap}		img			渲染的位图
-	 * @param	{string}			name		所渲染的切片名
-	 * @param	{IUIU.Vector}		point		渲染的坐标
-	 * @param	{IUIU.Vector}		scale		渲染时采用的拉伸值
-	 * @param	{IUIU.Vector}		origin		渲染时采用的旋转锚点
-	 * @param	{int}				angle		渲染时采用的旋转值
-	 * @param	{IUIU.Color}		color		渲染时采用的颜色过滤
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.image = function(img, name, point, scale, origin, angle, color) {
-		if(!img.isLoaded) return;
-		if(!img.triangles[name]) img.triangulate(name);
-		var triangles = img.triangles[name];
-		if(!triangles) return;
-		
-		point = point || IUIU.Vector.zero;
+        }
+    };
+    
+    /**
+     * 渲染图片
+     * @param   {IUIU.Bitmap}       img         渲染的位图
+     * @param   {string}            name        所渲染的切片名
+     * @param   {IUIU.Vector}       point       渲染的坐标
+     * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
+     * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
+     * @param   {int}               angle       渲染时采用的旋转值
+     * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.image = function(img, name, point, scale, origin, angle, color) {
+        if(!img.isLoaded) return;
+        if(!img.triangles[name]) img.triangulate(name);
+        var triangles = img.triangles[name];
+        if(!triangles) return;
+        
+        point = point || IUIU.Vector.zero;
         scale = scale || IUIU.Vector.one;
         origin = origin || IUIU.Vector.zero;
         angle = angle || 0;
         color = color || IUIU.Color.white;
 
-		var size = { x : img.width, y : img.height };
-		
+        var size = { x : img.width, y : img.height };
+        
         for (var i = 0; i < triangles.length; i++) {
-        	var triangle = triangles[i];
-        	var p1 = triangle.p1.tracker.getPostion(0);
-        	var p2 = triangle.p2.tracker.getPostion(0);
-        	var p3 = triangle.p3.tracker.getPostion(0);
-        	
-			var point1 = { x : p1.x * scale.x + point.x, y : p1.y * scale.y + point.y };
-    		var point2 = { x : p2.x * scale.x + point.x, y : p2.y * scale.y + point.y };
-    		var point3 = { x : p3.x * scale.x + point.x, y : p3.y * scale.y + point.y };
-	
+            var triangle = triangles[i];
+            var p1 = triangle.p1.tracker.getPostion(0);
+            var p2 = triangle.p2.tracker.getPostion(0);
+            var p3 = triangle.p3.tracker.getPostion(0);
+            
+            var point1 = { x : p1.x * scale.x + point.x, y : p1.y * scale.y + point.y };
+            var point2 = { x : p2.x * scale.x + point.x, y : p2.y * scale.y + point.y };
+            var point3 = { x : p3.x * scale.x + point.x, y : p3.y * scale.y + point.y };
+    
             var point21 = MathTools.pointRotate(origin, point1, angle);
             var point22 = MathTools.pointRotate(origin, point2, angle);
             var point23 = MathTools.pointRotate(origin, point3, angle);
 
-			var uv1 = triangle.p1.uv;
-			var uv2 = triangle.p2.uv;
-			var uv3 = triangle.p3.uv;
+            var uv1 = triangle.p1.uv;
+            var uv2 = triangle.p2.uv;
+            var uv3 = triangle.p3.uv;
 
-			gl.draw({
-				texture : img.image,
-				p1 : [ point21.x, point21.y ],
-				p2 : [ point22.x, point22.y ],
-				p3 : [ point23.x, point23.y ],
-				uv1: [ uv1.x, 1 - uv1.y ],
-				uv2: [ uv2.x, 1 - uv2.y ],
-				uv3: [ uv3.x, 1 - uv3.y ],
-				color: [ color.r, color.g, color.b, color.a ]
-			});
+            gl.draw({
+                texture : img.image,
+                p1 : [ point21.x, point21.y ],
+                p2 : [ point22.x, point22.y ],
+                p3 : [ point23.x, point23.y ],
+                uv1: [ uv1.x, 1 - uv1.y ],
+                uv2: [ uv2.x, 1 - uv2.y ],
+                uv3: [ uv3.x, 1 - uv3.y ],
+                color: [ color.r, color.g, color.b, color.a ]
+            });
         }
-	};
-	
-	/**
-	 * 渲染图片
-	 * @param	{IUIU.Texture}		img				渲染的材质
-	 * @param	{IUIU.Vector}		point			渲染的坐标
-	 * @param	{IUIU.Vector}		scale			渲染时采用的拉伸值
-	 * @param	{IUIU.Vector}		origin			渲染时采用的旋转锚点
-	 * @param	{int}				angle			渲染时采用的旋转值
-	 * @param	{IUIU.Color}		color			渲染时采用的颜色过滤
-	 * @param	{IUIU.Rect}			sourceRectangle	渲染时截取的图片矩阵
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.texture = function(img, point, scale, origin, angle, color, sourceRectangle) {
-		if (spriteBatchMode.hasBegun == false)
+    };
+    
+    /**
+     * 渲染图片
+     * @param   {IUIU.Texture}      img             渲染的材质
+     * @param   {IUIU.Vector}       point           渲染的坐标
+     * @param   {IUIU.Vector}       scale           渲染时采用的拉伸值
+     * @param   {IUIU.Vector}       origin          渲染时采用的旋转锚点
+     * @param   {int}               angle           渲染时采用的旋转值
+     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+     * @param   {IUIU.Rect}         sourceRectangle 渲染时截取的图片矩阵
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.texture = function(img, point, scale, origin, angle, color, sourceRectangle) {
+        if(!img.isLoaded) return;
+        
+        if (displayBatchMode.hasBegun == false)
                 throw "begin() must be called before draw()";
 
         if (img == null)
             throw "texture";
         
-		point = (point == undefined || point == null) ?  Vector.zero : point; 
-		color = (color == undefined || color == null) ?  Color.white : color;
-		origin = (origin == undefined || origin == null) ? Vector.zero : origin; 
-		angle = (angle == undefined  || angle == null) ?  0 : angle; 
-		scale = (scale == undefined || scale == null) ? Vector.one : scale; 
-		sourceRectangle = (sourceRectangle == undefined || sourceRectangle == null) ?  { x : 0, y : 0, width : img.width, height : img.height } : sourceRectangle;
+        point = (point == undefined || point == null) ?  Vector.zero : point; 
+        color = (color == undefined || color == null) ?  Color.white : color;
+        origin = (origin == undefined || origin == null) ? Vector.zero : origin; 
+        angle = (angle == undefined  || angle == null) ?  0 : angle; 
+        scale = (scale == undefined || scale == null) ? Vector.one : scale; 
+        sourceRectangle = (sourceRectangle == undefined || sourceRectangle == null) ?  { x : 0, y : 0, width : img.width, height : img.height } : sourceRectangle;
         
         var br = new Vector(point.x + (sourceRectangle.width * scale.x), point.y + (sourceRectangle.height * scale.y));
-		
-		var step1 = {};
-		var step2 = {};
-		
-		step1.color = color;
-		step1.texture = img;
-		
-		step2.color = color;
-		step2.texture = img;
-		
-		if(sourceRectangle) {
-			step1.uv1 = [ (sourceRectangle.x + 1) / img.width, 1 - (sourceRectangle.y + 1) / img.height ];
-			step1.uv2 = [ (sourceRectangle.x + sourceRectangle.width - 1) / img.width, 1 - (sourceRectangle.y + 1) / img.height ];
-			step1.uv3 = [ (sourceRectangle.x + 1) / img.width, 1 - (sourceRectangle.y + sourceRectangle.height - 1) / texture.height ];
-			
-			step2.uv1 = [ (sourceRectangle.x + sourceRectangle.width - 1) / img.width, 1 - (sourceRectangle.y + 1) / img.height ];
-			step2.uv2 = [ (sourceRectangle.x + sourceRectangle.width - 1) / img.width, 1 - (sourceRectangle.y + sourceRectangle.height - 1) / img.height ];
-			step2.uv3 = [ (sourceRectangle.x + 1) / img.width, 1 - (sourceRectangle.y + sourceRectangle.height - 1) / texture.height ];
-			
-		} else {
-			step1.uv1 = [ 0, 0 ];
-			step1.uv2 = [ 1, 0 ];
-			step1.uv3 = [ 0, 1 ];
-			
-			step2.uv1 = [ 1, 0 ];
-			step2.uv2 = [ 1, 1 ];
-			step2.uv3 = [ 0, 1 ];
-		}
-		
-		step1.p1 = MathTools.pointRotate(origin, { x : point.x, y : point.y }, angle);
-		step1.p2 = MathTools.pointRotate(origin, { x : br.x, y : point.y }, angle);
-		step1.p3 = MathTools.pointRotate(origin, { x : point.x, y : br.y }, angle);
-		
-		step2.p1 = MathTools.pointRotate(origin, { x : br.x, y : point.y }, angle);
-		step2.p2 = MathTools.pointRotate(origin, { x : br.x, y : br.y }, angle);
-		step2.p3 = MathTools.pointRotate(origin, { x : point.x, y : br.y }, angle);
-		
-		step1.p1 = [ step1.p1.x, step1.p1.y ];
-		step1.p2 = [ step1.p2.x, step1.p2.y ];
-		step1.p3 = [ step1.p3.x, step1.p3.y ];
-		
-		step2.p1 = [ step2.p1.x, step2.p1.y ];
-		step2.p2 = [ step2.p2.x, step2.p2.y ];
-		step2.p3 = [ step2.p3.x, step2.p3.y ];
-		
-		spriteBatchMode.steps[stepIndex++] = step1;
-		spriteBatchMode.steps[stepIndex++] = step2;
-	};
-	
-	/**
-	 * 渲染文字
-	 * @param	{IUIU.Bitmap}		font			渲染的采用的字体
-	 * @param	{string}			text			所渲染的文字
-	 * @param	{IUIU.Vector}		point			渲染的坐标
-	 * @param	{IUIU.Vector}		scale			渲染时采用的拉伸值
-	 * @param	{IUIU.Vector}		origin			渲染时采用的旋转锚点
-	 * @param	{int}				angle			渲染时采用的旋转值
-	 * @param	{IUIU.Color}		color			渲染时采用的颜色过滤
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.text = function(font, text, size, point, origin, angle, color) {
-		point = point || IUIU.Vector.zero;
+        
+        var step1 = {};
+        var step2 = {};
+        
+        step1.color   = [ color.r, color.g, color.b, color.a ];   
+        step2.color   = [ color.r, color.g, color.b, color.a ];
+        step1.texture = img.image;
+        step2.texture = img.image;
+        
+        if(sourceRectangle) {
+            step1.uv1 = [ (sourceRectangle.x + 1) / img.image.width, 1 - (sourceRectangle.y + 1) / img.image.height ];
+            step1.uv2 = [ (sourceRectangle.x + sourceRectangle.width - 1) / img.image.width, 1 - (sourceRectangle.y + 1) / img.image.height ];
+            step1.uv3 = [ (sourceRectangle.x + 1) / img.image.width, 1 - (sourceRectangle.y + sourceRectangle.height - 1) / img.image.height ];
+            
+            step2.uv1 = [ (sourceRectangle.x + sourceRectangle.width - 1) / img.image.width, 1 - (sourceRectangle.y + 1) / img.image.height ];
+            step2.uv2 = [ (sourceRectangle.x + sourceRectangle.width - 1) / img.image.width, 1 - (sourceRectangle.y + sourceRectangle.height - 1) / img.image.height ];
+            step2.uv3 = [ (sourceRectangle.x + 1) / img.image.width, 1 - (sourceRectangle.y + sourceRectangle.height - 1) / img.image.height ];
+            
+        } else {
+            step1.uv1 = [ 0, 0 ];
+            step1.uv2 = [ 1, 0 ];
+            step1.uv3 = [ 0, 1 ];
+            
+            step2.uv1 = [ 1, 0 ];
+            step2.uv2 = [ 1, 1 ];
+            step2.uv3 = [ 0, 1 ];
+        }
+        
+        var v11 = MathTools.pointRotate(origin, { x : point.x, y : point.y }, angle);
+        var v12 = MathTools.pointRotate(origin, { x : br.x, y : point.y }, angle);
+        var v13 = MathTools.pointRotate(origin, { x : point.x, y : br.y }, angle);
+        
+        var v21 = MathTools.pointRotate(origin, { x : br.x, y : point.y }, angle);
+        var v22 = MathTools.pointRotate(origin, { x : br.x, y : br.y }, angle);
+        var v23 = MathTools.pointRotate(origin, { x : point.x, y : br.y }, angle);
+        
+        step1.p1 = [ v11.x, v11.y ];
+        step1.p2 = [ v12.x, v12.y ];
+        step1.p3 = [ v13.x, v13.y ];
+     
+        step2.p1 = [ v21.x, v21.y ];
+        step2.p2 = [ v22.x, v22.y ];
+        step2.p3 = [ v23.x, v23.y ];
+                
+        gl.draw(step1);
+        gl.draw(step2);
+    };
+    
+    /**
+     * 渲染文字
+     * @param   {IUIU.Bitmap}       font            渲染的采用的字体
+     * @param   {string}            text            所渲染的文字
+     * @param   {IUIU.Vector}       point           渲染的坐标
+     * @param   {IUIU.Vector}       scale           渲染时采用的拉伸值
+     * @param   {IUIU.Vector}       origin          渲染时采用的旋转锚点
+     * @param   {int}               angle           渲染时采用的旋转值
+     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.text = function(font, text, size, point, origin, angle, color) {
+        point = point || IUIU.Vector.zero;
         scale = scale || IUIU.Vector.one;
         origin = origin || IUIU.Vector.zero;
         angle = angle || 0;
         color = color || IUIU.Color.white;
-		
-		var scale = size / 1000;
-		var xOffset = 0;
-		for(var i = 0; i < text.length; i++) {
-			var c = text[i];
-			var info = font[c];
-			
-			for(var x = 0; x < info.vertices.length; x = x + 3) {
-				var p1 = { x : info.vertices[x].x * scale + point.x + xOffset, y : info.vertices[x].y * scale + point.y };
-				var p2 = { x : info.vertices[x + 1].x * scale + point.x + xOffset, y : info.vertices[x + 1].y * scale + point.y };
-				var p3 = { x : info.vertices[x + 2].x * scale + point.x + xOffset, y : info.vertices[x + 2].y * scale + point.y };
-				
-			 	p1 = MathTools.pointRotate(origin, p1, angle);
-			 	p2 = MathTools.pointRotate(origin, p2, angle);
-			 	p3 = MathTools.pointRotate(origin, p3, angle);
-				
-				gl.draw({
-					p1 : [ p1.x, p1.y ],
-					p2 : [ p2.x, p2.y ],
-					p3 : [ p3.x, p3.y ],
-					uv1 : [ 0, 0 ],
-					uv2 : [ 0, 1 ],
-					uv3 : [ 1, 1 ],
-					color: [ color.r, color.g, color.b, color.a ],
-					texture : IUIU.Texture.getPixel()
-				});
-			}
-			
-			xOffset = xOffset + info.size.width * scale + 1;
-		}
-	};
-	
-	/**
-	 * 渲染直线
-	 * @param	{IUIU.Vector}		start			起始坐标
-	 * @param	{IUIU.Vector}		end				结束坐标
-	 * @param	{IUIU.Color}		color			渲染时采用的颜色过滤
-	 * @param	{int}				thickness		线粗细
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.line = function(start, end, color, thickness) {
-		var length = MathTools.getDistance(start, end);
+        
+        var scale = size / 1000;
+        var xOffset = 0;
+        for(var i = 0; i < text.length; i++) {
+            var c = text[i];
+            var info = font[c];
+            
+            for(var x = 0; x < info.vertices.length; x = x + 3) {
+                var p1 = { x : info.vertices[x].x * scale + point.x + xOffset, y : info.vertices[x].y * scale + point.y };
+                var p2 = { x : info.vertices[x + 1].x * scale + point.x + xOffset, y : info.vertices[x + 1].y * scale + point.y };
+                var p3 = { x : info.vertices[x + 2].x * scale + point.x + xOffset, y : info.vertices[x + 2].y * scale + point.y };
+                
+                p1 = MathTools.pointRotate(origin, p1, angle);
+                p2 = MathTools.pointRotate(origin, p2, angle);
+                p3 = MathTools.pointRotate(origin, p3, angle);
+                
+                gl.draw({
+                    p1 : [ p1.x, p1.y ],
+                    p2 : [ p2.x, p2.y ],
+                    p3 : [ p3.x, p3.y ],
+                    uv1 : [ 0, 0 ],
+                    uv2 : [ 0, 1 ],
+                    uv3 : [ 1, 1 ],
+                    color: [ color.r, color.g, color.b, color.a ],
+                    texture : IUIU.Texture.getPixel()
+                });
+            }
+            
+            xOffset = xOffset + info.size.width * scale + 1;
+        }
+    };
+    
+    /**
+     * 渲染直线
+     * @param   {IUIU.Vector}       start           起始坐标
+     * @param   {IUIU.Vector}       end             结束坐标
+     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+     * @param   {int}               thickness       线粗细
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.line = function(start, end, color, thickness) {
+        var length = MathTools.getDistance(start, end);
         var angle = MathTools.getAngle(start, end);
         
         var v1 = new Vector(start.x, start.y);
@@ -2966,9 +2967,9 @@ function addDisplayBatchMode() {
             uv2 : [ 1, 0 ],
             uv3 : [ 1, 1 ]
         });
-        	
+            
         gl.draw({
-        	texture : IUIU.Texture.getPixel(),
+            texture : IUIU.Texture.getPixel(),
             color: [ color.r, color.g, color.b, color.a ],
             p1 : [ v1.x, v1.y ],
             p2 : [ v3.x, v3.y ],
@@ -2977,19 +2978,19 @@ function addDisplayBatchMode() {
             uv2 : [ 1, 1 ],
             uv3 : [ 0, 1 ]
         });
-	};
-	
-	/**
-	 * 渲染矩形
-	 * @param	{IUIU.Vector}		lower			起始坐标
-	 * @param	{IUIU.Vector}		upper			结束坐标
-	 * @param	{IUIU.Color}		color			渲染时采用的颜色过滤
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.rect = function(lower, upper, color) {
-		
-		gl.draw({
+    };
+    
+    /**
+     * 渲染矩形
+     * @param   {IUIU.Vector}       lower           起始坐标
+     * @param   {IUIU.Vector}       upper           结束坐标
+     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.rect = function(lower, upper, color) {
+        
+        gl.draw({
             texture : IUIU.Texture.getPixel(),
             color: [ color.r, color.g, color.b, color.a ],
             p1 : [ lower.x, lower.y ],
@@ -2999,7 +3000,7 @@ function addDisplayBatchMode() {
             uv2 : [ 1, 0 ],
             uv3 : [ 1, 1 ]
         });
-        	
+            
         gl.draw({
             texture : IUIU.Texture.getPixel(),
             color: [ color.r, color.g, color.b, color.a ],
@@ -3010,103 +3011,103 @@ function addDisplayBatchMode() {
             uv2 : [ 1, 0 ],
             uv3 : [ 1, 1 ]
         });
-		
-	};
-	
-	gl.ellipse = function(lower, upper) {
-	};
-	
-	gl.draw = function(state) {
-		displayBatchMode.steps[displayBatchMode.stepIndex++] = state;
-	};
-	
-	gl.flush = function(offset, count) {
-		if(count > 0) {
-			displayBatchMode.mesh.vertices = [];
-			displayBatchMode.mesh.colors = [];
-			displayBatchMode.mesh.coords = [];
-			displayBatchMode.mesh.triangles = [];
-			for(var i = 0; i < count; i++) {
-				var step = displayBatchMode.steps[i + offset];
+        
+    };
+    
+    gl.ellipse = function(lower, upper) {
+    };
+    
+    gl.draw = function(state) {
+        displayBatchMode.steps[displayBatchMode.stepIndex++] = state;
+    };
+    
+    gl.flush = function(offset, count) {
+        if(count > 0) {
+            displayBatchMode.mesh.vertices = [];
+            displayBatchMode.mesh.colors = [];
+            displayBatchMode.mesh.coords = [];
+            displayBatchMode.mesh.triangles = [];
+            for(var i = 0; i < count; i++) {
+                var step = displayBatchMode.steps[i + offset];
 
-				// corners
-				displayBatchMode.mesh.vertices.push(step.p1);
-				displayBatchMode.mesh.vertices.push(step.p2);
-				displayBatchMode.mesh.vertices.push(step.p3);
+                // corners
+                displayBatchMode.mesh.vertices.push(step.p1);
+                displayBatchMode.mesh.vertices.push(step.p2);
+                displayBatchMode.mesh.vertices.push(step.p3);
 
-				// colors
-				displayBatchMode.mesh.colors.push(step.color);
-				displayBatchMode.mesh.colors.push(step.color);
-				displayBatchMode.mesh.colors.push(step.color);
-				
-				// coords
-				displayBatchMode.mesh.coords.push(step.uv1);
-				displayBatchMode.mesh.coords.push(step.uv2);
-				displayBatchMode.mesh.coords.push(step.uv3);
-				
-				// triangles
-				displayBatchMode.mesh.triangles.push([i * 3, i * 3 + 1, i * 3 + 2]);
-			}
-			
-			displayBatchMode.mesh.compile();
-			displayBatchMode.steps[offset].texture.bind(0);
-			displayBatchMode.shader.uniforms({
-				Texture : 0
-			}).draw(displayBatchMode.mesh);
-			displayBatchMode.steps[offset].texture.unbind(0);
-		}
-	};
-	
-	/**
-	 * 通知渲染器结束接受命令并绘制
-	 * @date	2019-9-4
-	 * @author	KumaWang
-	 */
-	gl.end = function() {
-			var maxLenght = displayBatchMode.stepIndex;
-			var endLenght = maxLenght - 1;
-			// fist hit test
-			if(gl.enableHitTest) {
-				for(var i = 0; i < maxLenght; i++) {
-					gl.innerHitTest(displayBatchMode.steps[i], i);
-				}
-			}
-		
-			// sec render any step
-			var currentDrawnIndex = 0;
-			for(var i = 0; i < maxLenght; i++) {
-				var step = displayBatchMode.steps[i];
-				if(i == endLenght) {
-					gl.flush(currentDrawnIndex, i - currentDrawnIndex + 1);
-				}
-				else {
-					var nextstep = displayBatchMode.steps[i + 1];
-					if(step.texture != nextstep.texture) {
-						lastTexture = step.texture;
-						gl.flush(currentDrawnIndex, i + 1 - currentDrawnIndex);
-						currentDrawnIndex = i + 1;
-					}
-				}
-			}
-			
-			//displayBatchMode.steps = [];
-			displayBatchMode.stepIndex = 0;
-			displayBatchMode.hasBegun = false;
-	};
-	
-	gl.clip = function(x, y, width, height) {
-			displayBatchMode.hasClip = true;
-			displayBatchMode.clipArea = {
-				x : x,
-				y : y,
-				width : width,
-				height : height
-			};
-	};
-	
-	gl.endClip = function() {
-			displayBatchMode.hasClip = false;
-	};
+                // colors
+                displayBatchMode.mesh.colors.push(step.color);
+                displayBatchMode.mesh.colors.push(step.color);
+                displayBatchMode.mesh.colors.push(step.color);
+                
+                // coords
+                displayBatchMode.mesh.coords.push(step.uv1);
+                displayBatchMode.mesh.coords.push(step.uv2);
+                displayBatchMode.mesh.coords.push(step.uv3);
+                
+                // triangles
+                displayBatchMode.mesh.triangles.push([i * 3, i * 3 + 1, i * 3 + 2]);
+            }
+            
+            displayBatchMode.mesh.compile();
+            displayBatchMode.steps[offset].texture.bind(0);
+            displayBatchMode.shader.uniforms({
+                Texture : 0
+            }).draw(displayBatchMode.mesh);
+            displayBatchMode.steps[offset].texture.unbind(0);
+        }
+    };
+    
+    /**
+     * 通知渲染器结束接受命令并绘制
+     * @date    2019-9-4
+     * @author  KumaWang
+     */
+    gl.end = function() {
+            var maxLenght = displayBatchMode.stepIndex;
+            var endLenght = maxLenght - 1;
+            // fist hit test
+            if(gl.enableHitTest) {
+                for(var i = 0; i < maxLenght; i++) {
+                    gl.innerHitTest(displayBatchMode.steps[i], i);
+                }
+            }
+        
+            // sec render any step
+            var currentDrawnIndex = 0;
+            for(var i = 0; i < maxLenght; i++) {
+                var step = displayBatchMode.steps[i];
+                if(i == endLenght) {
+                    gl.flush(currentDrawnIndex, i - currentDrawnIndex + 1);
+                }
+                else {
+                    var nextstep = displayBatchMode.steps[i + 1];
+                    if(step.texture != nextstep.texture) {
+                        lastTexture = step.texture;
+                        gl.flush(currentDrawnIndex, i + 1 - currentDrawnIndex);
+                        currentDrawnIndex = i + 1;
+                    }
+                }
+            }
+            
+            //displayBatchMode.steps = [];
+            displayBatchMode.stepIndex = 0;
+            displayBatchMode.hasBegun = false;
+    };
+    
+    gl.clip = function(x, y, width, height) {
+            displayBatchMode.hasClip = true;
+            displayBatchMode.clipArea = {
+                x : x,
+                y : y,
+                width : width,
+                height : height
+            };
+    };
+    
+    gl.endClip = function() {
+            displayBatchMode.hasClip = false;
+    };
 }
 
 function addOtherMethods() {
@@ -3118,13 +3119,13 @@ function addOtherMethods() {
   
   /**
    * 启用循环
-   * @param		{int}			interval		每帧间隔（毫秒）
-   * @date		2019-9-4
-   * @author	KumaWang
+   * @param     {int}           interval        每帧间隔（毫秒）
+   * @date      2019-9-4
+   * @author    KumaWang
    */
   gl.loop = function(interval) {
-  	interval = interval || 60;  
-  	
+    interval = interval || 60;  
+    
     var post =
       window.requestAnimationFrame ||
       window.mozRequestAnimationFrame ||
@@ -3148,8 +3149,8 @@ function addOtherMethods() {
 
   /**
    * 将画布全屏化
-   * @date		2019-9-4
-   * @author	KumaWang
+   * @date      2019-9-4
+   * @author    KumaWang
    */
   gl.fullscreen = function(options) {
     options = options || {};
@@ -3172,7 +3173,7 @@ function addOtherMethods() {
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
       if (gl.ondraw) gl.ondraw();
     }
-	
+    
     window.addEventListener('resize', resize);
     resize();
   };
@@ -3185,7 +3186,7 @@ function MathTools() {
 }
 
 MathTools.pointRotate = function(center, p1, angle) {
-	var tmp = {};
+    var tmp = {};
     var angleHude = -angle * Math.PI / 180;/*角度变成弧度*/
     var x1 = (p1.x - center.x) * Math.cos(angleHude) + (p1.y - center.y) * Math.sin(angleHude) + center.x;
     var y1 = -(p1.x - center.x) * Math.sin(angleHude) + (p1.y - center.y) * Math.cos(angleHude) + center.y;
@@ -3195,20 +3196,20 @@ MathTools.pointRotate = function(center, p1, angle) {
 }
 
 MathTools.getDistance = function(p1, p2) {
-	var a = p1.x - p2.x;
-	var b = p1.y - p2.y;
-	var distance = Math.sqrt(a * a + b * b);
-	return distance;
+    var a = p1.x - p2.x;
+    var b = p1.y - p2.y;
+    var distance = Math.sqrt(a * a + b * b);
+    return distance;
 }
 
 MathTools.getExtendPoint = function(p1, p2, length) {
-	var rotation = MathTools.getAngle(p1, p2);
-	var target = MathTools.pointRotate(p1, { x : p1.x, y : p1.y - length }, rotation);
-	return target;
+    var rotation = MathTools.getAngle(p1, p2);
+    var target = MathTools.pointRotate(p1, { x : p1.x, y : p1.y - length }, rotation);
+    return target;
 }
 
 MathTools.getAngle = function(p1, p2) {
-	var xDiff = p2.x - p1.x;
+    var xDiff = p2.x - p1.x;
     var yDiff = p2.y - p1.y;
 
     if (xDiff == 0 && yDiff == 0) return 0;
@@ -3218,9 +3219,9 @@ MathTools.getAngle = function(p1, p2) {
 }
 
 MathTools.maskPolygon = function(polygon, mask) {
-	var v = new [];
-	var intersectPoints = MathTools.intersectionPolygons(mask, polygon);
-	if (intersectPoints.length % 2 == 0 && intersectPoints.length > 0) {
+    var v = new [];
+    var intersectPoints = MathTools.intersectionPolygons(mask, polygon);
+    if (intersectPoints.length % 2 == 0 && intersectPoints.length > 0) {
         for (var c = 0; c < polygon.length; c++) {
             for (var k = intersectPoints.length - 2; k >= 0; k = k - 2) {
                 var start = intersectPoints[k];
@@ -3253,34 +3254,34 @@ MathTools.maskPolygon = function(polygon, mask) {
                 }
             }
         }
-	}
-	
-	return v;
+    }
+    
+    return v;
 }
 
 MathTools.intersectionPolygons = function(v1, v2) {
-	var result = [];
-	var temp = false;
-	
-	for(var i = 0; i < v2.length; i++) {
-		var curr = v2[i];
-		var next = v2[i == v2.length - 1 ? 0 : 1 ];
-		
-		var clipPoints = MathTools.clipLineWithPolygon(curr, next, v1);
-		for(var x = 0; x < clipPoints.length; i++) {
-			result.push({
-				index : i,
-				point : clipPoints[x].point,
-				outside : clipPoints[x].outsdie
-			});
-		}
-	}
-	
-	return result;
+    var result = [];
+    var temp = false;
+    
+    for(var i = 0; i < v2.length; i++) {
+        var curr = v2[i];
+        var next = v2[i == v2.length - 1 ? 0 : 1 ];
+        
+        var clipPoints = MathTools.clipLineWithPolygon(curr, next, v1);
+        for(var x = 0; x < clipPoints.length; i++) {
+            result.push({
+                index : i,
+                point : clipPoints[x].point,
+                outside : clipPoints[x].outsdie
+            });
+        }
+    }
+    
+    return result;
 }
 
 MathTools.clipLineWithPolygon = function(point1, point2, polygon_points) {
-	// Make lists to hold points of
+    // Make lists to hold points of
     // intersection and their t values.
     var intersections = [];
     var t_values = [];
@@ -3322,26 +3323,26 @@ MathTools.clipLineWithPolygon = function(point1, point2, polygon_points) {
 
     // Sort the points of intersection by t value.
     var s_array = [];
-	for(var i = 0; i < intersections.length; i++) {
-		s_array.push({ id : t_values[i], value : intersections[i] });
-	}
-	s_array.sort(function(a,b){
-		return a.id - b.id;
-	});
+    for(var i = 0; i < intersections.length; i++) {
+        s_array.push({ id : t_values[i], value : intersections[i] });
+    }
+    s_array.sort(function(a,b){
+        return a.id - b.id;
+    });
     
     var intersections_array = [];
-	for(var i = 0; i < s_array.length; i++) {
-		intersections_array.push(s_array[i].value);
-	}
-	
+    for(var i = 0; i < s_array.length; i++) {
+        intersections_array.push(s_array[i].value);
+    }
+    
     // Return the intersections.
     return intersections_array;
 }
 
 
 MathTools.findIntersection = function(p1, p2, p3, p4) {
-	var lines_intersect, segments_intersect, intersection, close_p1, close_p2, t1, t2;
-	
+    var lines_intersect, segments_intersect, intersection, close_p1, close_p2, t1, t2;
+    
     // Get the segments' parameters.
     var dx12 = p2.x - p1.x;
     var dy12 = p2.y - p1.y;
@@ -3356,7 +3357,7 @@ MathTools.findIntersection = function(p1, p2, p3, p4) {
         // The lines are parallel (or close enough to it).
         lines_intersect = false;
         segments_intersect = false;
-		intersection = { x : Number.NaN, y : Number.NaN };
+        intersection = { x : Number.NaN, y : Number.NaN };
         close_p1 = { x : Number.NaN, y : Number.NaN };
         close_p2 = { x : Number.NaN, y : Number.NaN };
         t2 = Number.POSITIVE_INFINITY;
@@ -3367,7 +3368,7 @@ MathTools.findIntersection = function(p1, p2, p3, p4) {
     t2 = ((p3.x - p1.x) * dy12 + (p1.y - p3.y) * dx12) / -denominator;
 
     // Find the point of intersection.
-	intersection = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
+    intersection = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
 
     // The segments intersect if t1 and t2 are between 0 and 1.
     segments_intersect = ((t1 >= 0) && (t1 <= 1) && (t2 >= 0) && (t2 <= 1));
@@ -3379,18 +3380,18 @@ MathTools.findIntersection = function(p1, p2, p3, p4) {
     if (t2 < 0) t2 = 0;
     else if (t2 > 1) t2 = 1;
 
-	close_p1 = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
-	close_p2 = { x : p3.x + dx34 * t2, y : p3.y + dy34 * t2 };
-	
-	return {
-		lines_intersect : lines_intersect,
-		segments_intersect : segments_intersect,
-		intersection : intersection,
-		close_p1 : close_p1,
-		close_p2 : close_p2,
-		t1 : t1,
-		t2 : t2
-	};
+    close_p1 = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
+    close_p2 = { x : p3.x + dx34 * t2, y : p3.y + dy34 * t2 };
+    
+    return {
+        lines_intersect : lines_intersect,
+        segments_intersect : segments_intersect,
+        intersection : intersection,
+        close_p1 : close_p1,
+        close_p2 : close_p2,
+        t1 : t1,
+        t2 : t2
+    };
 }
 
 MathTools.pointIsInPolygon = function(x, y, polygon_points) {
@@ -3419,27 +3420,27 @@ MathTools.pointIsInPolygon = function(x, y, polygon_points) {
 }
 
 MathTools.getAngle2 = function(Ax, Ay, Bx, By, Cx, Cy) {
-	// Get the dot product.
-	var dot_product = MathTools.dotProduct(Ax, Ay, Bx, By, Cx, Cy);
+    // Get the dot product.
+    var dot_product = MathTools.dotProduct(Ax, Ay, Bx, By, Cx, Cy);
 
-	// Get the cross product.
-	var cross_product = MathTools.crossProductLength(Ax, Ay, Bx, By, Cx, Cy);
+    // Get the cross product.
+    var cross_product = MathTools.crossProductLength(Ax, Ay, Bx, By, Cx, Cy);
 
-	// Calculate the angle.
-	return Math.atan2(cross_product, dot_product);
+    // Calculate the angle.
+    return Math.atan2(cross_product, dot_product);
 }
 
 // Return the dot product AB · BC.
 // Note that AB · BC = |AB| * |BC| * Cos(theta).
 MathTools.dotProduct = function(Ax, Ay, Bx, By, Cx, Cy) {
-	// Get the vectors' coordinates.
-	var BAx = Ax - Bx;
-	var BAy = Ay - By;
-	var BCx = Cx - Bx;
-	var BCy = Cy - By;
+    // Get the vectors' coordinates.
+    var BAx = Ax - Bx;
+    var BAy = Ay - By;
+    var BCx = Cx - Bx;
+    var BCy = Cy - By;
 
-	// Calculate the dot product.
-	return (BAx * BCx + BAy * BCy);
+    // Calculate the dot product.
+    return (BAx * BCx + BAy * BCy);
 }
 
 MathTools.crossProductLength = function(Ax, Ay, Bx, By, Cx, Cy)
@@ -3612,7 +3613,7 @@ Matrix.multiply = function(left, right, result) {
 };
 
 Matrix.multiply2 = function(matrix1, matrix2, result) {
-	result = result || new Matrix();
+    result = result || new Matrix();
     var m11 = (((matrix1.m[0] * matrix2.m[0]) + (matrix1.m[1] * matrix2.m[4])) + (matrix1.m[2] * matrix2.m[8])) + (matrix1.m[3] * matrix2.m[12]);
     var m12 = (((matrix1.m[0] * matrix2.m[1]) + (matrix1.m[1] * matrix2.m[5])) + (matrix1.m[2] * matrix2.m[9])) + (matrix1.m[3] * matrix2.m[13]);
     var m13 = (((matrix1.m[0] * matrix2.m[2]) + (matrix1.m[1] * matrix2.m[6])) + (matrix1.m[2] * matrix2.m[10])) + (matrix1.m[3] * matrix2.m[14]);
@@ -3628,24 +3629,24 @@ Matrix.multiply2 = function(matrix1, matrix2, result) {
     var m41 = (((matrix1.m[12] * matrix2.m[0]) + (matrix1.m[13] * matrix2.m[4])) + (matrix1.m[14] * matrix2.m[8])) + (matrix1.m[15] * matrix2.m[12]);
     var m42 = (((matrix1.m[12] * matrix2.m[1]) + (matrix1.m[13] * matrix2.m[5])) + (matrix1.m[14] * matrix2.m[9])) + (matrix1.m[15] * matrix2.m[13]);
     var m43 = (((matrix1.m[12] * matrix2.m[2]) + (matrix1.m[13] * matrix2.m[6])) + (matrix1.m[14] * matrix2.m[10])) + (matrix1.m[15] * matrix2.m[14]);
-   	var m44 = (((matrix1.m[12] * matrix2.m[3]) + (matrix1.m[13] * matrix2.m[7])) + (matrix1.m[14] * matrix2.m[11])) + (matrix1.m[15] * matrix2.m[15]);
+    var m44 = (((matrix1.m[12] * matrix2.m[3]) + (matrix1.m[13] * matrix2.m[7])) + (matrix1.m[14] * matrix2.m[11])) + (matrix1.m[15] * matrix2.m[15]);
     result.m[0] = m11;
-	result.m[1] = m21;
-	result.m[2] = m31;
-	result.m[3] = m41;
-	result.m[4] = m12;
-	result.m[5] = m22;
-	result.m[6] = m32;
-	result.m[7] = m42;
-	result.m[8] = m13;
-	result.m[9] = m23;
-	result.m[10] = m33;
-	result.m[11] = m34;
-	result.m[12] = m14;
-	result.m[13] = m24;
-	result.m[14] = m34;
-	result.m[15] = m44;
-	return result;
+    result.m[1] = m21;
+    result.m[2] = m31;
+    result.m[3] = m41;
+    result.m[4] = m12;
+    result.m[5] = m22;
+    result.m[6] = m32;
+    result.m[7] = m42;
+    result.m[8] = m13;
+    result.m[9] = m23;
+    result.m[10] = m33;
+    result.m[11] = m34;
+    result.m[12] = m14;
+    result.m[13] = m24;
+    result.m[14] = m34;
+    result.m[15] = m44;
+    return result;
 }
 
 // ### GL.Matrix.identity([result])
@@ -4331,78 +4332,78 @@ Mesh.load = function(json, options) {
  * @returns {String}
  */
 function getSiteRoot(isVirtual) {
-	var siteRoot = window.location.protocol +"//"+ window.location.host +"/";
-	if(!isVirtual) return siteRoot;
-	
-	var relativePath = window.location.pathname;
-	if(relativePath != "" && relativePath.substring(0,1) == "/"){
-		//此处重要，不同的浏览器可能返回的relativePath不一样
-		relativePath = relativePath.substring(1);
-	}
-	var virtualPath = (relativePath == "") ? "" : relativePath.substring(0, relativePath.indexOf("/") + 1);
+    var siteRoot = window.location.protocol +"//"+ window.location.host +"/";
+    if(!isVirtual) return siteRoot;
+    
+    var relativePath = window.location.pathname;
+    if(relativePath != "" && relativePath.substring(0,1) == "/"){
+        //此处重要，不同的浏览器可能返回的relativePath不一样
+        relativePath = relativePath.substring(1);
+    }
+    var virtualPath = (relativePath == "") ? "" : relativePath.substring(0, relativePath.indexOf("/") + 1);
 
-	return siteRoot + virtualPath;
+    return siteRoot + virtualPath;
 }
 
 function Module() {
 }
 
 Module.load = function(path, callback, param) {
-	var root = getSiteRoot(false);
+    var root = getSiteRoot(false);
 
-	var needAdd = true;
-	// 检查脚本是否存在
-	var eleList = document.querySelectorAll('script')
-	for (var i = 0; i < eleList.length; i++) {
-	  	// 遍历操作
-	  	var ele = eleList[i];
-	  	var src = ele.src.replace(root, '');
-		if(src == path) {
-			needAdd = false;
-		}
-	}
-	
-	if(needAdd) {
-		var script=document.createElement("script");
-		script.type="text/javascript";
-		script.src = path;
-		document.getElementsByTagName('head')[0].appendChild(script); 
-		script.onload = function(){
-			script.loaded = true;
-			if(callback) callback(param);
-		}//js加载完成执行方法
-	}
-	else {
-		if(callback) callback(param);
-	}
+    var needAdd = true;
+    // 检查脚本是否存在
+    var eleList = document.querySelectorAll('script')
+    for (var i = 0; i < eleList.length; i++) {
+        // 遍历操作
+        var ele = eleList[i];
+        var src = ele.src.replace(root, '');
+        if(src == path) {
+            needAdd = false;
+        }
+    }
+    
+    if(needAdd) {
+        var script=document.createElement("script");
+        script.type="text/javascript";
+        script.src = path;
+        document.getElementsByTagName('head')[0].appendChild(script); 
+        script.onload = function(){
+            script.loaded = true;
+            if(callback) callback(param);
+        }//js加载完成执行方法
+    }
+    else {
+        if(callback) callback(param);
+    }
 }
 
 Module.replace = function(path, callback) {
-	var root = getSiteRoot(false);
-	
-	// 检查脚本是否存在
-	var exist = false;
-	var eleList = document.querySelectorAll('script')
-	for (var i = 0; i < eleList.length; i++) {
-	  	// 遍历操作
-	  	var ele = eleList[i];
-	  	var src = ele.src.replace(root, '');
-		if(src == path) {
-			ele.parentNode.removeChild(ele); 
-			exist = true;
-		}
-	}
-	
-	if(exist) {
-		var script=document.createElement("script");
-		script.type="text/javascript";
-		script.src=path;
-		document.getElementsByTagName('head')[0].appendChild(script); 
-		script.onload = function(){
-			script.loaded = true;
-			if(callback) callback();
-		}//js加载完成执行方法
-	}
+    var root = getSiteRoot(false);
+    
+    // 检查脚本是否存在
+    var exist = false;
+    var eleList = document.querySelectorAll('script')
+    for (var i = 0; i < eleList.length; i++) {
+        // 遍历操作
+        var ele = eleList[i];
+        var src = ele.src.replace(root, '');
+        if(src == path) {
+            ele.parentNode.removeChild(ele); 
+            exist = true;
+        }
+    }
+    
+    if(exist) {
+        var script=document.createElement("script");
+        script.type="text/javascript";
+        script.src=path;
+        document.getElementsByTagName('head')[0].appendChild(script); 
+        script.onload = function(){
+            script.loaded = true;
+            if(callback) callback();
+        }//js加载完成执行方法
+    }
 }
 // src/pointer.js
 function initPointer() {
@@ -4494,19 +4495,19 @@ function initPointer() {
 initPointer();
 
 function pointer(event, method) {
-	if(!pointer.handler[event]) pointer.handler[event] = [];
-	
-	pointer.handler[event].push(method);
+    if(!pointer.handler[event]) pointer.handler[event] = [];
+    
+    pointer.handler[event].push(method);
 }
 
 pointer.update = function() {
-	if(pointer.button != 0) {
-		if(!pointer.handler['down']) return;
-	
-		for (var i = 0; i < pointer.handler['down'].length; i++) {
-	        pointer.handler['down'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-		}
-	}
+    if(pointer.button != 0) {
+        if(!pointer.handler['down']) return;
+    
+        for (var i = 0; i < pointer.handler['down'].length; i++) {
+            pointer.handler['down'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
+        }
+    }
 }
 
 pointer.handler = {};
@@ -4515,63 +4516,63 @@ pointer.x = 0;
 pointer.y = 0;
 
 document.addEventListener('pointerdown', function(e) {
-	pointer.button = e.buttons;
-	pointer.x = e.x;
-	pointer.y = e.y;
-	
-	if(!pointer.handler['down']) return;
-	
-	for (var i = 0; i < pointer.handler['down'].length; i++) {
+    pointer.button = e.buttons;
+    pointer.x = e.x;
+    pointer.y = e.y;
+    
+    if(!pointer.handler['down']) return;
+    
+    for (var i = 0; i < pointer.handler['down'].length; i++) {
         pointer.handler['down'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-	}
+    }
 });
 
 document.addEventListener('pointerup', function(e) {
-	pointer.button = e.buttons;
-	pointer.x = e.x;
-	pointer.y = e.y;
-	
-	if(!pointer.handler['up']) return;
-	
+    pointer.button = e.buttons;
+    pointer.x = e.x;
+    pointer.y = e.y;
+    
+    if(!pointer.handler['up']) return;
+    
     for (var i = 0; i < pointer.handler['up'].length; i++) {
         pointer.handler['up'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-	}
+    }
 });
 
 document.addEventListener('pointermove', function(e) {
-	pointer.button = e.buttons;
-	pointer.x = e.x;
-	pointer.y = e.y;
-	
-	if(!pointer.handler['move']) return;
-	
-	for (var i = 0; i < pointer.handler['move'].length; i++) {
+    pointer.button = e.buttons;
+    pointer.x = e.x;
+    pointer.y = e.y;
+    
+    if(!pointer.handler['move']) return;
+    
+    for (var i = 0; i < pointer.handler['move'].length; i++) {
         pointer.handler['move'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-	}
+    }
 });
 
 document.addEventListener('pointerleave', function(e) {
-	pointer.button = e.buttons;
-	pointer.x = e.x;
-	pointer.y = e.y;
-	
-	if(!pointer.handler['leave']) return;
-	
-	for (var i = 0; i < pointer.handler['leave'].length; i++) {
+    pointer.button = e.buttons;
+    pointer.x = e.x;
+    pointer.y = e.y;
+    
+    if(!pointer.handler['leave']) return;
+    
+    for (var i = 0; i < pointer.handler['leave'].length; i++) {
         pointer.handler['leave'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-	}
+    }
 });
 
 document.addEventListener('pointerclick', function(e) {
-	pointer.button = e.buttons;
-	pointer.x = e.x;
-	pointer.y = e.y;
-	
-	if(!pointer.handler['click']) return;
-	
-	for (var i = 0; i < pointer.handler['click'].length; i++) {
+    pointer.button = e.buttons;
+    pointer.x = e.x;
+    pointer.y = e.y;
+    
+    if(!pointer.handler['click']) return;
+    
+    for (var i = 0; i < pointer.handler['click'].length; i++) {
         pointer.handler['click'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-	}
+    }
 });
 
 if (typeof window !== 'undefined') {
@@ -5029,7 +5030,7 @@ Shader.prototype = {
 function Texture(width, height, options) {
   this.oneOverWidth = 1.0 / width;
   this.oneOverHeight = 1.0 / height;
-	
+    
   options = options || {};
   this.id = gl.createTexture();
   this.width = width;
@@ -5172,13 +5173,13 @@ Texture.fromImage = function(image, options) {
 };
 
 Texture.getPixel = function() {
-    pixelTexture = pixelTexture || (function() {	
-	    var c = document.createElement('canvas').getContext('2d');
-	    c.canvas.width = c.canvas.height = 2;
-	    c.fillStyle = '#FFF';
-	    c.fillRect(0, 0, 2, 2);
-	    return Texture.fromImage(c.canvas);
-	})();
+    pixelTexture = pixelTexture || (function() {    
+        var c = document.createElement('canvas').getContext('2d');
+        c.canvas.width = c.canvas.height = 2;
+        c.fillStyle = '#FFF';
+        c.fillRect(0, 0, 2, 2);
+        return Texture.fromImage(c.canvas);
+    })();
     return pixelTexture;
 };
 
@@ -5252,195 +5253,195 @@ function Trigger() {
 }
 
 Trigger.eval = function(header) {
-	if(triggers[header]) {
-		var triggerCollection = triggers[header];
-		for(var i = 0; i < triggerCollection.length; i++) {
-			var level = triggerCollection[i].level;
-			var trigger = triggerCollection[i].trigger;
-			
-			var loaded = true;
-			if(trigger.loadedFiles) {
-				var names = Object.getOwnPropertyNames(trigger.loadedFiles);
-				for(var x = 0; x < names.length; x++) {
-					if(!trigger.loadedFiles[names[x]]) {
-						loaded = false;
-						break;
-					}
-				}
-			}
-			else {
-				loaded = false;
-			}
-			
-			
-			if(trigger.enabled && loaded) {
-				var run = true;
-				for(var x = 0; x < trigger.conditions.length; x++) {
-					if(!Trigger.action(level, trigger.conditions[x])) {
-						run = false;
-						break;
-					}
-				}
-				
-				if(run) {
-					for(var x = 0; x < trigger.actions.length; x++) {
-						Trigger.action(level, trigger.actions[x]);
-					}
-				}
-			}
-		}
-	}
+    if(triggers[header]) {
+        var triggerCollection = triggers[header];
+        for(var i = 0; i < triggerCollection.length; i++) {
+            var level = triggerCollection[i].level;
+            var trigger = triggerCollection[i].trigger;
+            
+            var loaded = true;
+            if(trigger.loadedFiles) {
+                var names = Object.getOwnPropertyNames(trigger.loadedFiles);
+                for(var x = 0; x < names.length; x++) {
+                    if(!trigger.loadedFiles[names[x]]) {
+                        loaded = false;
+                        break;
+                    }
+                }
+            }
+            else {
+                loaded = false;
+            }
+            
+            
+            if(trigger.enabled && loaded) {
+                var run = true;
+                for(var x = 0; x < trigger.conditions.length; x++) {
+                    if(!Trigger.action(level, trigger.conditions[x])) {
+                        run = false;
+                        break;
+                    }
+                }
+                
+                if(run) {
+                    for(var x = 0; x < trigger.actions.length; x++) {
+                        Trigger.action(level, trigger.actions[x]);
+                    }
+                }
+            }
+        }
+    }
 }
 
 Trigger.bind = function(token, header, callback) {
-	triggerActions[header] = callback;
+    triggerActions[header] = callback;
 }
 
 Trigger.load = function(level, trigger) {
-	for(var i = 0; i < trigger.events.length; i++) {
-		var event = trigger.events[i];
-		var item = { level : level, trigger : trigger };
-		
-		var itemKey = null;
-		for(var key in event.value) {
-			itemKey = key;
-    		break;
- 		}
-		
-		if(!triggers[itemKey]) 
-			triggers[itemKey] = [];
-		
-		triggers[itemKey].push(item);
-	}
-	
-	trigger.loadedFiles = {};
+    for(var i = 0; i < trigger.events.length; i++) {
+        var event = trigger.events[i];
+        var item = { level : level, trigger : trigger };
+        
+        var itemKey = null;
+        for(var key in event.value) {
+            itemKey = key;
+            break;
+        }
+        
+        if(!triggers[itemKey]) 
+            triggers[itemKey] = [];
+        
+        triggers[itemKey].push(item);
+    }
+    
+    trigger.loadedFiles = {};
     var inculdes = Trigger.parseInculde(trigger);
-	if(inculdes.length == 0) {
-		level.init();
-	}
-	else {
-		for(var i = 0; i < inculdes.length; i++) {
-			trigger.loadedFiles[inculdes[i]] = false;
-			Module.load(inculdes[i], function(sender) {
-				var inculde = sender.inculde;
-				var trigger = sender.trigger;	
-				trigger.loadedFiles[inculde] = true;
-				
-				var loaded = true;
-				var names = Object.getOwnPropertyNames(trigger.loadedFiles);
-				for(var x = 0; x < names.length; x++) {
-					if(!trigger.loadedFiles[names[x]]) {
-						loaded = false;
-						break;
-					}
-				}
-				
-				if(loaded) {
-					level.init();
-				}
-				
-			}, { inculde : inculdes[i], trigger : trigger });
-		}
-	}
+    if(inculdes.length == 0) {
+        level.init();
+    }
+    else {
+        for(var i = 0; i < inculdes.length; i++) {
+            trigger.loadedFiles[inculdes[i]] = false;
+            Module.load(inculdes[i], function(sender) {
+                var inculde = sender.inculde;
+                var trigger = sender.trigger;   
+                trigger.loadedFiles[inculde] = true;
+                
+                var loaded = true;
+                var names = Object.getOwnPropertyNames(trigger.loadedFiles);
+                for(var x = 0; x < names.length; x++) {
+                    if(!trigger.loadedFiles[names[x]]) {
+                        loaded = false;
+                        break;
+                    }
+                }
+                
+                if(loaded) {
+                    level.init();
+                }
+                
+            }, { inculde : inculdes[i], trigger : trigger });
+        }
+    }
 }
 
 Trigger.unload = function(level) {
-	for(var header in triggers) {
-		for(var i = 0; i < triggers[header].length; i++) {
-			var trigger = triggers[header][i];
-			if(trigger.level == level) {
-				triggers[header].splice(i, 1);
-			}
-		}
-	}
+    for(var header in triggers) {
+        for(var i = 0; i < triggers[header].length; i++) {
+            var trigger = triggers[header][i];
+            if(trigger.level == level) {
+                triggers[header].splice(i, 1);
+            }
+        }
+    }
 }
 
 Trigger.parseInculde = function(trigger) {
-	var result = [];
-	for(var i = 0; i < trigger.conditions.length; i++) {
-		Trigger.parseInculdeItem(result, trigger.conditions[i]);
-	}
-	
-	for(var i = 0; i < trigger.actions.length; i++) {
-		Trigger.parseInculdeItem(result, trigger.actions[i]);
-	}
-	return result;
+    var result = [];
+    for(var i = 0; i < trigger.conditions.length; i++) {
+        Trigger.parseInculdeItem(result, trigger.conditions[i]);
+    }
+    
+    for(var i = 0; i < trigger.actions.length; i++) {
+        Trigger.parseInculdeItem(result, trigger.actions[i]);
+    }
+    return result;
 }
 
 Trigger.parseInculdeItem = function(result, sender) {
-	switch(sender.type) {
-		case "action":
-			result.push(sender.inculde);
-			var item = null;
-			for(var key in sender.value) {
-	    		item = sender.value[key];
-	    		break;
-	 		}
-	 		
-	 		if(item != null) {
-	 			Trigger.parseInculdeItem(result, item);
-	 		}
-	 		
-			break;
-	}
+    switch(sender.type) {
+        case "action":
+            result.push(sender.inculde);
+            var item = null;
+            for(var key in sender.value) {
+                item = sender.value[key];
+                break;
+            }
+            
+            if(item != null) {
+                Trigger.parseInculdeItem(result, item);
+            }
+            
+            break;
+    }
 }
 
 Trigger.action = function(level, act) {
-	switch(act.type) {
-		case "action":
-			var action = null;
-			var itemKey = null;
-			var item = null;
-			var value = null;
-			//var inculde = act.inculde;
-			for(var key in act.value) {
-				itemKey = key;
-        		item = act.value[key];
-        		break;
-     		}
+    switch(act.type) {
+        case "action":
+            var action = null;
+            var itemKey = null;
+            var item = null;
+            var value = null;
+            //var inculde = act.inculde;
+            for(var key in act.value) {
+                itemKey = key;
+                item = act.value[key];
+                break;
+            }
             
-            // 取值	
-			var key = typeof item == 'object' ? itemKey : '__Unknown';
-			if(key != '__Unknown') {
-				action = triggerActions[key];
-			}
-			
-			if(action != null) {
-				var params = [];
-				
-				var names = Object.getOwnPropertyNames(item);
-				for(var x = 0; x < names.length; x++) {
-					params.push(Trigger.action(level, item[names[x]]));
-				}
+            // 取值   
+            var key = typeof item == 'object' ? itemKey : '__Unknown';
+            if(key != '__Unknown') {
+                action = triggerActions[key];
+            }
+            
+            if(action != null) {
+                var params = [];
+                
+                var names = Object.getOwnPropertyNames(item);
+                for(var x = 0; x < names.length; x++) {
+                    params.push(Trigger.action(level, item[names[x]]));
+                }
 
-				value = action.apply(null, params);
-			}
-			
-			return value;
-		case "number":
-			return parseFloat(act.value);
-		case "string":
-			return act.value;
-		case "boolean":
-			return Boolean(act.value);
-		default:
-			var obj = null;
-			for(var i = 0; i < level.objects.length; i++) {
-				var obj2 = level.objects[i];
-				if(obj2.name == act.value) {
-					obj = obj2;
-					break;
-				}
-			}
-			return obj;
-	}
+                value = action.apply(null, params);
+            }
+            
+            return value;
+        case "number":
+            return parseFloat(act.value);
+        case "string":
+            return act.value;
+        case "boolean":
+            return Boolean(act.value);
+        default:
+            var obj = null;
+            for(var i = 0; i < level.objects.length; i++) {
+                var obj2 = level.objects[i];
+                if(obj2.name == act.value) {
+                    obj = obj2;
+                    break;
+                }
+            }
+            return obj;
+    }
 }
 // src/vector.js
 /**
  * 向量
- * @param 	{Number} 	x	向量X值
- * @param 	{Number} 	y	向量X值
- * @param 	{Number} 	z	向量X值
+ * @param   {Number}    x   向量X值
+ * @param   {Number}    y   向量X值
+ * @param   {Number}    z   向量X值
  */
 function Vector(x, y, z) {
   this.x = x || 0;
@@ -5457,7 +5458,7 @@ Vector.prototype = {
   },
   /**
    * 得到向量和
-   * @param	{Vector}	v	求和的向量
+   * @param {Vector}    v   求和的向量
    */
   add: function(v) {
     if (v instanceof Vector) return new Vector(this.x + v.x, this.y + v.y, this.z + v.z);
@@ -5534,10 +5535,10 @@ Vector.negative = function(a, b) {
 
 /**
  * 得到向量和
- * @param	{Number}	a	求和的向量
- * @param	{Number}	b	求和的向量
- * @param	{Number}	c	求和的向量
- * @return	Vector
+ * @param   {Number}    a   求和的向量
+ * @param   {Number}    b   求和的向量
+ * @param   {Number}    c   求和的向量
+ * @return  Vector
  */
 Vector.add = function(a, b, c) {
   if (b instanceof Vector) { c.x = a.x + b.x; c.y = a.y + b.y; c.z = a.z + b.z; }
