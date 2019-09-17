@@ -46,7 +46,7 @@
   <Content Include="index.html" />
   <Folder Include="res">
     <Content Include="res\demo0-5.map" />
-    <Content Include="res\demo0-1.img" />
     <Content Include="res\demo0-3.ani" />
+    <Content Include="res\demo0-1.img" />
   </Folder>
 </Project>

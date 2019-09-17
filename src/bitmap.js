@@ -95,19 +95,57 @@ Bitmap.fromJson = function(json, param, entry) {
     };
     data.isLoaded = false;
     data.image = texture;
-    var stringSheets = json.sheets.split('|');
-    for(var x = 0; x < stringSheets.length; x++) {
-        var sss = stringSheets[x];
-        var stringData = sss.split('&');
-        var name = stringData[0];
-        var outline = stringData[1].split(',');
-        var inline = stringData[2].split(',');
-
+    
+    for(var index2 = 0; index2 < json.sheets.length; index2++) {
+        var sheetJson = json.sheets[index2];
+        var tiledJson = sheetJson.tiled;
+        var name = sheetJson.name; 
         var keypoints = [];
-        if(outline.length > 1) for(var i = 0; i < outline.length; i += 2) keypoints.push({ x : parseFloat(outline[i]), y : parseFloat(outline[i + 1]) });
-        if(inline.length > 1) for(var i = 0; i < inline.length; i += 2) keypoints.push({ x : parseFloat(inline[i]), y : parseFloat(inline[i + 1]) });
+        var tiled = {};
+        tiled.brushs = [];
+        tiled.tiles  = [];
+        tiled.images = [];
         
-        data.sheets[name] = { texture : data, keypoints : keypoints };
+        for(var i = 0; i < sheetJson.outline.length; i++) {
+            var values = sheetJson.outline[i].split(',');
+            var x = parseFloat(values[0]);
+            var y = parseFloat(values[1]);
+            keypoints.push({ x : x, y : y });
+        }
+        
+        for(var i = 0; i < sheetJson.inline.length; i++) {
+            var values = sheetJson.inline[i].split(',');
+            var x = parseFloat(values[0]);
+            var y = parseFloat(values[1]);
+            keypoints.push({ x : x, y : y });
+        }
+        
+        for(var i = 0; i < tiledJson.brushs.length; i++) {
+            var brushJson = tiledJson.brushs[i];
+            var brushName = brushJson.name;
+            var brushIcon = brushJson.icon;
+            tiled.brushs.push({ name : brushName, icon : brushIcon });
+        }
+        
+        for(var i = 0; i < tiledJson.tiles.length; i++) {
+            var tileJson = tiledJson.tiles[i];
+            var tileIndex = tileJson.index;
+            var tileBrush = tileJson.brush.split(',');
+            tiled.tiles.push({ index : tileIndex, brush : tileBrush });
+        }
+        
+        for(var i = 0; i < tiledJson.images.length; i++) {
+            var imageJson = tiledJson.images[imageKey];
+            var name = imageJson.name;
+            var srcValues = imageJson.src.split(',');
+            var x = parseFloat(srcValues[0]);
+            var y = parseFloat(srcValues[1]);
+            var width = parseFloat(srcValues[2]);
+            var height = parseFloat(srcValues[3]);
+            tiled.images.push({ x : x, y : y, width : width, height : height });
+        }
+         
+        data.sheets[name] = { texture : data, keypoints : keypoints, tiled : tiled }; 
     }
     
     return data;

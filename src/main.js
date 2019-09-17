@@ -103,7 +103,13 @@ function addDisplayBatchMode() {
     };
     
     Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
-        
+    
+    var systemClearFunc = gl.clear; 
+	gl.clear = function(color) {	
+		systemClearFunc.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.clearColor(color.r, color.g, color.b, color.a);
+	}
+    
     /**
      * 通知渲染器开始接受命令，每次绘制前必须调用
      * @date    2019-9-4
@@ -147,6 +153,9 @@ function addDisplayBatchMode() {
         if(gl.enableHitTest) {
             gl.bindHitTestContext(displayBatchMode.steps);
         }
+        
+        gl.enable(gl.BLEND);
+    	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     };
     
     /**

@@ -6,9 +6,6 @@ var gl = IUIU.create(null, { hittest : false, useGL : true });
 
 // 设置每帧更新
 gl.onupdate = function(inv) {
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.begin();
  
     // 绘制动画指定帧
