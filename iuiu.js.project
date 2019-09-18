@@ -44,6 +44,7 @@
     <Compile Include="demo\demo0-4.js" />
     <Compile Include="demo\demo0-5.js" />
     <Compile Include="demo\demo0-6.js" />
+    <Compile Include="demo\demo0-7.js" />
   </Folder>
   <Compile Include="iuiu.js" />
   <Content Include="index.html" />
@@ -52,5 +53,10 @@
     <Content Include="res\demo0-3.ani" />
     <Content Include="res\demo0-1.img" />
     <Content Include="res\demo0-6.font" />
+    <Content Include="res\demo0-7.png" />
+  </Folder>
+  <Folder Include="test">
+    <Compile Include="test\statement.js" />
+    <Compile Include="test\autoindent.js" />
   </Folder>
 </Project>
