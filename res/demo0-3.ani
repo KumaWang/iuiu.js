@@ -15,7 +15,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "339,179",
+                            "location": "347,165",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -23,9 +23,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "339,179",
+                            "location": "347,165",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -33,9 +33,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "332,179",
+                            "location": "351,155",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -49,7 +49,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "347,169",
+                            "location": "356,165",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -57,9 +57,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "347,169",
+                            "location": "356,165",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -67,9 +67,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "342,168",
+                            "location": "360,155",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -83,7 +83,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "353,167",
+                            "location": "362,170",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -91,9 +91,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "353,167",
+                            "location": "362,170",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -101,9 +101,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "356,163",
+                            "location": "366,160",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -117,7 +117,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "361,167",
+                            "location": "366,175",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -125,9 +125,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "361,167",
+                            "location": "366,175",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -135,9 +135,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "364,163",
+                            "location": "374,182",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -151,7 +151,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "365,170",
+                            "location": "366,180",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -159,9 +159,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "365,170",
+                            "location": "366,180",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -169,9 +169,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "368,166",
+                            "location": "374,187",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -185,7 +185,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "370,179",
+                            "location": "364,183",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -193,9 +193,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "370,179",
+                            "location": "364,183",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -203,9 +203,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "373,184",
+                            "location": "372,190",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -219,7 +219,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "370,187",
+                            "location": "358,187",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -227,9 +227,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "370,187",
+                            "location": "358,187",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -237,9 +237,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "373,192",
+                            "location": "366,194",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -253,7 +253,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "364,191",
+                            "location": "342,186",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -261,9 +261,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "364,191",
+                            "location": "342,186",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -271,9 +271,9 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "367,196",
+                            "location": "337,190",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -287,7 +287,7 @@
                         {
                             "frame": 0.0,
                             "value": 1.0,
-                            "location": "344,193",
+                            "location": "338,180",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -295,9 +295,9 @@
                             "smooth": "true"
                         },
                         {
-                            "frame": 20.0,
+                            "frame": 30.0,
                             "value": 1.0,
-                            "location": "344,193",
+                            "location": "338,180",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -305,9 +305,43 @@
                             "smooth": "false"
                         },
                         {
-                            "frame": 10.0,
+                            "frame": 15.0,
                             "value": 1.0,
-                            "location": "341,196",
+                            "location": "333,184",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        }
+                    ]
+                },
+                {
+                    "keyframes": [
+                        {
+                            "frame": 0.0,
+                            "value": 1.0,
+                            "location": "338,174",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "true"
+                        },
+                        {
+                            "frame": 30.0,
+                            "value": 1.0,
+                            "location": "338,174",
+                            "scale": "1,1",
+                            "origin": "0,0",
+                            "angle": 0.0,
+                            "color": "255,255,255,255",
+                            "smooth": "false"
+                        },
+                        {
+                            "frame": 15.0,
+                            "value": 1.0,
+                            "location": "333,178",
                             "scale": "1,1",
                             "origin": "0,0",
                             "angle": 0.0,
@@ -322,29 +356,29 @@
                 {
                     "frame": 0.0,
                     "value": 1.0,
-                    "location": "-16,-13",
+                    "location": "-15,-10",
                     "scale": "1,1",
-                    "origin": "15.5,13",
+                    "origin": "14,11",
                     "angle": 0.0,
                     "color": "255,255,255,255",
                     "smooth": "true"
                 },
                 {
-                    "frame": 20.0,
+                    "frame": 30.0,
                     "value": 1.0,
-                    "location": "-16,-13",
+                    "location": "-15,-10",
                     "scale": "1,1",
-                    "origin": "15.5,13",
+                    "origin": "14,11",
                     "angle": 0.0,
                     "color": "255,255,255,255",
                     "smooth": "false"
                 },
                 {
-                    "frame": 10.0,
+                    "frame": 15.0,
                     "value": 1.0,
-                    "location": "-16,-13",
+                    "location": "-15,-10",
                     "scale": "1,1",
-                    "origin": "15.5,13",
+                    "origin": "14,11",
                     "angle": 0.0,
                     "color": "255,255,255,255",
                     "smooth": "true"

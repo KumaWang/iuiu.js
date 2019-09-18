@@ -33,7 +33,7 @@ var IUIU = {
   /**
    * Shader
    */
-  Shader: Shader,
+  //Shader: Shader,
   /**
    * 材质
    */ 
@@ -59,7 +59,7 @@ var IUIU = {
   /**
    * 组件管理器，一般由IDE进行管理
    */
-  Component : new Component(),
+   // Component : new Component(),
   /**
    * 模块管理器，一般由IDE进行管理
    */
@@ -105,10 +105,10 @@ function addDisplayBatchMode() {
     Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
     
     var systemClearFunc = gl.clear; 
-	gl.clear = function(color) {	
-		systemClearFunc.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-		gl.clearColor(color.r, color.g, color.b, color.a);
-	}
+    gl.clear = function(color) {    
+        systemClearFunc.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.clearColor(color.r, color.g, color.b, color.a);
+    }
     
     /**
      * 通知渲染器开始接受命令，每次绘制前必须调用
@@ -155,7 +155,7 @@ function addDisplayBatchMode() {
         }
         
         gl.enable(gl.BLEND);
-    	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     };
     
     /**
@@ -442,6 +442,8 @@ function addDisplayBatchMode() {
     gl.text = function(font, text, size, point, origin, angle, color) {
         if (displayBatchMode.hasBegun == false)
             throw "begin() must be called before draw()";
+        
+        if(!font.isLoaded) return;
         
         point = point || IUIU.Vector.zero;
         scale = scale || IUIU.Vector.one;

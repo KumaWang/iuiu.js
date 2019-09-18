@@ -35,12 +35,15 @@
     <Compile Include="src\vector.js" />
     <Compile Include="src\WebAudio.js" />
     <Compile Include="src\WebSound.js" />
+    <Compile Include="src\map.js" />
   </Folder>
   <Folder Include="demo">
     <Compile Include="demo\demo0-1.js" />
     <Compile Include="demo\demo0-2.js" />
     <Compile Include="demo\demo0-3.js" />
     <Compile Include="demo\demo0-4.js" />
+    <Compile Include="demo\demo0-5.js" />
+    <Compile Include="demo\demo0-6.js" />
   </Folder>
   <Compile Include="iuiu.js" />
   <Content Include="index.html" />
@@ -48,5 +51,6 @@
     <Content Include="res\demo0-5.map" />
     <Content Include="res\demo0-3.ani" />
     <Content Include="res\demo0-1.img" />
+    <Content Include="res\demo0-6.font" />
   </Folder>
 </Project>
