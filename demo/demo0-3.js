@@ -1,21 +1,21 @@
-// Í¨¹ı¼ÓÔØÆ÷¶ÁÈ¡¶¯»­×ÊÔ´
-var ani = IUIU.Loader.load("res/demo0-3.ani");
-
-// ĞÂ½¨äÖÈ¾Æ÷
+// æ–°å»ºæ¸²æŸ“å™¨
 var gl = IUIU.create(null, { hittest : false, useGL : true });
 
-// ÉèÖÃÃ¿Ö¡¸üĞÂ
+// é€šè¿‡åŠ è½½å™¨è¯»å–åŠ¨ç”»èµ„æº
+var ani = IUIU.Loader.load("res/demo0-3.ani");
+
+// è®¾ç½®æ¯å¸§æ›´æ–°
 gl.onupdate = function(inv) {
     gl.begin();
  
-    // »æÖÆ¶¯»­Ö¸¶¨Ö¡
+    // ç»˜åˆ¶åŠ¨ç”»æŒ‡å®šå¸§
     gl.animate(ani, 12, new IUIU.Vector(100, 100));
     
     gl.end();
 };
 
-// ÉèÖÃÈ«ÆÁ»¯
+// è®¾ç½®å…¨å±åŒ–
 gl.fullscreen();
 
-// ÉèÖÃÑ­»·
+// è®¾ç½®å¾ªç¯
 gl.loop();

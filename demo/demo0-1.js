@@ -1,8 +1,8 @@
-﻿// 通过加载器读取图片资源
-var img = IUIU.Loader.load("res/demo0-1.img");
-
 // 新建渲染器
 var gl = IUIU.create(null, { hittest : false, useGL : true });
+
+// 通过加载器读取图片资源
+var img = IUIU.Loader.load("res/demo0-1.img");
 
 // 设置每帧更新
 gl.onupdate = function(inv) {
