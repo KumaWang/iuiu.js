@@ -2533,9 +2533,9 @@ var gl;
 
 var IUIU = {
   /**
-   * åˆ›å»ºç”»å¸ƒ
-   * @param     {Canvas}            canvas      æ‰€é€‰ä¸­çš„ç”»å¸ƒï¼Œå¦‚æœä¸ºnullåˆ™æ–°å»ºä¸€ä¸ªç”»å¸ƒ
-   * @param     {object}            options     åˆ›å»ºwebglæ—¶æ‰€ç”¨åˆ°çš„å‚æ•°é€‰é¡¹
+   * ´´½¨»­²¼
+   * @param     {Canvas}            canvas      ËùÑ¡ÖĞµÄ»­²¼£¬Èç¹ûÎªnullÔòĞÂ½¨Ò»¸ö»­²¼
+   * @param     {object}            options     ´´½¨webglÊ±ËùÓÃµ½µÄ²ÎÊıÑ¡Ïî
    * @return    GraphiceDevice
    * @date      2019-9-4
    * @author    KumaWang
@@ -2566,33 +2566,33 @@ var IUIU = {
    */
   //Shader: Shader,
   /**
-   * æè´¨
+   * ²ÄÖÊ
    */ 
   Texture: Texture,
   /**
-   * å‘é‡
+   * ÏòÁ¿
    */
   Vector: Vector,
   /**
-   * é¢œè‰²
+   * ÑÕÉ«
    */
   Color: Color,
   //Level : Level,
       
   /**
-   * èµ„æºåŠ è½½å™¨
+   * ×ÊÔ´¼ÓÔØÆ÷
    */
   Loader: new Loader(),
   /**
-   * è§¦å‘å™¨ï¼Œä¸€èˆ¬ç”±IDEè¿›è¡Œç®¡ç†
+   * ´¥·¢Æ÷£¬Ò»°ãÓÉIDE½øĞĞ¹ÜÀí
    */
   Trigger : Trigger,
   /**
-   * ç»„ä»¶ç®¡ç†å™¨ï¼Œä¸€èˆ¬ç”±IDEè¿›è¡Œç®¡ç†
+   * ×é¼ş¹ÜÀíÆ÷£¬Ò»°ãÓÉIDE½øĞĞ¹ÜÀí
    */
    // Component : new Component(),
   /**
-   * æ¨¡å—ç®¡ç†å™¨ï¼Œä¸€èˆ¬ç”±IDEè¿›è¡Œç®¡ç†
+   * Ä£¿é¹ÜÀíÆ÷£¬Ò»°ãÓÉIDE½øĞĞ¹ÜÀí
    */
   Module : Module
 };
@@ -2642,7 +2642,7 @@ function addDisplayBatchMode() {
     }
     
     /**
-     * é€šçŸ¥æ¸²æŸ“å™¨å¼€å§‹æ¥å—å‘½ä»¤ï¼Œæ¯æ¬¡ç»˜åˆ¶å‰å¿…é¡»è°ƒç”¨
+     * Í¨ÖªäÖÈ¾Æ÷¿ªÊ¼½ÓÊÜÃüÁî£¬Ã¿´Î»æÖÆÇ°±ØĞëµ÷ÓÃ
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -2690,8 +2690,8 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“åœºæ™¯
-     * @param   {IUIU.Level}        level   æ¸²æŸ“çš„åœºæ™¯
+     * äÖÈ¾³¡¾°
+     * @param   {IUIU.Level}        level   äÖÈ¾µÄ³¡¾°
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -2705,14 +2705,14 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“åŠ¨ç”»
-     * @param   {IUIU.Animation}    ani         é€‰ä¸­çš„åŠ¨ç”»
-     * @param   {int}               frame       æ‰€æ¸²æŸ“çš„å¸§æ•°
-     * @param   {IUIU.Vector}       point       æ¸²æŸ“çš„åæ ‡
-     * @param   {IUIU.Vector}       scale       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ‹‰ä¼¸å€¼
-     * @param   {IUIU.Vector}       origin      æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬é”šç‚¹
-     * @param   {int}               angle       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬å€¼
-     * @param   {IUIU.Color}        color       æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
+     * äÖÈ¾¶¯»­
+     * @param   {IUIU.Animation}    ani         Ñ¡ÖĞµÄ¶¯»­
+     * @param   {int}               frame       ËùäÖÈ¾µÄÖ¡Êı
+     * @param   {IUIU.Vector}       point       äÖÈ¾µÄ×ø±ê
+     * @param   {IUIU.Vector}       scale       äÖÈ¾Ê±²ÉÓÃµÄÀ­ÉìÖµ
+     * @param   {IUIU.Vector}       origin      äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÃªµã
+     * @param   {int}               angle       äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÖµ
+     * @param   {IUIU.Color}        color       äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -2735,13 +2735,13 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“åŠ¨ç”»çŠ¶æ€
-     * @param   {IUIU.AnimationState}   state       æ‰€æ¸²æŸ“çš„çŠ¶æ€
-     * @param   {IUIU.Vector}           point       æ¸²æŸ“çš„åæ ‡
-     * @param   {IUIU.Vector}           scale       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ‹‰ä¼¸å€¼
-     * @param   {IUIU.Vector}           origin      æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬é”šç‚¹
-     * @param   {int}                   angle       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬å€¼
-     * @param   {IUIU.Color}            color       æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
+     * äÖÈ¾¶¯»­×´Ì¬
+     * @param   {IUIU.AnimationState}   state       ËùäÖÈ¾µÄ×´Ì¬
+     * @param   {IUIU.Vector}           point       äÖÈ¾µÄ×ø±ê
+     * @param   {IUIU.Vector}           scale       äÖÈ¾Ê±²ÉÓÃµÄÀ­ÉìÖµ
+     * @param   {IUIU.Vector}           origin      äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÃªµã
+     * @param   {int}                   angle       äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÖµ
+     * @param   {IUIU.Color}            color       äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -2754,14 +2754,14 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“æ¨¡å‹
-     * @param   {IUIU.Mesh}         mesh        æ¸²æŸ“çš„æ¨¡å‹
-     * @param   {int}               frame       æ‰€æ¸²æŸ“çš„å¸§æ•°
-     * @param   {IUIU.Vector}       point       æ¸²æŸ“çš„åæ ‡
-     * @param   {IUIU.Vector}       scale       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ‹‰ä¼¸å€¼
-     * @param   {IUIU.Vector}       origin      æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬é”šç‚¹
-     * @param   {int}               angle       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬å€¼
-     * @param   {IUIU.Color}        color       æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
+     * äÖÈ¾Ä£ĞÍ
+     * @param   {IUIU.Mesh}         mesh        äÖÈ¾µÄÄ£ĞÍ
+     * @param   {int}               frame       ËùäÖÈ¾µÄÖ¡Êı
+     * @param   {IUIU.Vector}       point       äÖÈ¾µÄ×ø±ê
+     * @param   {IUIU.Vector}       scale       äÖÈ¾Ê±²ÉÓÃµÄÀ­ÉìÖµ
+     * @param   {IUIU.Vector}       origin      äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÃªµã
+     * @param   {int}               angle       äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÖµ
+     * @param   {IUIU.Color}        color       äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -2779,7 +2779,7 @@ function addDisplayBatchMode() {
                 angle = angle || 0;
                 color = color || IUIU.Color.white;
 
-                // ç»˜åˆ¶å†…éƒ¨å¡«å……
+                // »æÖÆÄÚ²¿Ìî³ä
                 var offset = { x : state.x + point.x, y : state.y + point.y };
                 color = { r : state.r * color.r, g : state.g * color.g, b : state.b * color.b, a : state.a * color.a };
                 origin = { x : offset.x + state.originX + origin.x, y : offset.y + state.originY + origin.y };
@@ -2822,14 +2822,14 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“å›¾ç‰‡
-     * @param   {IUIU.Bitmap}       img         æ¸²æŸ“çš„ä½å›¾
-     * @param   {string}            name        æ‰€æ¸²æŸ“çš„åˆ‡ç‰‡å
-     * @param   {IUIU.Vector}       point       æ¸²æŸ“çš„åæ ‡
-     * @param   {IUIU.Vector}       scale       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ‹‰ä¼¸å€¼
-     * @param   {IUIU.Vector}       origin      æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬é”šç‚¹
-     * @param   {int}               angle       æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬å€¼
-     * @param   {IUIU.Color}        color       æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
+     * äÖÈ¾Í¼Æ¬
+     * @param   {IUIU.Bitmap}       img         äÖÈ¾µÄÎ»Í¼
+     * @param   {string}            name        ËùäÖÈ¾µÄÇĞÆ¬Ãû
+     * @param   {IUIU.Vector}       point       äÖÈ¾µÄ×ø±ê
+     * @param   {IUIU.Vector}       scale       äÖÈ¾Ê±²ÉÓÃµÄÀ­ÉìÖµ
+     * @param   {IUIU.Vector}       origin      äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÃªµã
+     * @param   {int}               angle       äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÖµ
+     * @param   {IUIU.Color}        color       äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -2882,14 +2882,14 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“å›¾ç‰‡
-     * @param   {IUIU.Texture}      img             æ¸²æŸ“çš„æè´¨
-     * @param   {IUIU.Vector}       point           æ¸²æŸ“çš„åæ ‡
-     * @param   {IUIU.Vector}       scale           æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ‹‰ä¼¸å€¼
-     * @param   {IUIU.Vector}       origin          æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬é”šç‚¹
-     * @param   {int}               angle           æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬å€¼
-     * @param   {IUIU.Color}        color           æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
-     * @param   {IUIU.Rect}         sourceRectangle æ¸²æŸ“æ—¶æˆªå–çš„å›¾ç‰‡çŸ©é˜µ
+     * äÖÈ¾Í¼Æ¬
+     * @param   {IUIU.Texture}      img             äÖÈ¾µÄ²ÄÖÊ
+     * @param   {IUIU.Vector}       point           äÖÈ¾µÄ×ø±ê
+     * @param   {IUIU.Vector}       scale           äÖÈ¾Ê±²ÉÓÃµÄÀ­ÉìÖµ
+     * @param   {IUIU.Vector}       origin          äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÃªµã
+     * @param   {int}               angle           äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÖµ
+     * @param   {IUIU.Color}        color           äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
+     * @param   {IUIU.Rect}         sourceRectangle äÖÈ¾Ê±½ØÈ¡µÄÍ¼Æ¬¾ØÕó
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -2960,14 +2960,14 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“æ–‡å­—
-     * @param   {IUIU.Bitmap}       font            æ¸²æŸ“çš„é‡‡ç”¨çš„å­—ä½“
-     * @param   {string}            text            æ‰€æ¸²æŸ“çš„æ–‡å­—
-     * @param   {IUIU.Vector}       point           æ¸²æŸ“çš„åæ ‡
-     * @param   {IUIU.Vector}       scale           æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ‹‰ä¼¸å€¼
-     * @param   {IUIU.Vector}       origin          æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬é”šç‚¹
-     * @param   {int}               angle           æ¸²æŸ“æ—¶é‡‡ç”¨çš„æ—‹è½¬å€¼
-     * @param   {IUIU.Color}        color           æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
+     * äÖÈ¾ÎÄ×Ö
+     * @param   {IUIU.Bitmap}       font            äÖÈ¾µÄ²ÉÓÃµÄ×ÖÌå
+     * @param   {string}            text            ËùäÖÈ¾µÄÎÄ×Ö
+     * @param   {IUIU.Vector}       point           äÖÈ¾µÄ×ø±ê
+     * @param   {IUIU.Vector}       scale           äÖÈ¾Ê±²ÉÓÃµÄÀ­ÉìÖµ
+     * @param   {IUIU.Vector}       origin          äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÃªµã
+     * @param   {int}               angle           äÖÈ¾Ê±²ÉÓÃµÄĞı×ªÖµ
+     * @param   {IUIU.Color}        color           äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -3015,11 +3015,11 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“ç›´çº¿
-     * @param   {IUIU.Vector}       start           èµ·å§‹åæ ‡
-     * @param   {IUIU.Vector}       end             ç»“æŸåæ ‡
-     * @param   {IUIU.Color}        color           æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
-     * @param   {int}               thickness       çº¿ç²—ç»†
+     * äÖÈ¾Ö±Ïß
+     * @param   {IUIU.Vector}       start           ÆğÊ¼×ø±ê
+     * @param   {IUIU.Vector}       end             ½áÊø×ø±ê
+     * @param   {IUIU.Color}        color           äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
+     * @param   {int}               thickness       Ïß´ÖÏ¸
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -3064,10 +3064,10 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * æ¸²æŸ“çŸ©å½¢
-     * @param   {IUIU.Vector}       lower           èµ·å§‹åæ ‡
-     * @param   {IUIU.Vector}       upper           ç»“æŸåæ ‡
-     * @param   {IUIU.Color}        color           æ¸²æŸ“æ—¶é‡‡ç”¨çš„é¢œè‰²è¿‡æ»¤
+     * äÖÈ¾¾ØĞÎ
+     * @param   {IUIU.Vector}       lower           ÆğÊ¼×ø±ê
+     * @param   {IUIU.Vector}       upper           ½áÊø×ø±ê
+     * @param   {IUIU.Color}        color           äÖÈ¾Ê±²ÉÓÃµÄÑÕÉ«¹ıÂË
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -3146,7 +3146,7 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * é€šçŸ¥æ¸²æŸ“å™¨ç»“æŸæ¥å—å‘½ä»¤å¹¶ç»˜åˆ¶
+     * Í¨ÖªäÖÈ¾Æ÷½áÊø½ÓÊÜÃüÁî²¢»æÖÆ
      * @date    2019-9-4
      * @author  KumaWang
      */
@@ -3205,8 +3205,8 @@ function addOtherMethods() {
   })(gl);
   
   /**
-   * å¯ç”¨å¾ªç¯
-   * @param     {int}           interval        æ¯å¸§é—´éš”ï¼ˆæ¯«ç§’ï¼‰
+   * ÆôÓÃÑ­»·
+   * @param     {int}           interval        Ã¿Ö¡¼ä¸ô£¨ºÁÃë£©
    * @date      2019-9-4
    * @author    KumaWang
    */
@@ -3235,7 +3235,7 @@ function addOtherMethods() {
   };
 
   /**
-   * å°†ç”»å¸ƒå…¨å±åŒ–
+   * ½«»­²¼È«ÆÁ»¯
    * @date      2019-9-4
    * @author    KumaWang
    */
