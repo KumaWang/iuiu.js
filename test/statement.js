@@ -13,5 +13,5 @@ var Test = (function() {
         foo : new Foo()
     };
     
-    return Test;
-})();  
+    return Test;  
+})();         
