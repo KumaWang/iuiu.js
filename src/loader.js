@@ -258,9 +258,6 @@ Loader.prototype = {
     //          image
     load : function(fileName, userToken, callback, params) {
         var scope = this;
-        
-        if(this.checklist[fileName])
-            fileName = this.checklist[fileName];
 
         var fileNameExt = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度
         var fileNameLength = fileName.length;//取到文件名长度

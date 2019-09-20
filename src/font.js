@@ -1,4 +1,5 @@
 function Font() {
+    this.isLoaded = false;
 }
 
 Font.create = function() {

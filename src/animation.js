@@ -162,12 +162,12 @@ Animation.fromJson = function(json, params, entry) {
                 
             case "text":
                 var label = new AnimationItemLabel();
-                label.text = json.text;
-                label.size = parseFloat(json.size);
-
-                IUIU.loader.load(json.inculde, { label : label }, function(c) {
+                label.text = item.text;
+                label.size = parseFloat(item.size);
+                label.font = new Font();
+                IUIU.Loader.load(item.inculde, { label : label }, function(c) {
                     c.userToken.label.font = c.content;
-                });
+                }); 
                 
                 baseItem = label;
                 baseItem.type = "text";
