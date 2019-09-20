@@ -14,4 +14,4 @@ var Test = (function() {
     };
     
     return Test;  
-})();           
+})();            
