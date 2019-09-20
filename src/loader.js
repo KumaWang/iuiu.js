@@ -143,17 +143,6 @@ ContentLoader.prototype = {
     }
 };
 
-function ScriptLoader(loader) {
-    this.loader = loader;
-}
-ScriptLoader.prototype = {
-    sync : true,
-    responseType : 'text',
-    load : function(buffer, params, entry) {
-        return eval('\'' + Format(buffer, params) + '\'');
-    }
-};
-
 function JsonLoader(loader) {
     this.loader = loader;
 }
@@ -246,25 +235,12 @@ function Loader(domain) {
     this.loaders = {};
     this.addMode('content', new ContentLoader(this));
     this.addMode('ini', new IniLoader(this));
-    this.addMode('script', new ScriptLoader(this));
     this.addMode('json', new JsonLoader(this));
     this.addMode("ani", new AnimationLoader(this));
     this.addMode("img", new ImageLoader(this));
     this.addMode("level", new LevelLoader(this));
     this.addMode("map", new MapLoader(this));
     this.addMode("font", new FontLoader(this));
-    // load checklist
-    /*
-    var content = this.load('checklist.ini', 'ini', null, false);
-    content.onloaded = function(c) {
-        this.checklist = c.content;
-    };
-    content.onerror = function(c) {
-        // no cache
-    };
-    
-    // load entry
-    */
 }
 
 Loader.prototype = {
@@ -282,6 +258,9 @@ Loader.prototype = {
     //          image
     load : function(fileName, userToken, callback, params) {
         var scope = this;
+        
+        if(this.checklist[fileName])
+            fileName = this.checklist[fileName];
 
         var fileNameExt = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度
         var fileNameLength = fileName.length;//取到文件名长度
