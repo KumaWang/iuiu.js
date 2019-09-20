@@ -1,4 +1,4 @@
-// 新建渲染器
+﻿// 新建渲染器
 var gl = IUIU.create(null, { hittest : false, useGL : true });
 
 // 通过加载器读取图片资源
@@ -14,7 +14,7 @@ gl.onupdate = function(inv) {
         new IUIU.Vector(200, 200), 
         IUIU.Vector.one, 
         IUIU.Vector.zero, 
-        0, 
+        0,  
         IUIU.Color.white, 
         { x : 0, y : 0, width : img.width, height : img.height });
     
