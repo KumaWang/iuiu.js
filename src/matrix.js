@@ -156,7 +156,7 @@ Matrix.multiply = function(left, right, result) {
 };
 
 Matrix.multiply2 = function(matrix1, matrix2, result) {
-	result = result || new Matrix();
+    result = result || new Matrix();
     var m11 = (((matrix1.m[0] * matrix2.m[0]) + (matrix1.m[1] * matrix2.m[4])) + (matrix1.m[2] * matrix2.m[8])) + (matrix1.m[3] * matrix2.m[12]);
     var m12 = (((matrix1.m[0] * matrix2.m[1]) + (matrix1.m[1] * matrix2.m[5])) + (matrix1.m[2] * matrix2.m[9])) + (matrix1.m[3] * matrix2.m[13]);
     var m13 = (((matrix1.m[0] * matrix2.m[2]) + (matrix1.m[1] * matrix2.m[6])) + (matrix1.m[2] * matrix2.m[10])) + (matrix1.m[3] * matrix2.m[14]);
@@ -172,24 +172,24 @@ Matrix.multiply2 = function(matrix1, matrix2, result) {
     var m41 = (((matrix1.m[12] * matrix2.m[0]) + (matrix1.m[13] * matrix2.m[4])) + (matrix1.m[14] * matrix2.m[8])) + (matrix1.m[15] * matrix2.m[12]);
     var m42 = (((matrix1.m[12] * matrix2.m[1]) + (matrix1.m[13] * matrix2.m[5])) + (matrix1.m[14] * matrix2.m[9])) + (matrix1.m[15] * matrix2.m[13]);
     var m43 = (((matrix1.m[12] * matrix2.m[2]) + (matrix1.m[13] * matrix2.m[6])) + (matrix1.m[14] * matrix2.m[10])) + (matrix1.m[15] * matrix2.m[14]);
-   	var m44 = (((matrix1.m[12] * matrix2.m[3]) + (matrix1.m[13] * matrix2.m[7])) + (matrix1.m[14] * matrix2.m[11])) + (matrix1.m[15] * matrix2.m[15]);
+    var m44 = (((matrix1.m[12] * matrix2.m[3]) + (matrix1.m[13] * matrix2.m[7])) + (matrix1.m[14] * matrix2.m[11])) + (matrix1.m[15] * matrix2.m[15]);
     result.m[0] = m11;
-	result.m[1] = m21;
-	result.m[2] = m31;
-	result.m[3] = m41;
-	result.m[4] = m12;
-	result.m[5] = m22;
-	result.m[6] = m32;
-	result.m[7] = m42;
-	result.m[8] = m13;
-	result.m[9] = m23;
-	result.m[10] = m33;
-	result.m[11] = m34;
-	result.m[12] = m14;
-	result.m[13] = m24;
-	result.m[14] = m34;
-	result.m[15] = m44;
-	return result;
+    result.m[1] = m21;
+    result.m[2] = m31;
+    result.m[3] = m41;
+    result.m[4] = m12;
+    result.m[5] = m22;
+    result.m[6] = m32;
+    result.m[7] = m42;
+    result.m[8] = m13;
+    result.m[9] = m23;
+    result.m[10] = m33;
+    result.m[11] = m34;
+    result.m[12] = m14;
+    result.m[13] = m24;
+    result.m[14] = m34;
+    result.m[15] = m44;
+    return result;
 }
 
 // ### GL.Matrix.identity([result])
@@ -347,6 +347,27 @@ Matrix.translate = function(x, y, z, result) {
   return result;
 };
 
+Matrix.translate2 = function(x, y, z) {
+    var result = new Matrix();
+    result.m[0] = 1;
+    result.m[1] = 0;
+    result.m[2] = 0;
+    result.m[3] = x;
+    result.m[4] = 0;
+    result.m[5] = 1;
+    result.m[6] = 0;
+    result.m[7] = y;
+    result.m[8] = 0;
+    result.m[9] = 0;
+    result.m[10] = 1;
+    result.m[11] = z;
+    result.m[12] = 0;
+    result.m[13] = 0;
+    result.m[14] = 0;
+    result.m[15] = 1;
+    return result;
+}
+
 // ### GL.Matrix.rotate(a, x, y, z[, result])
 //
 // Returns a matrix that rotates by `a` degrees around the vector `x, y, z`.
@@ -386,6 +407,19 @@ Matrix.rotate = function(a, x, y, z, result) {
 
   return result;
 };
+
+Matrix.rotateZ = function(radians) {
+    var result = Matrix.identity();
+    var val1 = Math.cos(radians);
+    var val2 = Math.sin(radians);
+    
+    result.m[0] = val1;
+    result.m[4] = -val2;
+    result.m[1] = val2;
+    result.m[5] = val1;
+    
+    return result;
+}
 
 // ### GL.Matrix.lookAt(ex, ey, ez, cx, cy, cz, ux, uy, uz[, result])
 //

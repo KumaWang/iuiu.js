@@ -7,16 +7,16 @@ var state = ani.newState();
 
 // 设置每帧更新
 gl.onupdate = function(inv) {    
-gl.begin();
-
-// 绘制动画状态
-gl.state(state, new IUIU.Vector(300, 50));
-
-gl.end();
+    gl.begin(null, { location : new IUIU.Vector(10, 20), scale : 0.3, angle : 10 });
+    
+    // 绘制动画状态
+    gl.state(state, new IUIU.Vector(300, 50));
+    
+    gl.end();
 };
 
 // 设置全屏化
 gl.fullscreen();
 
 // 设置循环
-gl.loop();
+gl.loop();gl.loop();

@@ -75,6 +75,7 @@ function addDisplayBatchMode() {
         hasBegun: false,
         hasClip : false,
         clipRect : null,
+        camera : { location : Vector.zero, scale : Vector.one, origin : Vector.zero, angle : 0 },
         transformMatrix: Matrix.identity(),
         shader: new Shader('\
             uniform mat4 MatrixTransform;\
@@ -111,11 +112,10 @@ function addDisplayBatchMode() {
      * @date    2019-9-4
      * @author  KumaWang
      */
-     gl.begin = function(blendState, offset) {
+     gl.begin = function(blendState, transform) {
         displayBatchMode.hasBegun = true;
         displayBatchMode.blendState = blendState || 'none';
-        offset = offset || { x : 0, y : 0 };
-        
+
         // project matrix
         if (displayBatchMode.cachedTransformMatrix == null              || 
             gl.drawingBufferWidth != displayBatchMode.viewportWidth     ||
@@ -137,15 +137,21 @@ function addDisplayBatchMode() {
             displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
         }
         
-        displayBatchMode.transformMatrix.m[12] = offset.x;
-        displayBatchMode.transformMatrix.m[13] = offset.y;
+        transform = transform || { location : Vector.zero, scale : 1, origin : Vector.zero, angle : 0 };
+        var location = transform.location || Vector.zero;
+        var angle = transform.angle / 180 * Math.PI || 0;
+        var origin = transform.origin || Vector.zero;
+        var scale = transform.scale || 1;
         
-        //gl.matrixMode(gl.PROJECTION);
-        //gl.loadMatrix(displayBatchMode.transformMatrix);
-        //gl.matrixMode(gl.MODELVIEW);
-        //gl.loadMatrix(displayBatchMode.cachedTransformMatrix);
-        
-        displayBatchMode.shader.uniforms({ MatrixTransform: Matrix.multiply2(displayBatchMode.transformMatrix, displayBatchMode.cachedTransformMatrix) });
+        var transformMatrix = Matrix.identity();
+        transformMatrix = Matrix.multiply2(transformMatrix, Matrix.translate2(location.x, location.y, 0));
+        transformMatrix = Matrix.multiply(transformMatrix, Matrix.rotateZ(angle));
+        transformMatrix = Matrix.multiply2(transformMatrix, Matrix.translate2(origin.x, origin.y, 0));
+        transformMatrix = Matrix.multiply2(transformMatrix, Matrix.scale(scale, scale, scale));
+        displayBatchMode.transformMatrix = transformMatrix;
+
+        var uniformsMatrix = Matrix.multiply2(displayBatchMode.transformMatrix, displayBatchMode.cachedTransformMatrix);
+        displayBatchMode.shader.uniforms({ MatrixTransform: uniformsMatrix });
         
         if(gl.enableHitTest) {
             gl.bindHitTestContext(displayBatchMode.steps);

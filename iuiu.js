@@ -2420,7 +2420,6 @@ Loader.prototype = {
     //          image
     load : function(fileName, userToken, callback, params) {
         var scope = this;
-
         var fileNameExt = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度
         var fileNameLength = fileName.length;//取到文件名长度
         var fileFormat = fileName.substring(fileNameExt + 1, fileNameLength);//截
@@ -2433,7 +2432,7 @@ Loader.prototype = {
             this.loadedContents[fileName] = { status : 'error', params : params, callbacks : [], content : loader.create() };
         
         var content = this.loadedContents[fileName];            
-        if(content.status == 'error') {
+        if(content.status == 'error') {            
             if(loader) {
                 if(callback) content.callbacks.push(callback);
                 
@@ -2583,6 +2582,7 @@ function addDisplayBatchMode() {
         hasBegun: false,
         hasClip : false,
         clipRect : null,
+        camera : { location : Vector.zero, scale : Vector.one, origin : Vector.zero, angle : 0 },
         transformMatrix: Matrix.identity(),
         shader: new Shader('\
             uniform mat4 MatrixTransform;\
@@ -2619,11 +2619,10 @@ function addDisplayBatchMode() {
      * @date    2019-9-4
      * @author  KumaWang
      */
-     gl.begin = function(blendState, offset) {
+     gl.begin = function(blendState, transform) {
         displayBatchMode.hasBegun = true;
         displayBatchMode.blendState = blendState || 'none';
-        offset = offset || { x : 0, y : 0 };
-        
+
         // project matrix
         if (displayBatchMode.cachedTransformMatrix == null              || 
             gl.drawingBufferWidth != displayBatchMode.viewportWidth     ||
@@ -2645,15 +2644,21 @@ function addDisplayBatchMode() {
             displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
         }
         
-        displayBatchMode.transformMatrix.m[12] = offset.x;
-        displayBatchMode.transformMatrix.m[13] = offset.y;
+        transform = transform || { location : Vector.zero, scale : 1, origin : Vector.zero, angle : 0 };
+        var location = transform.location || Vector.zero;
+        var angle = transform.angle / 180 * Math.PI || 0;
+        var origin = transform.origin || Vector.zero;
+        var scale = transform.scale || 1;
         
-        //gl.matrixMode(gl.PROJECTION);
-        //gl.loadMatrix(displayBatchMode.transformMatrix);
-        //gl.matrixMode(gl.MODELVIEW);
-        //gl.loadMatrix(displayBatchMode.cachedTransformMatrix);
-        
-        displayBatchMode.shader.uniforms({ MatrixTransform: Matrix.multiply2(displayBatchMode.transformMatrix, displayBatchMode.cachedTransformMatrix) });
+        var transformMatrix = Matrix.identity();
+        transformMatrix = Matrix.multiply2(transformMatrix, Matrix.translate2(location.x, location.y, 0));
+        transformMatrix = Matrix.multiply(transformMatrix, Matrix.rotateZ(angle));
+        transformMatrix = Matrix.multiply2(transformMatrix, Matrix.translate2(origin.x, origin.y, 0));
+        transformMatrix = Matrix.multiply2(transformMatrix, Matrix.scale(scale, scale, scale));
+        displayBatchMode.transformMatrix = transformMatrix;
+
+        var uniformsMatrix = Matrix.multiply2(displayBatchMode.transformMatrix, displayBatchMode.cachedTransformMatrix);
+        displayBatchMode.shader.uniforms({ MatrixTransform: uniformsMatrix });
         
         if(gl.enableHitTest) {
             gl.bindHitTestContext(displayBatchMode.steps);
@@ -3817,7 +3822,7 @@ Matrix.multiply = function(left, right, result) {
 };
 
 Matrix.multiply2 = function(matrix1, matrix2, result) {
-	result = result || new Matrix();
+    result = result || new Matrix();
     var m11 = (((matrix1.m[0] * matrix2.m[0]) + (matrix1.m[1] * matrix2.m[4])) + (matrix1.m[2] * matrix2.m[8])) + (matrix1.m[3] * matrix2.m[12]);
     var m12 = (((matrix1.m[0] * matrix2.m[1]) + (matrix1.m[1] * matrix2.m[5])) + (matrix1.m[2] * matrix2.m[9])) + (matrix1.m[3] * matrix2.m[13]);
     var m13 = (((matrix1.m[0] * matrix2.m[2]) + (matrix1.m[1] * matrix2.m[6])) + (matrix1.m[2] * matrix2.m[10])) + (matrix1.m[3] * matrix2.m[14]);
@@ -3833,24 +3838,24 @@ Matrix.multiply2 = function(matrix1, matrix2, result) {
     var m41 = (((matrix1.m[12] * matrix2.m[0]) + (matrix1.m[13] * matrix2.m[4])) + (matrix1.m[14] * matrix2.m[8])) + (matrix1.m[15] * matrix2.m[12]);
     var m42 = (((matrix1.m[12] * matrix2.m[1]) + (matrix1.m[13] * matrix2.m[5])) + (matrix1.m[14] * matrix2.m[9])) + (matrix1.m[15] * matrix2.m[13]);
     var m43 = (((matrix1.m[12] * matrix2.m[2]) + (matrix1.m[13] * matrix2.m[6])) + (matrix1.m[14] * matrix2.m[10])) + (matrix1.m[15] * matrix2.m[14]);
-   	var m44 = (((matrix1.m[12] * matrix2.m[3]) + (matrix1.m[13] * matrix2.m[7])) + (matrix1.m[14] * matrix2.m[11])) + (matrix1.m[15] * matrix2.m[15]);
+    var m44 = (((matrix1.m[12] * matrix2.m[3]) + (matrix1.m[13] * matrix2.m[7])) + (matrix1.m[14] * matrix2.m[11])) + (matrix1.m[15] * matrix2.m[15]);
     result.m[0] = m11;
-	result.m[1] = m21;
-	result.m[2] = m31;
-	result.m[3] = m41;
-	result.m[4] = m12;
-	result.m[5] = m22;
-	result.m[6] = m32;
-	result.m[7] = m42;
-	result.m[8] = m13;
-	result.m[9] = m23;
-	result.m[10] = m33;
-	result.m[11] = m34;
-	result.m[12] = m14;
-	result.m[13] = m24;
-	result.m[14] = m34;
-	result.m[15] = m44;
-	return result;
+    result.m[1] = m21;
+    result.m[2] = m31;
+    result.m[3] = m41;
+    result.m[4] = m12;
+    result.m[5] = m22;
+    result.m[6] = m32;
+    result.m[7] = m42;
+    result.m[8] = m13;
+    result.m[9] = m23;
+    result.m[10] = m33;
+    result.m[11] = m34;
+    result.m[12] = m14;
+    result.m[13] = m24;
+    result.m[14] = m34;
+    result.m[15] = m44;
+    return result;
 }
 
 // ### GL.Matrix.identity([result])
@@ -4008,6 +4013,27 @@ Matrix.translate = function(x, y, z, result) {
   return result;
 };
 
+Matrix.translate2 = function(x, y, z) {
+    var result = new Matrix();
+    result.m[0] = 1;
+    result.m[1] = 0;
+    result.m[2] = 0;
+    result.m[3] = x;
+    result.m[4] = 0;
+    result.m[5] = 1;
+    result.m[6] = 0;
+    result.m[7] = y;
+    result.m[8] = 0;
+    result.m[9] = 0;
+    result.m[10] = 1;
+    result.m[11] = z;
+    result.m[12] = 0;
+    result.m[13] = 0;
+    result.m[14] = 0;
+    result.m[15] = 1;
+    return result;
+}
+
 // ### GL.Matrix.rotate(a, x, y, z[, result])
 //
 // Returns a matrix that rotates by `a` degrees around the vector `x, y, z`.
@@ -4047,6 +4073,19 @@ Matrix.rotate = function(a, x, y, z, result) {
 
   return result;
 };
+
+Matrix.rotateZ = function(radians) {
+    var result = Matrix.identity();
+    var val1 = Math.cos(radians);
+    var val2 = Math.sin(radians);
+    
+    result.m[0] = val1;
+    result.m[4] = -val2;
+    result.m[1] = val2;
+    result.m[5] = val1;
+    
+    return result;
+}
 
 // ### GL.Matrix.lookAt(ex, ey, ez, cx, cy, cz, ux, uy, uz[, result])
 //

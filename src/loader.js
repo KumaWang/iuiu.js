@@ -258,7 +258,6 @@ Loader.prototype = {
     //          image
     load : function(fileName, userToken, callback, params) {
         var scope = this;
-
         var fileNameExt = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度
         var fileNameLength = fileName.length;//取到文件名长度
         var fileFormat = fileName.substring(fileNameExt + 1, fileNameLength);//截
@@ -271,7 +270,7 @@ Loader.prototype = {
             this.loadedContents[fileName] = { status : 'error', params : params, callbacks : [], content : loader.create() };
         
         var content = this.loadedContents[fileName];            
-        if(content.status == 'error') {
+        if(content.status == 'error') {            
             if(loader) {
                 if(callback) content.callbacks.push(callback);
                 
