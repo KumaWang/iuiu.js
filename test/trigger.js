@@ -15,6 +15,6 @@ var TEST = (function() {
     return foo;
     
 })();
-
+ 
 var k = TEST.create();
 
