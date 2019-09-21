@@ -19,4 +19,4 @@ gl.onupdate = function(inv) {
 gl.fullscreen();
 
 // 设置循环
-gl.loop();gl.loop();
+gl.loop();

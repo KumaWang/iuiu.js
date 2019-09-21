@@ -8,7 +8,7 @@
             "visual": "true",
             "locked": "false",
             "type": "mesh",
-            "inculde": "res/demo1-1.img&QQ截图20190920215232",
+            "inculde": "res/demo1-1.img&res121",
             "vertices": [
                 {
                     "keyframes": [
@@ -2260,7 +2260,7 @@
                 {
                     "frame": 0.0,
                     "value": 1.0,
-                    "location": "-124,26",
+                    "location": "-124,9",
                     "scale": "1,1",
                     "origin": "0,0",
                     "angle": 0.0,

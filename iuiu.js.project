@@ -61,5 +61,6 @@
   <Folder Include="test">
     <Compile Include="test\statement.js" />
     <Compile Include="test\autoindent.js" />
+    <Compile Include="test\trigger.js" />
   </Folder>
 </Project>
