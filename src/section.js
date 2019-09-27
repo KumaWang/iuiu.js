@@ -1,10 +1,10 @@
-function Bitmap() {
+function Section() {
     this.isVisual = true;
 }
-Bitmap.items = {};
-Bitmap.callbacks = [];
+Section.items = {};
+Section.callbacks = [];
 
-Bitmap.prototype.triangulate = function(name) {
+Section.prototype.triangulate = function(name) {
     var sheet = this.sheets[name];
     if(sheet == null) return;
     
@@ -48,7 +48,7 @@ Bitmap.prototype.triangulate = function(name) {
     }
 }
 
-Bitmap.fromName = function(fullName, userToken, callback) {
+Section.fromName = function(fullName, userToken, callback) {
     var inculde;
     var name;
     if(fullName.indexOf('&') != -1) {
@@ -57,36 +57,36 @@ Bitmap.fromName = function(fullName, userToken, callback) {
         name = sd[1];
     }
     
-    if(!Bitmap.items[inculde]) {
-        Bitmap.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
+    if(!Section.items[inculde]) {
+        Section.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
         IUIU.Loader.load(inculde, { inculde : inculde, name : name, userToken : userToken }, function(c) {
             c.content.isLoaded = true;
             c.content.image.userToken = c.userToken.inculde;
             c.content.image.onloaded = function(userToken) { 
-                for(var i = 0; i < Bitmap.callbacks.length; i++) {
-                    var callback = Bitmap.callbacks[i];
+                for(var i = 0; i < Section.callbacks.length; i++) {
+                    var callback = Section.callbacks[i];
                     if(callback.inculde == userToken) {
                         callback.func(c.content.sheets[callback.name], callback.userToken);
-                        Bitmap.callbacks.splice(i, 1);
+                        Section.callbacks.splice(i, 1);
                         i--;
                     }
                 }
             }
-            Bitmap.items[inculde] = c.content;
+            Section.items[inculde] = c.content;
         });     
     } else {
-        callback(Bitmap.items[inculde].sheets[name], userToken);
+        callback(Section.items[inculde].sheets[name], userToken);
     }
 }
 
-Bitmap.create = function() {
-    var data = new Bitmap();
+Section.create = function() {
+    var data = new Section();
     data.sheets = {};
     data.triangles = {};
     return data;
 }
 
-Bitmap.fromJson = function(json, param, entry) {
+Section.fromJson = function(json, param, entry) {
     var data = entry;
     var texture = new Texture.fromURL('data:image/png;base64,' + json.data);
     texture.userToken = data;
@@ -95,18 +95,26 @@ Bitmap.fromJson = function(json, param, entry) {
     };
     data.isLoaded = false;
     data.image = texture;
+    data.points = [];
+    
+    for(var index2 = 0; index2 < json.points.length; index2++) {
+        var values = json.points[index2].split(',');
+        var x = parseFloat(values[0]);
+        var y = parseFloat(values[1]);
+        data.points.push({ x : x, y : y });
+    }
     
     for(var index2 = 0; index2 < json.sheets.length; index2++) {
         var sheetJson = json.sheets[index2];
         var name = sheetJson.name; 
         var keypoints = [];
         
-        
         var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
-        for(var i = 0; i < sheetJson.outline.length; i++) {
-            var values = sheetJson.outline[i].split(',');
-            var x = parseFloat(values[0]);
-            var y = parseFloat(values[1]);
+        for(var i = 0; i < sheetJson.indexs.length; i++) {
+            var index3 = parseFloat(sheetJson.indexs[i]);
+            var point = data.points[index3];
+            var x = point.x;
+            var y = point.y;
             keypoints.push({ x : x, y : y });
             
             if(x < left) left = x;
@@ -115,48 +123,8 @@ Bitmap.fromJson = function(json, param, entry) {
             if(y > bottom) bottom = y;
         }
         
-        for(var i = 0; i < sheetJson.inline.length; i++) {
-            var values = sheetJson.inline[i].split(',');
-            var x = parseFloat(values[0]);
-            var y = parseFloat(values[1]);
-            keypoints.push({ x : x, y : y });
-        }
-              
         data.sheets[name] = { width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
     }
-    
-    var tiled = {};
-    tiled.brushs = [];
-    tiled.tiles  = [];
-    tiled.images = [];
-    var tiledJson = json.terrain;
-    
-    for(var i = 0; i < tiledJson.brushs.length; i++) {
-        var brushJson = tiledJson.brushs[i];
-        var brushName = brushJson.name;
-        var brushIcon = brushJson.icon;
-        tiled.brushs.push({ name : brushName, icon : brushIcon });
-    }
-    
-    for(var i = 0; i < tiledJson.tiles.length; i++) {
-        var tileJson = tiledJson.tiles[i];
-        var tileIndex = tileJson.index;
-        var tileBrush = tileJson.brush.split(',');
-        tiled.tiles.push({ index : tileIndex, brush : tileBrush });
-    }
-    
-    for(var i = 0; i < tiledJson.images.length; i++) {
-        var imageJson = tiledJson.images[imageKey];
-        var name = imageJson.name;
-        var srcValues = imageJson.src.split(',');
-        var x = parseFloat(srcValues[0]);
-        var y = parseFloat(srcValues[1]);
-        var width = parseFloat(srcValues[2]);
-        var height = parseFloat(srcValues[3]);
-        tiled.images.push({ x : x, y : y, width : width, height : height });
-    }
-    
-    data.tiles = tiled;
     
     return data;
 }

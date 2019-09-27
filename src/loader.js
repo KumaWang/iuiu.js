@@ -168,17 +168,17 @@ AnimationLoader.prototype = {
     }
 }
 
-function ImageLoader(loader) {
+function SectionLoader(loader) {
     this.loader = loader;
 }
-ImageLoader.prototype = {
+SectionLoader.prototype = {
     responseType : 'text',
     load : function(buffer, params, entry) {
         var jsonObj = JSON.parse(buffer);
-        return Bitmap.fromJson(jsonObj, params, entry);
+        return Section.fromJson(jsonObj, params, entry);
     },
     create : function() {
-        return Bitmap.create();
+        return Section.create();
     }
 }
 
@@ -237,7 +237,7 @@ function Loader(domain) {
     this.addMode('ini', new IniLoader(this));
     this.addMode('json', new JsonLoader(this));
     this.addMode("ani", new AnimationLoader(this));
-    this.addMode("img", new ImageLoader(this));
+    this.addMode("img", new SectionLoader(this));
     this.addMode("level", new LevelLoader(this));
     this.addMode("map", new MapLoader(this));
     this.addMode("font", new FontLoader(this));

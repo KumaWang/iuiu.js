@@ -123,7 +123,7 @@ Animation.fromJson = function(json, params, entry) {
                 mesh.keypoints = [];
                 mesh.brush = new VoidBrush();
 
-                Bitmap.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
+                Section.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
                     var mesh2 = userToken.mesh;
                     mesh2.brush = sheet;
                     var tb = mesh2.brush;

@@ -136,7 +136,7 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
             displayBatchMode.cachedTransformMatrix.m[12] -= displayBatchMode.cachedTransformMatrix.m[0];
             displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
         }
-        
+
         transform = transform || { location : Vector.zero, scale : 1, origin : Vector.zero, angle : 0 };
         var location = transform.location || Vector.zero;
         var angle = transform.angle / 180 * Math.PI || 0;
@@ -449,7 +449,7 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
     
     /**
     * 渲染文字
-    * @param   {IUIU.Bitmap}       font            渲染的采用的字体
+    * @param   {IUIU.Font}         font            渲染的采用的字体
     * @param   {string}            text            所渲染的文字
     * @param   {IUIU.Vector}       point           渲染的坐标
     * @param   {IUIU.Vector}       scale           渲染时采用的拉伸值

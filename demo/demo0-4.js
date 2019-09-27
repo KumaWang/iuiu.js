@@ -6,7 +6,7 @@ var ani = IUIU.Loader.load("res/demo0-3.ani");
 var state = ani.newState();
 
 // 设置每帧更新
-gl.onupdate = function(inv) {    
+gl.onupdate = function(inv) {      
     gl.begin();
  
     // 绘制动画状态

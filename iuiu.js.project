@@ -10,7 +10,7 @@
   <Content Include="build.py" />
   <Folder Include="src">
     <Compile Include="src\animation.js" />
-    <Compile Include="src\bitmap.js" />
+    <Compile Include="src\section.js" />
     <Compile Include="src\color.js" />
     <Compile Include="src\common.js" />
     <Compile Include="src\component.js" />
@@ -54,13 +54,13 @@
     <Content Include="res\demo0-3.ani" />
     <Content Include="res\demo0-6.font" />
     <Content Include="res\demo0-7.png" />
-    <Content Include="res\demo0-1.img" />
-    <Content Include="res\demo1-1.img" />
     <Content Include="res\demo1-1.ani" />
+    <Content Include="res\切片1.img" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />
     <Compile Include="test\autoindent.js" />
     <Compile Include="test\trigger.js" />
+    <Compile Include="test\test.js" />
   </Folder>
 </Project>

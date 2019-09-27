@@ -3,15 +3,15 @@ var gl = IUIU.create(null, { hittest : false, useGL : true });
 
 // 通过加载器读取动画资源
 var ani = IUIU.Loader.load("res/demo1-1.ani");
-var state = ani.newState();
+var state2 = ani.newState();
 
 // 设置每帧更新
 gl.onupdate = function(inv) {    
     gl.begin(null, { location : new IUIU.Vector(10, 20), scale : 0.3, angle : 10 });
     
     // 绘制动画状态
-    gl.state(state, new IUIU.Vector(300, 50));
-    
+    gl.state(state2, new IUIU.Vector(500, 100));
+       
     gl.end();
 };
 

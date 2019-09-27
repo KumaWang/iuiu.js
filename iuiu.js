@@ -133,7 +133,7 @@ Animation.fromJson = function(json, params, entry) {
                 mesh.keypoints = [];
                 mesh.brush = new VoidBrush();
 
-                Bitmap.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
+                Section.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
                     var mesh2 = userToken.mesh;
                     mesh2.brush = sheet;
                     var tb = mesh2.brush;
@@ -503,169 +503,6 @@ function AnimationItemMesh() {
             }
         }
     };
-}
-// src/bitmap.js
-function Bitmap() {
-    this.isVisual = true;
-}
-Bitmap.items = {};
-Bitmap.callbacks = [];
-
-Bitmap.prototype.triangulate = function(name) {
-    var sheet = this.sheets[name];
-    if(sheet == null) return;
-    
-    var minX = Number.MAX_VALUE;
-    var minY = Number.MAX_VALUE;
-    for(var index2 = 0; index2 < sheet.keypoints.length; index2++) {
-        var drawOffset = { x : sheet.keypoints[index2].x, y : sheet.keypoints[index2].y };
-        sheet.keypoints[index2].drawOffset = drawOffset;
-        sheet.keypoints[index2].bindingUV = [ sheet.keypoints[index2].x / this.image.width, sheet.keypoints[index2].y / this.image.height ];
-        
-        if(minX > drawOffset.x) minX = drawOffset.x;
-        if(minY > drawOffset.y) minY = drawOffset.y;
-    }
-    sheet.drawOffset = { x : minX, y : minY };
-    
-    this.triangles[name] = [];
-    var vertices = [];
-    this.fixedUVs = [];
-    for(var i = 0; i < sheet.keypoints.length; i++) {
-        var keypoint = sheet.keypoints[i];
-        vertices.push([ keypoint.drawOffset.x - sheet.drawOffset.x, keypoint.drawOffset.y - sheet.drawOffset.y ]);
-    }
-    
-    
-    var delau_triangles = Delaunay.triangulate(vertices);
-    for(var x = 0; x < delau_triangles.length; x += 3) {
-        
-        var v1 = vertices[delau_triangles[x]];
-        var v2 = vertices[delau_triangles[x + 1]];
-        var v3 = vertices[delau_triangles[x + 2]];
-        
-        var p1 = new MeshVertexTrackerDefault(v1);
-        var p2 = new MeshVertexTrackerDefault(v2);
-        var p3 = new MeshVertexTrackerDefault(v3);
-        
-        this.triangles[name].push({
-            p1 : { tracker : p1, uv : { x : (v1[0] + sheet.drawOffset.x) / this.image.width, y : (v1[1] + sheet.drawOffset.y) / this.image.height } },
-            p2 : { tracker : p2, uv : { x : (v2[0] + sheet.drawOffset.x) / this.image.width, y : (v2[1] + sheet.drawOffset.y) / this.image.height } },
-            p3 : { tracker : p3, uv : { x : (v3[0] + sheet.drawOffset.x) / this.image.width, y : (v3[1] + sheet.drawOffset.y) / this.image.height } },
-        });     
-    }
-}
-
-Bitmap.fromName = function(fullName, userToken, callback) {
-    var inculde;
-    var name;
-    if(fullName.indexOf('&') != -1) {
-        var sd = fullName.split('&');
-        inculde = sd[0];
-        name = sd[1];
-    }
-    
-    if(!Bitmap.items[inculde]) {
-        Bitmap.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
-        IUIU.Loader.load(inculde, { inculde : inculde, name : name, userToken : userToken }, function(c) {
-            c.content.isLoaded = true;
-            c.content.image.userToken = c.userToken.inculde;
-            c.content.image.onloaded = function(userToken) { 
-                for(var i = 0; i < Bitmap.callbacks.length; i++) {
-                    var callback = Bitmap.callbacks[i];
-                    if(callback.inculde == userToken) {
-                        callback.func(c.content.sheets[callback.name], callback.userToken);
-                        Bitmap.callbacks.splice(i, 1);
-                        i--;
-                    }
-                }
-            }
-            Bitmap.items[inculde] = c.content;
-        });     
-    } else {
-        callback(Bitmap.items[inculde].sheets[name], userToken);
-    }
-}
-
-Bitmap.create = function() {
-    var data = new Bitmap();
-    data.sheets = {};
-    data.triangles = {};
-    return data;
-}
-
-Bitmap.fromJson = function(json, param, entry) {
-    var data = entry;
-    var texture = new Texture.fromURL('data:image/png;base64,' + json.data);
-    texture.userToken = data;
-    texture.onloaded = function(userToken) {
-        userToken.isLoaded = true;
-    };
-    data.isLoaded = false;
-    data.image = texture;
-    
-    for(var index2 = 0; index2 < json.sheets.length; index2++) {
-        var sheetJson = json.sheets[index2];
-        var name = sheetJson.name; 
-        var keypoints = [];
-        
-        
-        var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
-        for(var i = 0; i < sheetJson.outline.length; i++) {
-            var values = sheetJson.outline[i].split(',');
-            var x = parseFloat(values[0]);
-            var y = parseFloat(values[1]);
-            keypoints.push({ x : x, y : y });
-            
-            if(x < left) left = x;
-            if(x > right) right = x;
-            if(y < top) top = y;
-            if(y > bottom) bottom = y;
-        }
-        
-        for(var i = 0; i < sheetJson.inline.length; i++) {
-            var values = sheetJson.inline[i].split(',');
-            var x = parseFloat(values[0]);
-            var y = parseFloat(values[1]);
-            keypoints.push({ x : x, y : y });
-        }
-              
-        data.sheets[name] = { width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
-    }
-    
-    var tiled = {};
-    tiled.brushs = [];
-    tiled.tiles  = [];
-    tiled.images = [];
-    var tiledJson = json.terrain;
-    
-    for(var i = 0; i < tiledJson.brushs.length; i++) {
-        var brushJson = tiledJson.brushs[i];
-        var brushName = brushJson.name;
-        var brushIcon = brushJson.icon;
-        tiled.brushs.push({ name : brushName, icon : brushIcon });
-    }
-    
-    for(var i = 0; i < tiledJson.tiles.length; i++) {
-        var tileJson = tiledJson.tiles[i];
-        var tileIndex = tileJson.index;
-        var tileBrush = tileJson.brush.split(',');
-        tiled.tiles.push({ index : tileIndex, brush : tileBrush });
-    }
-    
-    for(var i = 0; i < tiledJson.images.length; i++) {
-        var imageJson = tiledJson.images[imageKey];
-        var name = imageJson.name;
-        var srcValues = imageJson.src.split(',');
-        var x = parseFloat(srcValues[0]);
-        var y = parseFloat(srcValues[1]);
-        var width = parseFloat(srcValues[2]);
-        var height = parseFloat(srcValues[3]);
-        tiled.images.push({ x : x, y : y, width : width, height : height });
-    }
-    
-    data.tiles = tiled;
-    
-    return data;
 }
 // src/color.js
 function Color(r, g, b, a) {
@@ -2330,17 +2167,17 @@ AnimationLoader.prototype = {
     }
 }
 
-function ImageLoader(loader) {
+function SectionLoader(loader) {
     this.loader = loader;
 }
-ImageLoader.prototype = {
+SectionLoader.prototype = {
     responseType : 'text',
     load : function(buffer, params, entry) {
         var jsonObj = JSON.parse(buffer);
-        return Bitmap.fromJson(jsonObj, params, entry);
+        return Section.fromJson(jsonObj, params, entry);
     },
     create : function() {
-        return Bitmap.create();
+        return Section.create();
     }
 }
 
@@ -2399,7 +2236,7 @@ function Loader(domain) {
     this.addMode('ini', new IniLoader(this));
     this.addMode('json', new JsonLoader(this));
     this.addMode("ani", new AnimationLoader(this));
-    this.addMode("img", new ImageLoader(this));
+    this.addMode("img", new SectionLoader(this));
     this.addMode("level", new LevelLoader(this));
     this.addMode("map", new MapLoader(this));
     this.addMode("font", new FontLoader(this));
@@ -2508,69 +2345,69 @@ Loader.prototype = {
 var gl;
 
 var IUIU = {
-  /**
-   * 创建画布
-   * @param     {Canvas}            canvas      所选中的画布，如果为null则新建一个画布
-   * @param     {object}            options     创建webgl时所用到的参数选项
-   * @return    GraphiceDevice
-   * @date      2019-9-4
-   * @author    KumaWang
-   */
-  create: function(canvas, options) {
-    options = options || {};
-    var canvas2 = canvas || document.createElement('canvas');
-    if(!canvas) canvas2.width = 800;
-    if(!canvas) canvas2.height = 600;
-    if (!('alpha' in options)) options.alpha = false;
-    try { gl = canvas2.getContext('webgl', options); } catch (e) {}
-    try { gl = gl || canvas2.getContext('experimental-webgl', options); } catch (e) {}
-    if (!gl) throw new Error('WebGL not supported');
-    //gl.HALF_FLOAT_OES = 0x8D61;
-    addDisplayBatchMode();
-    addOtherMethods();
-    return gl;
-  },
-
-  //Matrix: Matrix,
-  //Indexer: Indexer,
-  //Buffer: Buffer,
-  //Mesh: Mesh,
-  //HitTest: HitTest,
-  //Raytracer: Raytracer,
-  /**
-   * Shader
-   */
-  //Shader: Shader,
-  /**
-   * 材质
-   */ 
-  Texture: Texture,
-  /**
-   * 向量
-   */
-  Vector: Vector,
-  /**
-   * 颜色
-   */
-  Color: Color,
-  //Level : Level,
-      
-  /**
-   * 资源加载器
-   */
-  Loader: new Loader(),
-  /**
-   * 触发器，一般由IDE进行管理
-   */
-  Trigger : Trigger,
-  /**
-   * 组件管理器，一般由IDE进行管理
-   */
-   // Component : new Component(),
-  /**
-   * 模块管理器，一般由IDE进行管理
-   */
-  Module : Module
+    /**
+    * 创建画布
+    * @param     {Canvas}            canvas      所选中的画布，如果为null则新建一个画布
+    * @param     {object}            options     创建webgl时所用到的参数选项
+    * @return    GraphiceDevice
+    * @date      2019-9-4
+    * @author    KumaWang
+    */
+    create: function(canvas, options) {
+        options = options || {};
+        var canvas2 = canvas || document.createElement('canvas');
+        if(!canvas) canvas2.width = 800;
+        if(!canvas) canvas2.height = 600;
+        if (!('alpha' in options)) options.alpha = false;
+        try { gl = canvas2.getContext('webgl', options); } catch (e) {}
+        try { gl = gl || canvas2.getContext('experimental-webgl', options); } catch (e) {}
+        if (!gl) throw new Error('WebGL not supported');
+        //gl.HALF_FLOAT_OES = 0x8D61;
+        addDisplayBatchMode();
+        addOtherMethods();
+        return gl;
+    },
+    
+    //Matrix: Matrix,
+    //Indexer: Indexer,
+    //Buffer: Buffer,
+    //Mesh: Mesh,
+    //HitTest: HitTest,
+    //Raytracer: Raytracer,
+    /**
+    * Shader
+    */
+    //Shader: Shader,
+    /**
+    * 材质
+    */ 
+    Texture: Texture,
+    /**
+    * 向量
+    */
+    Vector: Vector,
+    /**
+    * 颜色
+    */
+    Color: Color,
+    //Level : Level,
+    
+    /**
+    * 资源加载器
+    */
+    Loader: new Loader(),
+    /**
+    * 触发器，一般由IDE进行管理
+    */
+    Trigger : Trigger,
+    /**
+    * 组件管理器，一般由IDE进行管理
+    */
+    // Component : new Component(),
+    /**
+    * 模块管理器，一般由IDE进行管理
+    */
+    Module : Module
 };
 
 function addDisplayBatchMode() {
@@ -2603,10 +2440,10 @@ function addDisplayBatchMode() {
                 gl_FragColor = texture2D(Texture, diffuseTexCoord.xy) * diffuseColor;\
             }\
             '
-        )
+            )
     };
     
-    Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
+Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
     
     var systemClearFunc = gl.clear; 
     gl.clear = function(color) {    
@@ -2615,22 +2452,22 @@ function addDisplayBatchMode() {
     }
     
     /**
-     * 通知渲染器开始接受命令，每次绘制前必须调用
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
-     gl.begin = function(blendState, transform) {
+    * 通知渲染器开始接受命令，每次绘制前必须调用
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
+    gl.begin = function(blendState, transform) {
         displayBatchMode.hasBegun = true;
         displayBatchMode.blendState = blendState || 'none';
-
+        
         // project matrix
         if (displayBatchMode.cachedTransformMatrix == null              || 
-            gl.drawingBufferWidth != displayBatchMode.viewportWidth     ||
+                gl.drawingBufferWidth != displayBatchMode.viewportWidth     ||
             gl.drawingBufferHeight != displayBatchMode.viewportHeight) {
-                
+            
             displayBatchMode.viewportWidth = gl.drawingBufferWidth;
             displayBatchMode.viewportHeight = gl.drawingBufferHeight;
-     
+            
             displayBatchMode.cachedTransformMatrix = new Matrix();
             var m = displayBatchMode.cachedTransformMatrix.m;
             m[0] = 2 * (displayBatchMode.viewportWidth > 0 ? 1 / displayBatchMode.viewportWidth : 0);
@@ -2643,7 +2480,7 @@ function addDisplayBatchMode() {
             displayBatchMode.cachedTransformMatrix.m[12] -= displayBatchMode.cachedTransformMatrix.m[0];
             displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
         }
-        
+
         transform = transform || { location : Vector.zero, scale : 1, origin : Vector.zero, angle : 0 };
         var location = transform.location || Vector.zero;
         var angle = transform.angle / 180 * Math.PI || 0;
@@ -2656,7 +2493,7 @@ function addDisplayBatchMode() {
         transformMatrix = Matrix.multiply2(transformMatrix, Matrix.translate2(origin.x, origin.y, 0));
         transformMatrix = Matrix.multiply2(transformMatrix, Matrix.scale(scale, scale, scale));
         displayBatchMode.transformMatrix = transformMatrix;
-
+        
         var uniformsMatrix = Matrix.multiply2(displayBatchMode.transformMatrix, displayBatchMode.cachedTransformMatrix);
         displayBatchMode.shader.uniforms({ MatrixTransform: uniformsMatrix });
         
@@ -2669,11 +2506,11 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * 渲染场景
-     * @param   {IUIU.Level}        level   渲染的场景
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 渲染场景
+    * @param   {IUIU.Level}        level   渲染的场景
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.level = function(level) {
         for(var i = 0; i < level.objects.length; i++) {
             var obj = level.objects[i];
@@ -2713,7 +2550,7 @@ function addDisplayBatchMode() {
                     origin = origin || IUIU.Vector.zero;
                     angle = angle || 0;
                     color = color || IUIU.Color.white;
-
+                    
                     point = { x: point.x + state.x, y: point.y + state.y };
                     scale = { x: scale.x * state.scaleX, y: scale.y * state.scaleY };
                     origin = { x: origin.x + state.originX, y: origin.y + state.originY };
@@ -2730,39 +2567,39 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * 渲染动画状态
-     * @param   {IUIU.AnimationState}   state       所渲染的状态
-     * @param   {IUIU.Vector}           point       渲染的坐标
-     * @param   {IUIU.Vector}           scale       渲染时采用的拉伸值
-     * @param   {IUIU.Vector}           origin      渲染时采用的旋转锚点
-     * @param   {int}                   angle       渲染时采用的旋转值
-     * @param   {IUIU.Color}            color       渲染时采用的颜色过滤
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 渲染动画状态
+    * @param   {IUIU.AnimationState}   state       所渲染的状态
+    * @param   {IUIU.Vector}           point       渲染的坐标
+    * @param   {IUIU.Vector}           scale       渲染时采用的拉伸值
+    * @param   {IUIU.Vector}           origin      渲染时采用的旋转锚点
+    * @param   {int}                   angle       渲染时采用的旋转值
+    * @param   {IUIU.Color}            color       渲染时采用的颜色过滤
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.state = function(state, point, scale, origin, angle, color) {
         if (displayBatchMode.hasBegun == false)
-                throw "begin() must be called before draw()";
+            throw "begin() must be called before draw()";
         
         state.update(gl.elapsedTime);
         gl.animate(state.animation, state.frame, point, scale, origin, angle, color);
     };
     
     /**
-     * 渲染模型
-     * @param   {IUIU.Mesh}         mesh        渲染的模型
-     * @param   {int}               frame       所渲染的帧数
-     * @param   {IUIU.Vector}       point       渲染的坐标
-     * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
-     * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
-     * @param   {int}               angle       渲染时采用的旋转值
-     * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 渲染模型
+    * @param   {IUIU.Mesh}         mesh        渲染的模型
+    * @param   {int}               frame       所渲染的帧数
+    * @param   {IUIU.Vector}       point       渲染的坐标
+    * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
+    * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
+    * @param   {int}               angle       渲染时采用的旋转值
+    * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.mesh = function(mesh, frame, point, scale, origin, angle, color) {
         if (displayBatchMode.hasBegun == false)
-                throw "begin() must be called before draw()";
+            throw "begin() must be called before draw()";
         
         var state = mesh.getRealState(frame);
         if(mesh.brush.texture) {
@@ -2773,7 +2610,7 @@ function addDisplayBatchMode() {
                 origin = origin || IUIU.Vector.zero;
                 angle = angle || 0;
                 color = color || IUIU.Color.white;
-
+                
                 // 绘制内部填充
                 var offset = { x : state.x + point.x, y : state.y + point.y };
                 color = { r : state.r * color.r, g : state.g * color.g, b : state.b * color.b, a : state.a * color.a };
@@ -2792,15 +2629,15 @@ function addDisplayBatchMode() {
                     var point1 = { x : p1.x * scale.x + offset.x, y : p1.y * scale.y + offset.y };
                     var point2 = { x : p2.x * scale.x + offset.x, y : p2.y * scale.y + offset.y };
                     var point3 = { x : p3.x * scale.x + offset.x, y : p3.y * scale.y + offset.y };
-            
+                    
                     var point21 = MathTools.pointRotate(origin, point1, angle);
                     var point22 = MathTools.pointRotate(origin, point2, angle);
                     var point23 = MathTools.pointRotate(origin, point3, angle);
-
+                    
                     var uv1 = triangle.p1.uv;
                     var uv2 = triangle.p2.uv;
                     var uv3 = triangle.p3.uv;
-
+                    
                     gl.draw({
                         texture : mesh.brush.texture.image,
                         p1 : [ point21.x, point21.y ],
@@ -2817,20 +2654,20 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * 渲染图片
-     * @param   {IUIU.Bitmap}       img         渲染的位图
-     * @param   {string}            name        所渲染的切片名
-     * @param   {IUIU.Vector}       point       渲染的坐标
-     * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
-     * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
-     * @param   {int}               angle       渲染时采用的旋转值
-     * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 渲染图片
+    * @param   {IUIU.Bitmap}       img         渲染的位图
+    * @param   {string}            name        所渲染的切片名
+    * @param   {IUIU.Vector}       point       渲染的坐标
+    * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
+    * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
+    * @param   {int}               angle       渲染时采用的旋转值
+    * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.image = function(img, name, point, scale, origin, angle, color) {
         if (displayBatchMode.hasBegun == false)
-                throw "begin() must be called before draw()";
+            throw "begin() must be called before draw()";
         
         if(!img.isLoaded) return;
         if(!img.triangles[name]) img.triangulate(name);
@@ -2842,7 +2679,7 @@ function addDisplayBatchMode() {
         origin = origin || IUIU.Vector.zero;
         angle = angle || 0;
         color = color || IUIU.Color.white;
-
+        
         var size = { x : img.width, y : img.height };
         
         for (var i = 0; i < triangles.length; i++) {
@@ -2854,15 +2691,15 @@ function addDisplayBatchMode() {
             var point1 = { x : p1.x * scale.x + point.x, y : p1.y * scale.y + point.y };
             var point2 = { x : p2.x * scale.x + point.x, y : p2.y * scale.y + point.y };
             var point3 = { x : p3.x * scale.x + point.x, y : p3.y * scale.y + point.y };
-    
+            
             var point21 = MathTools.pointRotate(origin, point1, angle);
             var point22 = MathTools.pointRotate(origin, point2, angle);
             var point23 = MathTools.pointRotate(origin, point3, angle);
-
+            
             var uv1 = triangle.p1.uv;
             var uv2 = triangle.p2.uv;
             var uv3 = triangle.p3.uv;
-
+            
             gl.draw({
                 texture : img.image,
                 p1 : [ point21.x, point21.y ],
@@ -2877,21 +2714,21 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * 渲染图片
-     * @param   {IUIU.Texture}      img             渲染的材质
-     * @param   {IUIU.Vector}       point           渲染的坐标
-     * @param   {IUIU.Vector}       scale           渲染时采用的拉伸值
-     * @param   {IUIU.Vector}       origin          渲染时采用的旋转锚点
-     * @param   {int}               angle           渲染时采用的旋转值
-     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
-     * @param   {IUIU.Rect}         sourceRectangle 渲染时截取的图片矩阵
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 渲染图片
+    * @param   {IUIU.Texture}      img             渲染的材质
+    * @param   {IUIU.Vector}       point           渲染的坐标
+    * @param   {IUIU.Vector}       scale           渲染时采用的拉伸值
+    * @param   {IUIU.Vector}       origin          渲染时采用的旋转锚点
+    * @param   {int}               angle           渲染时采用的旋转值
+    * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+    * @param   {IUIU.Rect}         sourceRectangle 渲染时截取的图片矩阵
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.texture = function(img, point, scale, origin, angle, color, sourceRectangle) {        
         if (displayBatchMode.hasBegun == false)
-                throw "begin() must be called before draw()";
-
+            throw "begin() must be called before draw()";
+        
         if (img == null)
             throw "texture";
         
@@ -2945,28 +2782,28 @@ function addDisplayBatchMode() {
         step1.p1 = [ v11.x, v11.y ];
         step1.p2 = [ v12.x, v12.y ];
         step1.p3 = [ v13.x, v13.y ];
-     
+        
         step2.p1 = [ v21.x, v21.y ];
         step2.p2 = [ v22.x, v22.y ];
         step2.p3 = [ v23.x, v23.y ];
-                
+        
         gl.draw(step1);
         gl.draw(step2);
     };
     
     /**
-     * 渲染文字
-     * @param   {IUIU.Bitmap}       font            渲染的采用的字体
-     * @param   {string}            text            所渲染的文字
-     * @param   {IUIU.Vector}       point           渲染的坐标
-     * @param   {IUIU.Vector}       scale           渲染时采用的拉伸值
-     * @param   {IUIU.Vector}       origin          渲染时采用的旋转锚点
-     * @param   {int}               angle           渲染时采用的旋转值
-     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
-     gl.text = function(font, text, size, point, scale, origin, angle, color) {
+    * 渲染文字
+    * @param   {IUIU.Font}         font            渲染的采用的字体
+    * @param   {string}            text            所渲染的文字
+    * @param   {IUIU.Vector}       point           渲染的坐标
+    * @param   {IUIU.Vector}       scale           渲染时采用的拉伸值
+    * @param   {IUIU.Vector}       origin          渲染时采用的旋转锚点
+    * @param   {int}               angle           渲染时采用的旋转值
+    * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
+    gl.text = function(font, text, size, point, scale, origin, angle, color) {
         if (displayBatchMode.hasBegun == false)
             throw "begin() must be called before draw()";
         
@@ -3015,14 +2852,14 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * 渲染直线
-     * @param   {IUIU.Vector}       start           起始坐标
-     * @param   {IUIU.Vector}       end             结束坐标
-     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
-     * @param   {int}               thickness       线粗细
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 渲染直线
+    * @param   {IUIU.Vector}       start           起始坐标
+    * @param   {IUIU.Vector}       end             结束坐标
+    * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+    * @param   {int}               thickness       线粗细
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.line = function(start, end, color, thickness) {
         if (displayBatchMode.hasBegun == false)
             throw "begin() must be called before draw()";
@@ -3034,7 +2871,7 @@ function addDisplayBatchMode() {
         var v2 = new Vector(start.x + thickness, start.y);
         var v3 = new Vector(start.x + thickness, start.y - length);
         var v4 = new Vector(start.x, start.y - length);
-
+        
         angle = angle % 360;
         v2 = MathTools.pointRotate(v1, v2, angle);
         v3 = MathTools.pointRotate(v1, v3, angle);
@@ -3050,7 +2887,7 @@ function addDisplayBatchMode() {
             uv2 : [ 1, 0 ],
             uv3 : [ 1, 1 ]
         });
-            
+        
         gl.draw({
             texture : IUIU.Texture.getPixel(),
             color: [ color.r, color.g, color.b, color.a ],
@@ -3064,13 +2901,13 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * 渲染矩形
-     * @param   {IUIU.Vector}       lower           起始坐标
-     * @param   {IUIU.Vector}       upper           结束坐标
-     * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 渲染矩形
+    * @param   {IUIU.Vector}       lower           起始坐标
+    * @param   {IUIU.Vector}       upper           结束坐标
+    * @param   {IUIU.Color}        color           渲染时采用的颜色过滤
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.rect = function(lower, upper, color) {
         if (displayBatchMode.hasBegun == false)
             throw "begin() must be called before draw()";
@@ -3085,7 +2922,7 @@ function addDisplayBatchMode() {
             uv2 : [ 1, 0 ],
             uv3 : [ 1, 1 ]
         });
-            
+        
         gl.draw({
             texture : IUIU.Texture.getPixel(),
             color: [ color.r, color.g, color.b, color.a ],
@@ -3116,12 +2953,12 @@ function addDisplayBatchMode() {
             displayBatchMode.mesh.triangles = [];
             for(var i = 0; i < count; i++) {
                 var step = displayBatchMode.steps[i + offset];
-
+                
                 // corners
                 displayBatchMode.mesh.vertices.push(step.p1);
                 displayBatchMode.mesh.vertices.push(step.p2);
                 displayBatchMode.mesh.vertices.push(step.p3);
-
+                
                 // colors
                 displayBatchMode.mesh.colors.push(step.color);
                 displayBatchMode.mesh.colors.push(step.color);
@@ -3146,124 +2983,124 @@ function addDisplayBatchMode() {
     };
     
     /**
-     * 通知渲染器结束接受命令并绘制
-     * @date    2019-9-4
-     * @author  KumaWang
-     */
+    * 通知渲染器结束接受命令并绘制
+    * @date    2019-9-4
+    * @author  KumaWang
+    */
     gl.end = function() {
-            var maxLenght = displayBatchMode.stepIndex;
-            var endLenght = maxLenght - 1;
-            // fist hit test
-            if(gl.enableHitTest) {
-                for(var i = 0; i < maxLenght; i++) {
-                    gl.innerHitTest(displayBatchMode.steps[i], i);
-                }
-            }
-        
-            // sec render any step
-            var currentDrawnIndex = 0;
+        var maxLenght = displayBatchMode.stepIndex;
+        var endLenght = maxLenght - 1;
+        // fist hit test
+        if(gl.enableHitTest) {
             for(var i = 0; i < maxLenght; i++) {
-                var step = displayBatchMode.steps[i];
-                if(i == endLenght) {
-                    gl.flush(currentDrawnIndex, i - currentDrawnIndex + 1);
-                }
-                else {
-                    var nextstep = displayBatchMode.steps[i + 1];
-                    if(step.texture != nextstep.texture) {
-                        lastTexture = step.texture;
-                        gl.flush(currentDrawnIndex, i + 1 - currentDrawnIndex);
-                        currentDrawnIndex = i + 1;
-                    }
+                gl.innerHitTest(displayBatchMode.steps[i], i);
+            }
+        }
+        
+        // sec render any step
+        var currentDrawnIndex = 0;
+        for(var i = 0; i < maxLenght; i++) {
+            var step = displayBatchMode.steps[i];
+            if(i == endLenght) {
+                gl.flush(currentDrawnIndex, i - currentDrawnIndex + 1);
+            }
+            else {
+                var nextstep = displayBatchMode.steps[i + 1];
+                if(step.texture != nextstep.texture) {
+                    lastTexture = step.texture;
+                    gl.flush(currentDrawnIndex, i + 1 - currentDrawnIndex);
+                    currentDrawnIndex = i + 1;
                 }
             }
-            
-            //displayBatchMode.steps = [];
-            displayBatchMode.stepIndex = 0;
-            displayBatchMode.hasBegun = false;
+        }
+        
+        //displayBatchMode.steps = [];
+        displayBatchMode.stepIndex = 0;
+        displayBatchMode.hasBegun = false;
     };
     
     gl.clip = function(x, y, width, height) {
-            displayBatchMode.hasClip = true;
-            displayBatchMode.clipArea = {
-                x : x,
-                y : y,
-                width : width,
-                height : height
-            };
+        displayBatchMode.hasClip = true;
+        displayBatchMode.clipArea = {
+            x : x,
+            y : y,
+            width : width,
+            height : height
+        };
     };
     
     gl.endClip = function() {
-            displayBatchMode.hasClip = false;
+        displayBatchMode.hasClip = false;
     };
 }
 
-function addOtherMethods() {
-  (function(context) {
-    gl.makeCurrent = function() {
-      gl = context;
+function addOtherMethods() {    
+    /**
+    * 启用循环
+    * @param     {int}           interval        每帧间隔（毫秒）
+    * @date      2019-9-4
+    * @author    KumaWang
+    */
+    gl.loop = function(interval) {
+        interval = interval || 60;  
+        
+        var post =
+        window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        function(callback) { setTimeout(callback, 1000 / interval); };
+        var time = new Date().getTime();
+        var context = gl;
+        function update() {
+            gl = context;
+            var now = new Date().getTime();
+            pointer.update();
+            hotkeys.update();
+            gl.elapsedTime = now - time;
+            if (gl.onupdate) gl.onupdate(gl.elapsedTime);
+            if (gl.ondraw) gl.ondraw();
+            post(update);
+            time = now;
+        }
+        update();
     };
-  })(gl);
     
-  /**
-   * 启用循环
-   * @param     {int}           interval        每帧间隔（毫秒）
-   * @date      2019-9-4
-   * @author    KumaWang
-   */
-  gl.loop = function(interval) {
-    interval = interval || 60;  
+    /**
+    * 将画布全屏化
+    * @date      2019-9-4
+    * @author    KumaWang
+    */
+    gl.fullscreen = function(options) {
+        options = options || {};
+        var top = options.paddingTop || 0;
+        var left = options.paddingLeft || 0;
+        var right = options.paddingRight || 0;
+        var bottom = options.paddingBottom || 0;
+        if (!document.body) {
+            throw new Error('document.body doesn\'t exist yet (call gl.fullscreen() from ' +
+                'window.onload() or from inside the <body> tag)');
+        }
+        document.body.appendChild(gl.canvas);
+        document.body.style.overflow = 'hidden';
+        gl.canvas.style.position = 'absolute';
+        gl.canvas.style.left = left + 'px';
+        gl.canvas.style.top = top + 'px';
+        function resize() {
+            gl.canvas.width = window.innerWidth - left - right;
+            gl.canvas.height = window.innerHeight - top - bottom;
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            if (gl.ondraw) gl.ondraw();
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+    };
     
-    var post =
-      window.requestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      function(callback) { setTimeout(callback, 1000 / interval); };
-    var time = new Date().getTime();
-    var context = gl;
-    function update() {
-      gl = context;
-      var now = new Date().getTime();
-      pointer.update();
-      hotkeys.update();
-      gl.elapsedTime = now - time;
-      if (gl.onupdate) gl.onupdate(gl.elapsedTime);
-      if (gl.ondraw) gl.ondraw();
-      post(update);
-      time = now;
-    }
-    update();
-  };
-
-  /**
-   * 将画布全屏化
-   * @date      2019-9-4
-   * @author    KumaWang
-   */
-  gl.fullscreen = function(options) {
-    options = options || {};
-    var top = options.paddingTop || 0;
-    var left = options.paddingLeft || 0;
-    var right = options.paddingRight || 0;
-    var bottom = options.paddingBottom || 0;
-    if (!document.body) {
-      throw new Error('document.body doesn\'t exist yet (call gl.fullscreen() from ' +
-        'window.onload() or from inside the <body> tag)');
-    }
-    document.body.appendChild(gl.canvas);
-    document.body.style.overflow = 'hidden';
-    gl.canvas.style.position = 'absolute';
-    gl.canvas.style.left = left + 'px';
-    gl.canvas.style.top = top + 'px';
-    function resize() {
-      gl.canvas.width = window.innerWidth - left - right;
-      gl.canvas.height = window.innerHeight - top - bottom;
-      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-      if (gl.ondraw) gl.ondraw();
-    }
-    
-    window.addEventListener('resize', resize);
-    resize();
-  };
+    (function(context) {
+        gl.makeCurrent = function() {
+            gl = context;
+        };
+    })(gl);
 }
 
 var ENUM = 0x12340000;
@@ -4978,6 +4815,137 @@ Raytracer.hitTestTriangle = function(origin, ray, a, b, c) {
   return null;
 };
 
+// src/section.js
+function Section() {
+    this.isVisual = true;
+}
+Section.items = {};
+Section.callbacks = [];
+
+Section.prototype.triangulate = function(name) {
+    var sheet = this.sheets[name];
+    if(sheet == null) return;
+    
+    var minX = Number.MAX_VALUE;
+    var minY = Number.MAX_VALUE;
+    for(var index2 = 0; index2 < sheet.keypoints.length; index2++) {
+        var drawOffset = { x : sheet.keypoints[index2].x, y : sheet.keypoints[index2].y };
+        sheet.keypoints[index2].drawOffset = drawOffset;
+        sheet.keypoints[index2].bindingUV = [ sheet.keypoints[index2].x / this.image.width, sheet.keypoints[index2].y / this.image.height ];
+        
+        if(minX > drawOffset.x) minX = drawOffset.x;
+        if(minY > drawOffset.y) minY = drawOffset.y;
+    }
+    sheet.drawOffset = { x : minX, y : minY };
+    
+    this.triangles[name] = [];
+    var vertices = [];
+    this.fixedUVs = [];
+    for(var i = 0; i < sheet.keypoints.length; i++) {
+        var keypoint = sheet.keypoints[i];
+        vertices.push([ keypoint.drawOffset.x - sheet.drawOffset.x, keypoint.drawOffset.y - sheet.drawOffset.y ]);
+    }
+    
+    
+    var delau_triangles = Delaunay.triangulate(vertices);
+    for(var x = 0; x < delau_triangles.length; x += 3) {
+        
+        var v1 = vertices[delau_triangles[x]];
+        var v2 = vertices[delau_triangles[x + 1]];
+        var v3 = vertices[delau_triangles[x + 2]];
+        
+        var p1 = new MeshVertexTrackerDefault(v1);
+        var p2 = new MeshVertexTrackerDefault(v2);
+        var p3 = new MeshVertexTrackerDefault(v3);
+        
+        this.triangles[name].push({
+            p1 : { tracker : p1, uv : { x : (v1[0] + sheet.drawOffset.x) / this.image.width, y : (v1[1] + sheet.drawOffset.y) / this.image.height } },
+            p2 : { tracker : p2, uv : { x : (v2[0] + sheet.drawOffset.x) / this.image.width, y : (v2[1] + sheet.drawOffset.y) / this.image.height } },
+            p3 : { tracker : p3, uv : { x : (v3[0] + sheet.drawOffset.x) / this.image.width, y : (v3[1] + sheet.drawOffset.y) / this.image.height } },
+        });     
+    }
+}
+
+Section.fromName = function(fullName, userToken, callback) {
+    var inculde;
+    var name;
+    if(fullName.indexOf('&') != -1) {
+        var sd = fullName.split('&');
+        inculde = sd[0];
+        name = sd[1];
+    }
+    
+    if(!Section.items[inculde]) {
+        Section.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
+        IUIU.Loader.load(inculde, { inculde : inculde, name : name, userToken : userToken }, function(c) {
+            c.content.isLoaded = true;
+            c.content.image.userToken = c.userToken.inculde;
+            c.content.image.onloaded = function(userToken) { 
+                for(var i = 0; i < Section.callbacks.length; i++) {
+                    var callback = Section.callbacks[i];
+                    if(callback.inculde == userToken) {
+                        callback.func(c.content.sheets[callback.name], callback.userToken);
+                        Section.callbacks.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+            Section.items[inculde] = c.content;
+        });     
+    } else {
+        callback(Section.items[inculde].sheets[name], userToken);
+    }
+}
+
+Section.create = function() {
+    var data = new Section();
+    data.sheets = {};
+    data.triangles = {};
+    return data;
+}
+
+Section.fromJson = function(json, param, entry) {
+    var data = entry;
+    var texture = new Texture.fromURL('data:image/png;base64,' + json.data);
+    texture.userToken = data;
+    texture.onloaded = function(userToken) {
+        userToken.isLoaded = true;
+    };
+    data.isLoaded = false;
+    data.image = texture;
+    data.points = [];
+    
+    for(var index2 = 0; index2 < json.points.length; index2++) {
+        var values = json.points[index2].split(',');
+        var x = parseFloat(values[0]);
+        var y = parseFloat(values[1]);
+        data.points.push({ x : x, y : y });
+    }
+    
+    for(var index2 = 0; index2 < json.sheets.length; index2++) {
+        var sheetJson = json.sheets[index2];
+        var name = sheetJson.name; 
+        var keypoints = [];
+        
+        var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
+        for(var i = 0; i < sheetJson.indexs.length; i++) {
+            var index3 = parseFloat(sheetJson.indexs[i]);
+            var point = data.points[index3];
+            var x = point.x;
+            var y = point.y;
+            keypoints.push({ x : x, y : y });
+            
+            if(x < left) left = x;
+            if(x > right) right = x;
+            if(y < top) top = y;
+            if(y > bottom) bottom = y;
+        }
+        
+        data.sheets[name] = { width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
+    }
+    
+    return data;
+}
 // src/shader.js
 // Provides a convenient wrapper for WebGL shaders. A few uniforms and attributes,
 // prefixed with `gl_`, are automatically added to all shader sources to make
@@ -5301,8 +5269,8 @@ function Texture(width, height, options) {
   }
   gl.bindTexture(gl.TEXTURE_2D, this.id);
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, magFilter);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, options.wrap || options.wrapS || gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, options.wrap || options.wrapT || gl.CLAMP_TO_EDGE);
   gl.texImage2D(gl.TEXTURE_2D, 0, this.format, width, height, 0, this.format, this.type, options.data || null);

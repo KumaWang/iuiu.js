@@ -14,4 +14,20 @@ var Test = (function() {
     };
     
     return Test;  
-})(); 
+})();
+
+IUIU.Loader.load;
+
+var TEST = (function() {
+    var foo                 = {};
+    foo.aaa = 1;
+    
+    foo.create = function() {
+        return {  bbb : 1 };
+    };
+    
+    return foo;
+    
+})();
+
+var k = TEST.create(); var kkc = TEST.aaa;
