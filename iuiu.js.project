@@ -54,8 +54,8 @@
     <Content Include="res\demo0-3.ani" />
     <Content Include="res\demo0-6.font" />
     <Content Include="res\demo0-7.png" />
+    <Content Include="res\demo1-1.img" />
     <Content Include="res\demo1-1.ani" />
-    <Content Include="res\切片1.img" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />

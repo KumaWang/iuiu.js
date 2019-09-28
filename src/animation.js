@@ -26,7 +26,6 @@ AnimationState.prototype = {
         this.elaspedTime = this.elaspedTime + inv;
         this.frame = this.frame + parseInt(this.elaspedTime / frameRate);
         this.elaspedTime = this.elaspedTime % frameRate;
-        
         if(this.frame > this.animation.getMaxFrame()) { 
             this.frame = this._state != null && this.animation.staties && this.animation.staties[this._state] ? this.animation.staties[this._state] : 0;
         }
@@ -473,7 +472,7 @@ function AnimationItemMesh() {
                 var v1 = vertices[delau_triangles[x]];
                 var v2 = vertices[delau_triangles[x + 1]];
                 var v3 = vertices[delau_triangles[x + 2]];
-    
+                
                 var p1 = new MeshVertexTrackerDefault(v1);
                 var p2 = new MeshVertexTrackerDefault(v2);
                 var p3 = new MeshVertexTrackerDefault(v3);
