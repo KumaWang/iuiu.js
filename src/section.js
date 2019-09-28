@@ -99,15 +99,17 @@ Section.fromJson = function(json, param, entry) {
     
     for(var index2 = 0; index2 < json.points.length; index2++) {
         var values = json.points[index2].split(',');
-        var x = parseFloat(values[0]);
-        var y = parseFloat(values[1]);
-        data.points.push({ x : x, y : y });
+        var name = values[0];
+        var x = parseFloat(values[1]);
+        var y = parseFloat(values[2]);
+        var point = { name : name, x : x, y : y };
+        data.points.push(point);
     }
-    
+     
     for(var index2 = 0; index2 < json.sheets.length; index2++) {
         var sheetJson = json.sheets[index2];
         var name = sheetJson.name; 
-        var keypoints = [];
+        var keypoints = {};
         
         var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
         for(var i = 0; i < sheetJson.indexs.length; i++) {
@@ -115,7 +117,7 @@ Section.fromJson = function(json, param, entry) {
             var point = data.points[index3];
             var x = point.x;
             var y = point.y;
-            keypoints.push({ x : x, y : y });
+            keypoints[point.name] = point;
             
             if(x < left) left = x;
             if(x > right) right = x;

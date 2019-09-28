@@ -139,10 +139,12 @@ Animation.fromJson = function(json, params, entry) {
                     var tb = mesh2.brush;
                     var minX = Number.MAX_VALUE;
                     var minY = Number.MAX_VALUE;
-                    for(var index2 = 0; index2 < tb.keypoints.length; index2++) {
-                        var drawOffset = { x : tb.keypoints[index2].x, y : tb.keypoints[index2].y };
-                        mesh2.keypoints[index2].drawOffset = drawOffset;
-                        mesh2.keypoints[index2].bindingUV = [ tb.keypoints[index2].x / tb.texture.image.width, tb.keypoints[index2].y / tb.texture.image.height ];
+                    for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
+                        var keypoint = mesh2.keypoints[index2];
+                        var point = tb.keypoints[keypoint.index];
+                        var drawOffset = { x : point.x, y : point.y };
+                        keypoint.drawOffset = drawOffset;
+                        keypoint.bindingUV = [ point.x / tb.texture.image.width, point.y / tb.texture.image.height ];
                         
                         if(minX > drawOffset.x) minX = drawOffset.x;
                         if(minY > drawOffset.y) minY = drawOffset.y;
@@ -154,6 +156,7 @@ Animation.fromJson = function(json, params, entry) {
                 for(var index2 = 0; index2 < item.vertices.length; index2++) {
                     var keypoint = item.vertices[index2];
                     var key = {};
+                    key.index = keypoint.index;
                     key.parent = mesh;
                     key.keyframes = [];
                     // Ìí¼Ó·½·¨
@@ -4917,15 +4920,17 @@ Section.fromJson = function(json, param, entry) {
     
     for(var index2 = 0; index2 < json.points.length; index2++) {
         var values = json.points[index2].split(',');
-        var x = parseFloat(values[0]);
-        var y = parseFloat(values[1]);
-        data.points.push({ x : x, y : y });
+        var name = values[0];
+        var x = parseFloat(values[1]);
+        var y = parseFloat(values[2]);
+        var point = { name : name, x : x, y : y };
+        data.points.push(point);
     }
-    
+     
     for(var index2 = 0; index2 < json.sheets.length; index2++) {
         var sheetJson = json.sheets[index2];
         var name = sheetJson.name; 
-        var keypoints = [];
+        var keypoints = {};
         
         var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
         for(var i = 0; i < sheetJson.indexs.length; i++) {
@@ -4933,7 +4938,7 @@ Section.fromJson = function(json, param, entry) {
             var point = data.points[index3];
             var x = point.x;
             var y = point.y;
-            keypoints.push({ x : x, y : y });
+            keypoints[point.name] = point;
             
             if(x < left) left = x;
             if(x > right) right = x;

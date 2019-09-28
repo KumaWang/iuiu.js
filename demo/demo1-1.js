@@ -1,22 +1,22 @@
-ï»¿// æ–°å»ºæ¸²æŸ“å™¨
+// ĞÂ½¨äÖÈ¾Æ÷
 var gl = IUIU.create(null, { hittest : false, useGL : true });
 
-// é€šè¿‡åŠ è½½å™¨è¯»å–åŠ¨ç”»èµ„æº
+// Í¨¹ı¼ÓÔØÆ÷¶ÁÈ¡¶¯»­×ÊÔ´
 var ani = IUIU.Loader.load("res/demo1-1.ani");
 var state2 = ani.newState();
 
-// è®¾ç½®æ¯å¸§æ›´æ–°
+// ÉèÖÃÃ¿Ö¡¸üĞÂ
 gl.onupdate = function(inv) {    
     gl.begin(null, { location : new IUIU.Vector(10, 20), scale : 0.3, angle : 10 });
     
-    // ç»˜åˆ¶åŠ¨ç”»çŠ¶æ€
+    // »æÖÆ¶¯»­×´Ì¬
     gl.state(state2, new IUIU.Vector(500, 100));
        
     gl.end();
 };
 
-// è®¾ç½®å…¨å±åŒ–
+// ÉèÖÃÈ«ÆÁ»¯
 gl.fullscreen();
 
-// è®¾ç½®å¾ªç¯
+// ÉèÖÃÑ­»·
 gl.loop();
