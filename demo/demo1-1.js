@@ -7,10 +7,10 @@ var state2 = ani.newState();
 
 // 设置每帧更新
 gl.onupdate = function(inv) {    
-    gl.begin(null, { location : new IUIU.Vector(10, 20), scale : 0.3, angle : 10 });
+    gl.begin(null, { location : new IUIU.Vector(10, 20), scale : 0.3, angle : 0 });
     
     // 绘制动画状态
-    gl.state(state2, new IUIU.Vector(500, 100));
+    gl.state(state2, new IUIU.Vector(600, 300));
        
     gl.end();
 };
