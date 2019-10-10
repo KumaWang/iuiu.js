@@ -36,6 +36,7 @@
     <Compile Include="src\WebAudio.js" />
     <Compile Include="src\WebSound.js" />
     <Compile Include="src\map.js" />
+    <Compile Include="src\poly2tri.min.js" />
   </Folder>
   <Folder Include="demo">
     <Compile Include="demo\demo0-1.js" />
@@ -50,13 +51,15 @@
   <Compile Include="iuiu.js" />
   <Content Include="index.html" />
   <Folder Include="res">
-    <Content Include="res\demo0-5.map" />
     <Content Include="res\demo0-3.ani" />
     <Content Include="res\demo0-6.font" />
     <Content Include="res\demo0-7.png" />
     <Content Include="res\demo1-1.img" />
     <Content Include="res\demo1-1.ani" />
     <Content Include="res\test.map" />
+    <Content Include="res\demo0-5.map" />
+    <Content Include="res\demo0-5.img" />
+    <Content Include="res\demo0-5_2.img" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />

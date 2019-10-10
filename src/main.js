@@ -118,8 +118,8 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
         displayBatchMode.blendState = blendState || 'none';
         
         // project matrix
-        if (displayBatchMode.cachedTransformMatrix == null              || 
-                gl.drawingBufferWidth != displayBatchMode.viewportWidth     ||
+        if (displayBatchMode.cachedTransformMatrix == null || 
+            gl.drawingBufferWidth != displayBatchMode.viewportWidth ||
             gl.drawingBufferHeight != displayBatchMode.viewportHeight) {
             
             displayBatchMode.viewportWidth = gl.drawingBufferWidth;

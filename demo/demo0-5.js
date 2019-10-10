@@ -1,21 +1,21 @@
-// æ–°å»ºæ¸²æŸ“å™¨
+// ĞÂ½¨äÖÈ¾Æ÷
 var gl = IUIU.create(null, { hittest : false, useGL : true });
 
-// é€šè¿‡åŠ è½½å™¨è¯»å–åœ°å›¾èµ„æº
+// Í¨¹ı¼ÓÔØÆ÷¶ÁÈ¡µØÍ¼×ÊÔ´
 var map = IUIU.Loader.load("res/demo0-5.map");
 
-// è®¾ç½®æ¯å¸§æ›´æ–°
+// ÉèÖÃÃ¿Ö¡¸üĞÂ
 gl.onupdate = function(inv) {    
-    gl.begin();
+    gl.begin(null, { location : new IUIU.Vector(0, 0), scale : 1, angle : 0 });
  
-    // ç»˜åˆ¶åœ°å›¾ 
+    // »æÖÆµØÍ¼ 
     map.update(gl, inv);
-   
+    
     gl.end();
 };
 
-// è®¾ç½®å…¨å±åŒ–
+// ÉèÖÃÈ«ÆÁ»¯
 gl.fullscreen();
 
-// è®¾ç½®å¾ªç¯
+// ÉèÖÃÑ­»·
 gl.loop();

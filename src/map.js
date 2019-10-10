@@ -2,11 +2,24 @@ function Map() {
 }
 
 Map.prototype.update = function(gl, inv) {
+    for(var i = 0; i < this.objects.length; i++) {
+        var obj = this.objects[i];
+        if(obj.update) obj.update(inv);
+        
+        if(obj.getDisplayStates) {
+            var states = obj.getDisplayStates();
+            if(states != null) {
+                for(var x = 0; x < states.length; x++) {
+                    gl.draw(states[x]);
+                }
+            }
+        }
+    }
 } 
 
 Map.create = function() {
     var map = new Map();
-    map.object   = [];
+    map.objects  = [];
     map.triggers = [];
     return map;
 }
@@ -22,7 +35,7 @@ Map.fromJson = function(json, params, entry) {
             obj = IUIU.Loader.load(itemJson.inculde);
             break;
           case "image":
-            obj = IUIU.Loader.load(itemJson.inculde);
+            obj = Section.fromName(itemJson.inculde);
             break;
           case "text":
             obj = IUIU.Loader.load(itemJson.inculde);
@@ -33,7 +46,7 @@ Map.fromJson = function(json, params, entry) {
             obj = {};
             obj.points = [];
             obj.splitCornersThreshold = 120;
-            obj.strechThreshold = 0;
+            obj.streachThreshold = 0;
             obj.splitWhenDifferent = false;
             obj.smoothFactor = 5;
             for(var i = 0; i < itemJson.points.length; i++) {
@@ -43,16 +56,19 @@ Map.fromJson = function(json, params, entry) {
                 obj.points.push({ x : x, y : y });
             }
             
-            obj.fill = Map.readSegment(itemJson.uvmapping.fill);
-            obj.left = Map.readSegment(itemJson.uvmapping.left);
-            obj.top = Map.readSegment(itemJson.uvmapping.top);
-            obj.right = Map.readSegment(itemJson.uvmapping.right);
-            obj.bottom = Map.readSegment(itemJson.uvmapping.bottom);
+            if(itemJson.uvmapping.fill.inculde != null) obj.downloadCount = 1;
+            if(itemJson.uvmapping.left.inculde != null) obj.downloadCount++;
+            if(itemJson.uvmapping.top.inculde != null) obj.downloadCount++;
+            if(itemJson.uvmapping.right.inculde != null) obj.downloadCount++;
+            if(itemJson.uvmapping.bottom.inculde != null) obj.downloadCount++;
+            
+            obj.fill = Map.readSegment(itemJson.uvmapping.fill, obj);
+            obj.left = Map.readSegment(itemJson.uvmapping.left, obj);
+            obj.top = Map.readSegment(itemJson.uvmapping.top, obj);
+            obj.right = Map.readSegment(itemJson.uvmapping.right, obj);
+            obj.bottom = Map.readSegment(itemJson.uvmapping.bottom, obj);
             
             Map.addSplineFunctions(obj);
-            
-            obj.generateMesh();
-            
             break;
         }
         
@@ -67,20 +83,31 @@ Map.fromJson = function(json, params, entry) {
             obj.origin   = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
             obj.angle    = parseFloat(itemJson.angle);
             obj.color    = { 
-                r : parseFloat(colorStr[0]),
-                g : parseFloat(colorStr[1]),
-                b : parseFloat(colorStr[2]),
-                a : parseFloat(colorStr[3])
+                r : parseFloat(colorStr[0]) / 255,
+                g : parseFloat(colorStr[1]) / 255,
+                b : parseFloat(colorStr[2]) / 255,
+                a : parseFloat(colorStr[3]) / 255
             };
+            
+            map.objects.push(obj);
         }
     }
     
     return map;
 }
 
-Map.readSegment = function(json) {
+Map.readSegment = function(json, spline) {
     var seg = {};
-    seg.texture = Section.fromName(json.inculde);
+    if(json.inculde) {
+        Section.fromName(json.inculde, { segment : seg, spline : spline }, function(sheet, userToken) {
+            var segment = userToken.segment;
+            var spline = userToken.spline;
+            segment.texture = sheet;
+            spline.downloadCount--;
+            if(spline.downloadCount <= 0)
+                spline.generateMesh();
+        });
+    }
     seg.bodies = [];
     if(json.leftcap) {
         var aabbStr = json.leftcap.split(',');
@@ -129,7 +156,7 @@ Map.addSplineFunctions = function(spline) {
         return angle == 180 && !(side == "left" ? segment.prev != null : segment.next != null);
     };
     
-    spline.hermite = function(v1, v2, v3, v4, aPercentage, aTensin, aBias) {
+    spline.hermite = function(v1, v2, v3, v4, aPercentage, aTension, aBias) {
         var mu2 = aPercentage * aPercentage;
         var mu3 = mu2 * aPercentage;
         var m0 = (v2 - v1) * (1 + aBias) * (1 - aTension) / 2;
@@ -145,7 +172,7 @@ Map.addSplineFunctions = function(spline) {
     };
     
     spline.hermiteLerp = function(a, b, c, d, percentage, tension, bias) {
-        tensin = tension || 0;
+        tension = tension || 0;
         bias = bias || 0;
         
         return { x : this.hermite(a.x, b.x, c.x, d.x, percentage, tension, bias),
@@ -165,11 +192,11 @@ Map.addSplineFunctions = function(spline) {
         
         var n = source.length;
         
-        return i < 0 || i > n ? (looped ? source[((i % n) + n) % n] : null) : source[i];
+        return i < 0 || i >= n ? (looped ? source[((i % n) + n) % n] : null) : source[i];
     };
     
     spline.calculateDirection = function(fst, snd) {
-        if(fst.direction != "auto") 
+        if(fst.direction != null && fst.direction != "auto") 
             return fst.direction;
             
         var normal = this.normal({ x : fst.x - snd.x, y : fst.y - snd.y });
@@ -203,8 +230,8 @@ Map.addSplineFunctions = function(spline) {
         }
         
         var rect = segmentUvMapping.bodies[0];
-        var width = segmentUvMapping.texture.width;
-        var height = segmentUvMapping.texture.height;
+        var width = segmentUvMapping.texture.texture.image.width;
+        var height = segmentUvMapping.texture.texture.image.height;
         
         var x = rect.x / width;
         var y = rect.y / height;
@@ -213,9 +240,9 @@ Map.addSplineFunctions = function(spline) {
         var height2 = rect.height / height;
         
         var bodyUvSize = { width : width2, height : height2 };
-        var unitsPerEdgeUv = { width : segmentUvMapping.texture.width, height : segmentUvMapping.texture.height };
-        var bodyWidthInUnits = bodyUvSize.x * unitsPerEdgeUv.x;
-        var halfBodyHeightInUnits = bodyUvSize.y * unitsPerEdgeUv.y / 2;
+        var unitsPerEdgeUv = { width : segmentUvMapping.texture.texture.image.width, height : segmentUvMapping.texture.texture.image.height };
+        var bodyWidthInUnits = bodyUvSize.width * unitsPerEdgeUv.width;
+        var halfBodyHeightInUnits = bodyUvSize.height * unitsPerEdgeUv.height / 2;
         
         var bodyUv = {};
         var start = segment.begin;
@@ -229,24 +256,30 @@ Map.addSplineFunctions = function(spline) {
             
         if(doRightCap)
             segment.nextnext = segment.next = null;
-            
-        if(segment.prevprev != null && segment.prev != null && spline.shouldCloseSegment({ prev : segment.prevprev, begin : segment.prev, end : segment.begin }, "left"))
-            segment.prevprev = null;
+        
+        if(segment.prevprev != null && segment.prev != null) {
+            var seg2 = { prev : segment.prevprev, begin : segment.prev, end : segment.begin };
+            Map.addSegmentFunctions(seg2);
+            if(spline.shouldCloseSegment(seg2, "left")) {
+                segment.prevprev = null;
+            }
+        }
             
         var last = segment.prev || segment.begin;
         var next = { x : segment.begin.x - last.x, y : segment.begin.y - last.y };
         var length = Math.sqrt(next.x * next.x + next.y * next.y);
-        var prevNumOfCuts = Math.max(parseInt(Math.floor(length / (bodyWidthInUnits + spline.strechThreshold))), 1) * smoothFactor;
+        var prevNumOfCuts = Math.max(parseInt(Math.floor(length / (bodyWidthInUnits + spline.streachThreshold))), 1) * smoothFactor;
         var endPrevious = spline.hermiteLerp(segment.prevprev || segment.prev || segment.begin, segment.prev || segment.begin, segment.begin, segment.end, prevNumOfCuts == 1 ? 0.001 : ((prevNumOfCuts - 1) / prevNumOfCuts));
         var startOffset = spline.normal({ x : start.x - endPrevious.x, y : start.y - endPrevious.y }); // * halfBodyHeightInUnits;
         startOffset = { x : startOffset.x * halfBodyHeightInUnits, y : startOffset.y * halfBodyHeightInUnits };
         
         if(doLeftCap)
             spline.drawCap(
-                segmentUvMapping.rightcap, 
-                "right", 
+                segmentUvMapping.leftcap, 
+                "left", 
                 { x : segment.begin.x - startOffset.x, y : segment.begin.y - startOffset.y },
                 { x : segment.begin.x + startOffset.x, y : segment.begin.y + startOffset.y },
+                edgeList,
                 segmentUvMapping.texture,
                 segment.direction
             );
@@ -277,8 +310,8 @@ Map.addSplineFunctions = function(spline) {
             
             if(i % smoothFactor == 0) {
                 rect = segmentUvMapping.bodies[Math.abs(percentEnd >> 32) % 1];
-                width = segmentUvMapping.texture.width;
-                height = segmentUvMapping.texture.height;
+                width = segmentUvMapping.texture.texture.image.width;
+                height = segmentUvMapping.texture.texture.image.height;
                 
                 x = rect.x / width;
                 y = rect.y / height;
@@ -292,7 +325,61 @@ Map.addSplineFunctions = function(spline) {
                 bodyUv = { x : bodyUv.x + bodyUv.width, y : bodyUv.y, width : bodyUv.width, height : bodyUv.height };
             }
             
+            var p1 = [ localBottomLeft.x, localBottomLeft.y ];
+            var p2 = [ localTopLeft.x, localTopLeft.y ];
+            var p3 = [ localTopRight.x, localTopRight.y ];
+            var p4 = [ localBottomRight.x, localBottomRight.y ];
             
+            var uv1 = [ bodyUv.x, 1 - bodyUv.y - bodyUv.height ];
+            var uv2 = [ bodyUv.x, 1 - bodyUv.y ];
+            var uv3 = [ bodyUv.x + bodyUv.width, 1 - bodyUv.y ];
+            var uv4 = [ bodyUv.x + bodyUv.width, 1 - bodyUv.y - bodyUv.height ];
+            
+            if(segment.direction == "top") {
+                edgeList.push({
+                    texture : segmentUvMapping.texture.texture.image,
+                    color : this.color,
+                    p1 : p1,
+                    p2 : p2,
+                    p3 : p3,
+                    uv1 : uv1,
+                    uv2 : uv2,
+                    uv3 : uv3
+                });
+                
+                edgeList.push({
+                    texture : segmentUvMapping.texture.texture.image,
+                    color : this.color,
+                    p1 : p1,
+                    p2 : p4,
+                    p3 : p3,
+                    uv1 : uv1,
+                    uv2 : uv4,
+                    uv3 : uv3
+                });
+            } else {
+                edgeList.unshift({
+                    texture : segmentUvMapping.texture.texture.image,
+                    color : this.color,
+                    p1 : p1,
+                    p2 : p2,
+                    p3 : p3,
+                    uv1 : uv1,
+                    uv2 : uv2,
+                    uv3 : uv3
+                });
+                
+                edgeList.unshift({
+                    texture : segmentUvMapping.texture.texture.image,
+                    color : this.color,
+                    p1 : p1,
+                    p2 : p4,
+                    p3 : p3,
+                    uv1 : uv1,
+                    uv2 : uv4,
+                    uv3 : uv3
+                });
+            }
         }
         
         if(doRightCap)
@@ -301,11 +388,96 @@ Map.addSplineFunctions = function(spline) {
                 "right", 
                 { x : segment.end.x - startOffset.x, y : segment.end.y - startOffset.y },
                 { x : segment.end.x + startOffset.x, y : segment.end.y + startOffset.y },
+                edgeList,
                 segmentUvMapping.texture,
                 segment.direction
             );
         
         return fillPoints;
+    };
+    
+    spline.drawCap = function(rect, side, top, bottom, edges, texture, driection) {
+        width = texture.texture.image.width;
+        height = texture.texture.image.height;
+        
+        x = rect.x / width;
+        y = rect.y / height;
+        
+        width2 = rect.width / width;
+        height2 = rect.height / height;
+        
+        var capUv = { x : x, y : y, width : width2, height : height2 };
+        var capOffset = this.normal({ x : bottom.x - top.x, y : bottom.y - top.y });
+        capOffset = { x : capOffset.x * capUv.width * texture.width, y : capOffset.y * capUv.width * texture.width };
+        
+        var otherTop = side == "left" ? { x : top.x + capOffset.x, y : top.y + capOffset.y } : { x : top.x - capOffset.x, y : top.y - capOffset.y };
+        var otherBottom = side == "left" ? { x : bottom.x + capOffset.x, y : bottom.y + capOffset.y } : { x : bottom.x - capOffset.x, y : bottom.y - capOffset.y };
+        
+        if(side == "left") {
+            var temp = top;
+            top = otherTop;
+            otherTop = temp;
+            
+            var temp2 = bottom;
+            bottom = otherBottom;
+            otherBottom = temp2;
+        }
+        
+        var p1 = [ bottom.x, bottom.y ];
+        var p2 = [ top.x, top.y ];
+        var p3 = [ otherTop.x, otherTop.y ];
+        var p4 = [ otherBottom.x, otherBottom.y ];
+        
+        var uv1 = [ capUv.x, 1 - capUv.y - capUv.height ];
+        var uv2 = [ capUv.x, 1 - capUv.y ];
+        var uv3 = [ capUv.x + capUv.width, 1 - capUv.y ];
+        var uv4 = [ capUv.x + capUv.width, 1 - capUv.y - capUv.height ];
+        
+        if(driection == "top") {
+            edges.push({
+                texture : texture.texture.image,
+                color : this.color,
+                p1 : p1,
+                p2 : p2,
+                p3 : p3,
+                uv1 : uv1,
+                uv2 : uv2,
+                uv3 : uv3
+            });
+            
+            edges.push({
+                texture : texture.texture.image,
+                color : this.color,
+                p1 : p1,
+                p2 : p4,
+                p3 : p3,
+                uv1 : uv1,
+                uv2 : uv4,
+                uv3 : uv3
+            });
+        } else {
+            edges.unshift({
+                texture : texture.texture.image,
+                color : this.color,
+                p1 : p1,
+                p2 : p2,
+                p3 : p3,
+                uv1 : uv1,
+                uv2 : uv2,
+                uv3 : uv3
+            });
+            
+            edges.unshift({
+                texture : texture.texture.image,
+                color : this.color,
+                p1 : p1,
+                p2 : p4,
+                p3 : p3,
+                uv1 : uv1,
+                uv2 : uv4,
+                uv3 : uv3
+            });
+        }
     };
     
     spline.generateSegments = function() {
@@ -328,32 +500,8 @@ Map.addSplineFunctions = function(spline) {
             seg.direction = spline.calculateDirection(prev, cur);
             seg.prevDirection = prev2 == null ? "none" : spline.calculateDirection(prev2, prev);
             seg.nextDirection = next == null ? "none" : spline.calculateDirection(cur, next);
-            
-            seg.angleBetween = function(v1, v2) {
-                var y = v1.x * v2.y - v2.x * v1.y;
-                var x = v1.x * v2.x + v1.y * v2.y;
-                return Math.atan2(y, x) * (180 / Math.PI);
-            };
-            
-            seg.angleWithPrev = function() {
-                if(this.prev == null) return 180;
-                
-                var angle = this.angleBetween(
-                    { x : this.end.x - this.begin.x, y : this.end.y - this.begin.y },
-                    { x : this.prev.x - this.begin.x, y : this.prev.y - this.begin.y });
-                
-                return angle < 0 ? angle + 360 : angle;
-            };
-            
-            seg.angleWithNext = function() {
-                if(this.next == null) return 180;
-                
-                var angle = this.angleBetween(
-                    { x : this.begin.x - this.end.x, y : this.begin.y - this.end.y },
-                    { x : this.next.x - this.end.x, y : this.next.y - this.end.y });
-                
-                return angle < 0 ? angle + 360 : angle;
-            };
+
+            Map.addSegmentFunctions(seg);
             
             result.push(seg);
         }
@@ -361,6 +509,101 @@ Map.addSplineFunctions = function(spline) {
     };
     
     spline.generateMesh = function() {
+        this.triangles = [];
+        var edgeTriangles = [];
         
+        var segments = this.generateSegments();
+        var vertices = [];
+        var edgeVertices = [];
+        for(var i = 0; i < segments.length; i++) {
+            var points = this.drawSegment(segments[i], edgeTriangles);
+            for(var x = 0; x < points.length; x++) {
+                vertices.push(new poly2tri.Point(points[x].x, points[x].y));
+            }
+        }
+        
+        var swctx = new poly2tri.SweepContext(vertices);
+        swctx.triangulate();
+        var triangles = swctx.getTriangles();
+        
+        for(var x = 0; x < triangles.length; x++) {
+            
+            var v1 = triangles[x].points_[0];
+            var v2 = triangles[x].points_[1];
+            var v3 = triangles[x].points_[2];
+
+            this.triangles.push({
+                texture : this.fill.texture.texture.image,
+                color : this.color,
+                p1 : [ v1.x, v1.y ],
+                p2 : [ v2.x, v2.y ],
+                p3 : [ v3.x, v3.y ],
+                uv1 : [ v1.x / this.fill.texture.texture.image.width, v1.y / this.fill.texture.texture.image.height ],
+                uv2 : [ v2.x / this.fill.texture.texture.image.width, v2.y / this.fill.texture.texture.image.height ],
+                uv3 : [ v3.x / this.fill.texture.texture.image.width, v3.y / this.fill.texture.texture.image.height ]
+            });
+        }
+        
+        for(var i = 0; i < edgeTriangles.length; i++) {
+            this.triangles.push(edgeTriangles[i]);
+        }
+        
+    };
+    
+    spline.getDisplayStates = function() {
+        var result = [];
+        if(this.triangles != null) {
+            for(var i = 0; i < this.triangles.length; i++) {
+                var tri = this.triangles[i];
+                var origin = { x : this.origin.x + this.location.x, y : this.origin.y + this.location.y };
+                var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * this.scale.x, y : tri.p1[1] * this.scale.y }, this.angle);
+                var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * this.scale.x, y : tri.p2[1] * this.scale.y }, this.angle);
+                var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * this.scale.x, y : tri.p3[1] * this.scale.y }, this.angle);
+                
+                p1 = [ p1.x + this.location.x, p1.y + this.location.y ];
+                p2 = [ p2.x + this.location.x, p2.y + this.location.y ];
+                p3 = [ p3.x + this.location.x, p3.y + this.location.y ];
+                
+                result.push({
+                    texture : tri.texture,
+                    color : [ tri.color.r, tri.color.g, tri.color.b, tri.color.a ],
+                    p1 : p1,
+                    p2 : p2,
+                    p3 : p3,
+                    uv1 : tri.uv1,
+                    uv2 : tri.uv2,
+                    uv3 : tri.uv3
+                });
+            }
+        }
+        return result;
+    };
+}
+
+Map.addSegmentFunctions = function(seg) {
+    seg.angleBetween = function(v1, v2) {
+        var y = v1.x * v2.y - v2.x * v1.y;
+        var x = v1.x * v2.x + v1.y * v2.y;
+        return Math.atan2(y, x) * (180 / Math.PI);
+    };
+    
+    seg.angleWithPrev = function() {
+        if(this.prev == null) return 180;
+        
+        var angle = this.angleBetween(
+            { x : this.end.x - this.begin.x, y : this.end.y - this.begin.y },
+            { x : this.prev.x - this.begin.x, y : this.prev.y - this.begin.y });
+        
+        return angle < 0 ? angle + 360 : angle;
+    };
+    
+    seg.angleWithNext = function() {
+        if(this.next == null) return 180;
+        
+        var angle = this.angleBetween(
+            { x : this.begin.x - this.end.x, y : this.begin.y - this.end.y },
+            { x : this.next.x - this.end.x, y : this.next.y - this.end.y });
+        
+        return angle < 0 ? angle + 360 : angle;
     };
 }

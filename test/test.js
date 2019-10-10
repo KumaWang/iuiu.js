@@ -1,5 +1,6 @@
-var gl = IUIU.create();
+var json;
 
-var kkk;
-var aaa;
-kkk = aaa || { aaa : 1 };
+for(var x = 0; x < json.items.length; x++) {
+    var itemJson = json.items[x];
+
+} 

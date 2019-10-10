@@ -243,7 +243,7 @@ function Loader(domain) {
     this.addMode("ani", new AnimationLoader(this));
     this.addMode("img", new SectionLoader(this));
     //this.addMode("level", new LevelLoader(this));
-    //this.addMode("map", new MapLoader(this));
+    this.addMode("map", new MapLoader(this));
     this.addMode("font", new FontLoader(this));
 }
 
