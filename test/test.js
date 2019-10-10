@@ -1,3 +1,5 @@
-function foo(inv, foo) {
-    this.kuma = a;
-}
+var gl = IUIU.create();
+
+var kkk;
+var aaa;
+kkk = aaa || { aaa : 1 };

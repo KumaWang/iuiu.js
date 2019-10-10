@@ -1,21 +1,20 @@
-// æ–°å»ºæ¸²æŸ“å™¨
+// ĞÂ½¨äÖÈ¾Æ÷
 var gl = IUIU.create(null, { hittest : false, useGL : true });
 
-// é€šè¿‡åŠ è½½å™¨è¯»å–åœ°å›¾èµ„æº
+// Í¨¹ı¼ÓÔØÆ÷¶ÁÈ¡µØÍ¼×ÊÔ´
 var font = IUIU.Loader.load("res/demo0-6.font");
 
-// è®¾ç½®æ¯å¸§æ›´æ–°
+// ÉèÖÃÃ¿Ö¡¸üĞÂ
 gl.onupdate = function(inv) {    
     gl.begin();
  
-    // ç»˜åˆ¶æ–‡å­—
-    gl.text(font, "IUIUå·¥ä½œå®¤", 22, new IUIU.Vector(100, 100));
-    gl.dsadsa=1;
+    // »æÖÆÎÄ×Ö
+    gl.text(font, "IUIU¹¤×÷ÊÒ", 22, new IUIU.Vector(100, 100));
     gl.end();
 };
 
-// è®¾ç½®å…¨å±åŒ–
+// ÉèÖÃÈ«ÆÁ»¯
 gl.fullscreen();
 
-// è®¾ç½®å¾ªç¯
+// ÉèÖÃÑ­»·
 gl.loop();

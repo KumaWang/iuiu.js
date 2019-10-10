@@ -20,6 +20,7 @@ var IUIU = {
         if (!gl) throw new Error('WebGL not supported');
         //gl.HALF_FLOAT_OES = 0x8D61;
         addDisplayBatchMode();
+
         addOtherMethods();
         return gl;
     },
@@ -123,7 +124,6 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
             
             displayBatchMode.viewportWidth = gl.drawingBufferWidth;
             displayBatchMode.viewportHeight = gl.drawingBufferHeight;
-            
             displayBatchMode.cachedTransformMatrix = new Matrix();
             var m = displayBatchMode.cachedTransformMatrix.m;
             m[0] = 2 * (displayBatchMode.viewportWidth > 0 ? 1 / displayBatchMode.viewportWidth : 0);
@@ -136,7 +136,7 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
             displayBatchMode.cachedTransformMatrix.m[12] -= displayBatchMode.cachedTransformMatrix.m[0];
             displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
         }
-
+        
         transform = transform || { location : Vector.zero, scale : 1, origin : Vector.zero, angle : 0 };
         var location = transform.location || Vector.zero;
         var angle = transform.angle / 180 * Math.PI || 0;

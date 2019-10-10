@@ -39,46 +39,27 @@ IniLoader.prototype = {
     }
 };
 
-function ContentLoader(loader) {
+function PackageLoader(loader) {
     this.loader = loader;
 }
-ContentLoader.prototype = {
+PackageLoader.prototype = {
     responseType : 'arraybuffer',
     load : function(buffer, params) {
         if(buffer) {
             var content = {};
             var dataView = new DataView(buffer);
             var originalBuffer = readHeader(content, dataView);
-            if(!originalBuffer) {
-                return;
-            }
-
-            if(content.isCompression) {
-                var inStream = {
-                    data: originalBuffer,
-                    offset: 0,
-                    readByte: function(){
-                        return this.data.getUint8(this.offset++);
-                    }
-                };
-
-                var outStream = {
-                    data: new Uint8Array(content.originalSize),
-                    offset: 0,
-                    writeByte: function(value){
-                        this.data.set(this.offset++, value);
-                    }
-                };
-
-                LZMA.decompress(null, inStream, outStream, content.originalSize);
-
-                if(outStream.data.byteLength != content.originalSize) {
-                    //content.valid = false;
-                    //content.errorMessage = '无效的资产流,一般发生在数据缺损时';
-                    return;
+            
+            // 解压缩文件
+            if(content.flags == 1) {
+                var compressed = new Uint8Array(buffer, originalBuffer.position, originalBuffer.length);
+                var decompressed = lz4.decompress(compressed)
+                var arrayBuffer = new ArrayBuffer(decompressed.length);
+                for(var i = 0; i < decompressed.length; i++) {
+                    arrayBuffer[i] = decompressed[i];
                 }
-
-                originalBuffer = new dataView(outStream.data);
+                
+                originalBuffer = new BinaryReader(new DataView(arrayBuffer), 0, arrayBuffer.length);
             }
 
             // 读取实际内容
@@ -97,49 +78,72 @@ ContentLoader.prototype = {
         var e = br.readChar();
         var s = br.readChar();
 
-        if(r != 'r' || e != 'e' || s != 's') {
-            //content.errorMessage = '无效的资产头:' + content.src;
-            return false;
+        if(r != 'm' || e != 'r' || s != 'f') {
+            throw '存在无效包文件';
         }
 
-        // 读取校验值
-        content.checksum = br.readString(16);
+        // 读取平台
+        var platform = br.readByte();
+        
+        // 读取文件格式
+        var format = br.readByte();
+        
+        // 读取flags
+        var flags = br.readByte();
+        
+        // 读取内容大小
+        var contentSize = br.readInt32();
 
-        // 检查校验值与当前资源列表中区别
-        if(content.checksum != this.checklist[content.src]) {
-            // 废弃的资源需要重新更新,将其状态标记为error则会重新下载
-            content.status = 'error';
-            return;
-        }
+        // 预存数据
+        var holdSize = br.readInt32();
 
-        // 读取作者
-        content.author = br.readString();
-
-        // 版本读取
-        var major = br.readUint32();
-        var minor = br.readUint32();
-        var revision = br.readUint32();
-        var build = br.readUint32();
-        content.version = new CVersion(major, minor, revision, build);
-
-        // 原始大小读取
-        content.originalSize = br.readUint32();
-
-        // 判断是否压缩
-        content.isCompression = br.readBoolean();
+        content.platform = platform;
+        content.format = format;
+        content.flags = flags;
+        content.contentSize = contentSize;
 
         // 返回压缩数据大小
-        return new BinaryReader(buffer, br.position, br.length());
+        return new BinaryReader(buffer, br.position, content.contentSize);
     },
     readContent : function(content, buffer) {
-        // 校验内容
-        var nowChecksum = MD5.compute(buffer);
-        if(nowChecksum != content.checksum) {
-            //content.errorMessage = '无效的资产校验码';
-            return;
+        var header = {};
+        header.name = buffer.readString();
+        header.version = {};
+        header.version.major = buffer.readInt32();
+        header.version.minor = buffer.readInt32();
+        header.version.build = buffer.readInt32();
+        header.version.revision = buffer.readInt32();
+        
+        var iconData = buffer.readString();
+        var description = buffer.readString();
+        var references = [];
+        var files = [];
+        
+        var count = buffer.readInt32();
+        for(var i = 0; i < count; i++) {
+            var header2 = {};
+            header2.name = buffer.readString();
+            header2.version = {};
+            header2.version.major = buffer.readInt32();
+            header2.version.minor = buffer.readInt32();
+            header2.version.build = buffer.readInt32();
+            header2.version.revision = buffer.readInt32();
+            
+            references.push({ header : header2 });
         }
-
-        content.content = eval(buffer.readString());
+        
+        count = buffer.readInt32();
+        for(var i = 0; i < count;i ++) {
+            var inculde = buffer.readString();
+            var data = buffer.readString();
+            files.push({ inculde : inculde, data : data });
+        }
+        
+        content.header = header;
+        //content.description = description;
+        //content.
+        content.files = files;
+        content.references = reference;
     }
 };
 
@@ -233,13 +237,13 @@ function Loader(domain) {
     
     // modes
     this.loaders = {};
-    this.addMode('content', new ContentLoader(this));
+    this.addMode('pak', new PackageLoader(this));
     this.addMode('ini', new IniLoader(this));
     this.addMode('json', new JsonLoader(this));
     this.addMode("ani", new AnimationLoader(this));
     this.addMode("img", new SectionLoader(this));
-    this.addMode("level", new LevelLoader(this));
-    this.addMode("map", new MapLoader(this));
+    //this.addMode("level", new LevelLoader(this));
+    //this.addMode("map", new MapLoader(this));
     this.addMode("font", new FontLoader(this));
 }
 

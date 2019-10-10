@@ -10,7 +10,7 @@ Section.prototype.triangulate = function(name) {
     
     var minX = Number.MAX_VALUE;
     var minY = Number.MAX_VALUE;
-    for(var index2 = 0; index2 < sheet.keypoints.length; index2++) {
+    for(var index2 in sheet.keypoints) {
         var drawOffset = { x : sheet.keypoints[index2].x, y : sheet.keypoints[index2].y };
         sheet.keypoints[index2].drawOffset = drawOffset;
         sheet.keypoints[index2].bindingUV = [ sheet.keypoints[index2].x / this.image.width, sheet.keypoints[index2].y / this.image.height ];
@@ -23,7 +23,7 @@ Section.prototype.triangulate = function(name) {
     this.triangles[name] = [];
     var vertices = [];
     this.fixedUVs = [];
-    for(var i = 0; i < sheet.keypoints.length; i++) {
+    for(var i in sheet.keypoints) {
         var keypoint = sheet.keypoints[i];
         vertices.push([ keypoint.drawOffset.x - sheet.drawOffset.x, keypoint.drawOffset.y - sheet.drawOffset.y ]);
     }

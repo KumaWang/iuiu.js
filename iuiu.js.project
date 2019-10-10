@@ -56,11 +56,14 @@
     <Content Include="res\demo0-7.png" />
     <Content Include="res\demo1-1.img" />
     <Content Include="res\demo1-1.ani" />
+    <Content Include="res\test.map" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />
     <Compile Include="test\autoindent.js" />
     <Compile Include="test\trigger.js" />
     <Compile Include="test\test.js" />
+    <Compile Include="test\comment.js" />
+    <Compile Include="test\document.js" />
   </Folder>
 </Project>

@@ -1,4 +1,4 @@
-﻿function Foo() {
+function Foo() {
 }
 
 Foo.prototype = {
@@ -15,8 +15,6 @@ var Test = (function() {
     
     return Test;  
 })();
-
-IUIU.Loader.load;
 
 var TEST = (function() {
     var foo                 = {};

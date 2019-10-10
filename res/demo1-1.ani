@@ -1,5 +1,5 @@
 ﻿{
-    "framerate": 0.0,
+    "framerate": 24.0,
     "loop": false,
     "states": {},
     "items": [
@@ -10303,6 +10303,24 @@
                     "angle": 0.0,
                     "color": "255,255,255,255",
                     "smooth": "true"
+                }
+            ]
+        },
+        {
+            "name": "新曲线",
+            "visual": "true",
+            "locked": "false",
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "location": "-398,-339",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "color": "255,255,255,255",
+                    "smooth": "false"
                 }
             ]
         }
