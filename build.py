@@ -8,9 +8,9 @@ import re, os, sys, time, tempfile
 
 header = '''/*
  * lightgl.js
- * http://github.com/evanw/lightgl.js/
+ * http://github.com/KumaWang/iuiu.js/
  *
- * Copyright 2011 Evan Wallace
+ * Copyright 2018 KumaWang
  * Released under the MIT license
  */
 '''

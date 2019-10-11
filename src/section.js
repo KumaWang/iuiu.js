@@ -125,7 +125,7 @@ Section.fromJson = function(json, param, entry) {
             if(y > bottom) bottom = y;
         }
         
-        data.sheets[name] = { width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
+        data.sheets[name] = { x : left, y : top, width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
     }
     
     return data;

@@ -20,8 +20,29 @@ var IUIU = {
         if (!gl) throw new Error('WebGL not supported');
         //gl.HALF_FLOAT_OES = 0x8D61;
         addDisplayBatchMode();
-
         addOtherMethods();
+        
+        gl.defaultShader = new Shader('\
+            uniform mat4 MatrixTransform;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            void main( )\
+            {\
+                gl_Position = MatrixTransform * gl_Vertex;\
+                diffuseTexCoord = gl_TexCoord;\
+                diffuseColor = gl_Color;\
+            }\
+            ', '\
+            uniform sampler2D Texture;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            void main( )\
+            {\
+                gl_FragColor = texture2D(Texture, diffuseTexCoord.xy) * diffuseColor;\
+            }\
+            '
+            );
+        
         return gl;
     },
     
@@ -34,7 +55,7 @@ var IUIU = {
     /**
     * Shader
     */
-    //Shader: Shader,
+    Shader: Shader,
     /**
     * ²ÄÖÊ
     */ 
@@ -76,31 +97,10 @@ function addDisplayBatchMode() {
         hasBegun: false,
         hasClip : false,
         clipRect : null,
-        camera : { location : Vector.zero, scale : Vector.one, origin : Vector.zero, angle : 0 },
-        transformMatrix: Matrix.identity(),
-        shader: new Shader('\
-            uniform mat4 MatrixTransform;\
-            varying vec4 diffuseColor;\
-            varying vec4 diffuseTexCoord;\
-            void main( )\
-            {\
-                gl_Position = MatrixTransform * gl_Vertex;\
-                diffuseTexCoord = gl_TexCoord;\
-                diffuseColor = gl_Color;\
-            }\
-            ', '\
-            uniform sampler2D Texture;\
-            varying vec4 diffuseColor;\
-            varying vec4 diffuseTexCoord;\
-            void main( )\
-            {\
-                gl_FragColor = texture2D(Texture, diffuseTexCoord.xy) * diffuseColor;\
-            }\
-            '
-            )
+        transformMatrix: Matrix.identity()
     };
     
-Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
+    Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
     
     var systemClearFunc = gl.clear; 
     gl.clear = function(color) {    
@@ -113,10 +113,10 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
     * @date    2019-9-4
     * @author  KumaWang
     */
-    gl.begin = function(blendState, transform) {
+    gl.begin = function(blendState, transform, shader) {
         displayBatchMode.hasBegun = true;
         displayBatchMode.blendState = blendState || 'none';
-        
+  
         // project matrix
         if (displayBatchMode.cachedTransformMatrix == null || 
             gl.drawingBufferWidth != displayBatchMode.viewportWidth ||
@@ -137,6 +137,7 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
             displayBatchMode.cachedTransformMatrix.m[13] -= displayBatchMode.cachedTransformMatrix.m[5];
         }
         
+        displayBatchMode.shader = shader || gl.defaultShader;
         transform = transform || { location : Vector.zero, scale : 1, origin : Vector.zero, angle : 0 };
         var location = transform.location || Vector.zero;
         var angle = transform.angle / 180 * Math.PI || 0;
@@ -643,7 +644,10 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
     * @date    2019-9-4
     * @author  KumaWang
     */
-    gl.end = function() {
+    gl.end = function(uniforms) {
+        if(uniforms != null) {
+            displayBatchMode.shader.uniforms(uniforms);
+        }
         var maxLenght = displayBatchMode.stepIndex;
         var endLenght = maxLenght - 1;
         // fist hit test
@@ -670,7 +674,6 @@ Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.
             }
         }
         
-        //displayBatchMode.steps = [];
         displayBatchMode.stepIndex = 0;
         displayBatchMode.hasBegun = false;
     };

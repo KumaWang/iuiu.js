@@ -1,18 +1,70 @@
+var mapShader = null;
+
 function Map() {
 }
 
 Map.prototype.update = function(gl, inv) {
+    if(mapShader == null) {
+        mapShader = new Shader('\
+            uniform mat4 MatrixTransform;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            varying vec2 TilePostion;\
+            void main( )\
+            {\
+                gl_Position = MatrixTransform * gl_Vertex;\
+                TilePostion = (gl_Vertex).xy;\
+                diffuseTexCoord = gl_TexCoord;\
+                diffuseColor = gl_Color;\
+            }\
+            ', '\
+            uniform sampler2D Texture;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            varying vec2 TilePostion;\
+            uniform vec2 TileOffset;\
+            uniform vec2 TileSize;\
+            uniform vec2 TileUvOffset;\
+            uniform vec2 TileUvSize;\
+            void main( )\
+            {\
+                vec2 uv = TileUvOffset + fract((TilePostion - TileOffset) / TileSize) * TileUvSize;\
+                uv.y = 1.0 - uv.y;\
+                gl_FragColor = texture2D(Texture, uv) * diffuseColor;\
+            }\
+            '
+            );
+    }
+    
     for(var i = 0; i < this.objects.length; i++) {
         var obj = this.objects[i];
         if(obj.update) obj.update(inv);
         
-        if(obj.getDisplayStates) {
-            var states = obj.getDisplayStates();
+        if(obj.type == "spline") {
+            if(obj.fill.texture) {
+                gl.end();
+                gl.begin(null, null, mapShader);
+                var states = obj.getFillDisplayStates();
+                if(states != null) {
+                    for(var x = 0; x < states.length; x++) {
+                        gl.draw(states[x]);
+                    }
+                }
+                gl.end({
+                    TileOffset : [ obj.location.x, obj.location.y ],
+                    TileSize : [ obj.fill.texture.texture.image.width, obj.fill.texture.texture.image.height ],
+                    TileUvOffset : [ obj.fill.texture.x / obj.fill.texture.texture.image.width, obj.fill.texture.y / obj.fill.texture.texture.image.width ],
+                    TileUvSize : [ obj.fill.texture.width / obj.fill.texture.texture.image.width, obj.fill.texture.height / obj.fill.texture.texture.image.width ]
+                });
+                gl.begin();
+            }
+            states = obj.getEdgeDisplayStates();
             if(states != null) {
                 for(var x = 0; x < states.length; x++) {
                     gl.draw(states[x]);
                 }
             }
+            
         }
     }
 } 
@@ -44,6 +96,7 @@ Map.fromJson = function(json, params, entry) {
             break;
           case "spline":
             obj = {};
+            obj.type = "spline";
             obj.points = [];
             obj.splitCornersThreshold = 120;
             obj.streachThreshold = 0;
@@ -510,13 +563,13 @@ Map.addSplineFunctions = function(spline) {
     
     spline.generateMesh = function() {
         this.triangles = [];
-        var edgeTriangles = [];
+        this.edgeTriangles = [];
         
         var segments = this.generateSegments();
         var vertices = [];
         var edgeVertices = [];
         for(var i = 0; i < segments.length; i++) {
-            var points = this.drawSegment(segments[i], edgeTriangles);
+            var points = this.drawSegment(segments[i], this.edgeTriangles);
             for(var x = 0; x < points.length; x++) {
                 vertices.push(new poly2tri.Point(points[x].x, points[x].y));
             }
@@ -543,14 +596,39 @@ Map.addSplineFunctions = function(spline) {
                 uv3 : [ v3.x / this.fill.texture.texture.image.width, v3.y / this.fill.texture.texture.image.height ]
             });
         }
-        
-        for(var i = 0; i < edgeTriangles.length; i++) {
-            this.triangles.push(edgeTriangles[i]);
-        }
-        
+                
     };
     
-    spline.getDisplayStates = function() {
+    spline.getEdgeDisplayStates = function() {
+        var result = [];
+        if(this.triangles != null) {
+            for(var i = 0; i < this.edgeTriangles.length; i++) {
+                var tri = this.edgeTriangles[i];
+                var origin = { x : this.origin.x + this.location.x, y : this.origin.y + this.location.y };
+                var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * this.scale.x, y : tri.p1[1] * this.scale.y }, this.angle);
+                var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * this.scale.x, y : tri.p2[1] * this.scale.y }, this.angle);
+                var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * this.scale.x, y : tri.p3[1] * this.scale.y }, this.angle);
+                
+                p1 = [ p1.x + this.location.x, p1.y + this.location.y ];
+                p2 = [ p2.x + this.location.x, p2.y + this.location.y ];
+                p3 = [ p3.x + this.location.x, p3.y + this.location.y ];
+                
+                result.push({
+                    texture : tri.texture,
+                    color : [ tri.color.r, tri.color.g, tri.color.b, tri.color.a ],
+                    p1 : p1,
+                    p2 : p2,
+                    p3 : p3,
+                    uv1 : tri.uv1,
+                    uv2 : tri.uv2,
+                    uv3 : tri.uv3
+                });
+            }
+        }
+        return result;
+    };
+    
+    spline.getFillDisplayStates = function() {
         var result = [];
         if(this.triangles != null) {
             for(var i = 0; i < this.triangles.length; i++) {
