@@ -2,7 +2,7 @@ var mapShader = null;
 
 function Map() {
 }
-
+ 
 Map.prototype.update = function(gl, inv) {
     if(mapShader == null) {
         mapShader = new Shader('\
@@ -43,7 +43,7 @@ Map.prototype.update = function(gl, inv) {
         if(obj.type == "spline") {
             if(obj.fill.texture) {
                 gl.end();
-                gl.begin(null, null, mapShader);
+                gl.begin(gl.blendState, gl.camera, mapShader);
                 var states = obj.getFillDisplayStates();
                 if(states != null) {
                     for(var x = 0; x < states.length; x++) {
@@ -87,7 +87,7 @@ Map.fromJson = function(json, params, entry) {
             obj = IUIU.Loader.load(itemJson.inculde);
             break;
           case "image":
-            obj = Section.fromName(itemJson.inculde);
+            obj = Tile.fromName(itemJson.inculde);
             break;
           case "text":
             obj = IUIU.Loader.load(itemJson.inculde);
@@ -152,7 +152,7 @@ Map.fromJson = function(json, params, entry) {
 Map.readSegment = function(json, spline) {
     var seg = {};
     if(json.inculde) {
-        Section.fromName(json.inculde, { segment : seg, spline : spline }, function(sheet, userToken) {
+        Tile.fromName(json.inculde, { segment : seg, spline : spline }, function(sheet, userToken) {
             var segment = userToken.segment;
             var spline = userToken.spline;
             segment.texture = sheet;

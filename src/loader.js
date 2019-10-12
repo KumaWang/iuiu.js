@@ -179,10 +179,10 @@ SectionLoader.prototype = {
     responseType : 'text',
     load : function(buffer, params, entry) {
         var jsonObj = JSON.parse(buffer);
-        return Section.fromJson(jsonObj, params, entry);
+        return Tile.fromJson(jsonObj, params, entry);
     },
     create : function() {
-        return Section.create();
+        return Tile.create();
     }
 }
 

@@ -1,10 +1,10 @@
-function Section() {
+function Tile() {
     this.isVisual = true;
 }
-Section.items = {};
-Section.callbacks = [];
+Tile.items = {};
+Tile.callbacks = [];
 
-Section.prototype.triangulate = function(name) {
+Tile.prototype.triangulate = function(name) {
     var sheet = this.sheets[name];
     if(sheet == null) return;
     
@@ -48,7 +48,7 @@ Section.prototype.triangulate = function(name) {
     }
 }
 
-Section.fromName = function(fullName, userToken, callback) {
+Tile.fromName = function(fullName, userToken, callback) {
     var inculde;
     var name;
     if(fullName.indexOf('&') != -1) {
@@ -57,36 +57,36 @@ Section.fromName = function(fullName, userToken, callback) {
         name = sd[1];
     }
     
-    if(!Section.items[inculde]) {
-        Section.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
+    if(!Tile.items[inculde]) {
+        Tile.callbacks.push({ inculde : inculde, name : name, userToken : userToken, func : callback });
         IUIU.Loader.load(inculde, { inculde : inculde, name : name, userToken : userToken }, function(c) {
             c.content.isLoaded = true;
             c.content.image.userToken = c.userToken.inculde;
             c.content.image.onloaded = function(userToken) { 
-                for(var i = 0; i < Section.callbacks.length; i++) {
-                    var callback = Section.callbacks[i];
+                for(var i = 0; i < Tile.callbacks.length; i++) {
+                    var callback = Tile.callbacks[i];
                     if(callback.inculde == userToken) {
                         callback.func(c.content.sheets[callback.name], callback.userToken);
-                        Section.callbacks.splice(i, 1);
+                        Tile.callbacks.splice(i, 1);
                         i--;
                     }
                 }
             }
-            Section.items[inculde] = c.content;
+            Tile.items[inculde] = c.content;
         });     
     } else {
-        callback(Section.items[inculde].sheets[name], userToken);
+        callback(Tile.items[inculde].sheets[name], userToken);
     }
 }
 
-Section.create = function() {
-    var data = new Section();
+Tile.create = function() {
+    var data = new Tile();
     data.sheets = {};
     data.triangles = {};
     return data;
 }
 
-Section.fromJson = function(json, param, entry) {
+Tile.fromJson = function(json, param, entry) {
     var data = entry;
     var texture = new Texture.fromURL('data:image/png;base64,' + json.data);
     texture.userToken = data;
@@ -95,34 +95,39 @@ Section.fromJson = function(json, param, entry) {
     };
     data.isLoaded = false;
     data.image = texture;
-    data.points = [];
-    
-    for(var index2 = 0; index2 < json.points.length; index2++) {
-        var values = json.points[index2].split(',');
-        var name = values[0];
-        var x = parseFloat(values[1]);
-        var y = parseFloat(values[2]);
-        var point = { name : name, x : x, y : y };
-        data.points.push(point);
-    }
-     
+
     for(var index2 = 0; index2 < json.sheets.length; index2++) {
         var sheetJson = json.sheets[index2];
-        var name = sheetJson.name; 
-        var keypoints = {};
+        var name = sheetJson.name;
         
+        var boundsStr = sheetJson.bounds.split(',');
+        var bx = parseFloat(boundsStr[0]);
+        var by = parseFloat(boundsStr[1]);
+        var bwidth = parseFloat(boundsStr[2]);
+        var bheight = parseFloat(boundsStr[3]);
+        var bounds = { x : bx, y : by, width : bwidth, height : bheight };
+        
+        var keypoints = []; 
         var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
-        for(var i = 0; i < sheetJson.indexs.length; i++) {
-            var index3 = parseFloat(sheetJson.indexs[i]);
-            var point = data.points[index3];
-            var x = point.x;
-            var y = point.y;
-            keypoints[point.name] = point;
+        for(var i = 0; i < sheetJson.out.length; i++) {
+            var values = sheetJson.out[i].split(',');
+            var x = parseFloat(values[0]) + bounds.x;
+            var y = parseFloat(values[1]) + bounds.y;
+            var point = { x : x, y : y };
+            keypoints.push(point);
             
             if(x < left) left = x;
             if(x > right) right = x;
             if(y < top) top = y;
             if(y > bottom) bottom = y;
+        }
+        
+        for(var i = 0; i < sheetJson.in.length; i++) {
+            var values = sheetJson.in[i].split(',');
+            var x = parseFloat(values[0]);
+            var y = parseFloat(values[1]);
+            var point = { x : x, y : y };
+            keypoints.push(point);
         }
         
         data.sheets[name] = { x : left, y : top, width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 

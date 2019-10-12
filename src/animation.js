@@ -122,7 +122,7 @@ Animation.fromJson = function(json, params, entry) {
                 mesh.keypoints = [];
                 mesh.brush = new VoidBrush();
 
-                Section.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
+                Tile.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
                     var mesh2 = userToken.mesh;
                     mesh2.brush = sheet;
                     var tb = mesh2.brush;
@@ -130,7 +130,7 @@ Animation.fromJson = function(json, params, entry) {
                     var minY = Number.MAX_VALUE;
                     for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
                         var keypoint = mesh2.keypoints[index2];
-                        var point = tb.keypoints[keypoint.index];
+                        var point = tb.keypoints[index2];
                         var drawOffset = { x : point.x, y : point.y };
                         keypoint.drawOffset = drawOffset;
                         keypoint.bindingUV = [ point.x / tb.texture.image.width, point.y / tb.texture.image.height ];

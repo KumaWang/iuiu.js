@@ -116,6 +116,8 @@ function addDisplayBatchMode() {
     gl.begin = function(blendState, transform, shader) {
         displayBatchMode.hasBegun = true;
         displayBatchMode.blendState = blendState || 'none';
+        gl.camera = gl.camera || transform;
+        gl.blendState = gl.blendState || blendState;
   
         // project matrix
         if (displayBatchMode.cachedTransformMatrix == null || 
