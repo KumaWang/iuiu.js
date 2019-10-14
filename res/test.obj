@@ -1,5 +1,5 @@
 ﻿{
-    "framerate": 30.0,
+    "framerate": 24.0,
     "loop": true,
     "states": {},
     "items": [
@@ -10,7 +10,7 @@
             "type": "spline",
             "points": [
                 "0,0",
-                "100,0",
+                "132,0",
                 "100,120",
                 "0,100"
             ],
@@ -50,7 +50,7 @@
                 {
                     "frame": 0.0,
                     "value": 1.0,
-                    "location": "-352,-128",
+                    "location": "-55,-118",
                     "scale": "1,1",
                     "origin": "0,0",
                     "angle": 0.0,

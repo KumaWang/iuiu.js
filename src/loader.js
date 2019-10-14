@@ -165,10 +165,10 @@ ObjectLoader.prototype = {
     responseType : 'text',
     load : function(buffer, params, entry) {
         var jsonObj = JSON.parse(buffer);
-        return Object.fromJson(jsonObj, params, entry);
+        return IObject.fromJson(jsonObj, params, entry);
     },
     create : function() {
-        return Object.create();
+        return IObject.create();
     }
 }
 

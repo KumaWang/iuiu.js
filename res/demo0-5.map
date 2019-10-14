@@ -1,53 +1,9 @@
 ﻿{
     "items": [
         {
-            "type": "spline",
-            "points": [
-                "0,0",
-                "205,-7",
-                "226,107.5",
-                "176,217",
-                "46,229.5",
-                "0,100"
-            ],
-            "uvmapping": {
-                "fill": {
-                    "inculde": "res/demo0-5.img&新切片"
-                },
-                "left": {
-                    "inculde": "res/demo0-5.img&新切片12",
-                    "leftcap": "14,772,19.36987,62",
-                    "rightcap": "197.0411,772,34.95889,62",
-                    "bodies": [
-                        "33.36987,772,163.6712,62"
-                    ]
-                },
-                "top": {
-                    "inculde": "res/demo0-5.img&新切片1",
-                    "leftcap": "0,522,52.5,212",
-                    "rightcap": "469,522,42,212",
-                    "bodies": [
-                        "52.5,522,416.5,212"
-                    ]
-                },
-                "right": {
-                    "inculde": "res/demo0-5.img&新切片12",
-                    "leftcap": "14,772,16.19178,62",
-                    "rightcap": "197.0411,772,34.95889,62",
-                    "bodies": [
-                        "30.19178,772,166.8493,62"
-                    ]
-                },
-                "bottom": {
-                    "inculde": "res/demo0-5.img&新切片12",
-                    "leftcap": "14,772,8.246574,62",
-                    "rightcap": "211.3425,772,20.6575,62",
-                    "bodies": [
-                        "22.24657,772,189.0959,62"
-                    ]
-                }
-            },
-            "location": "-79,94",
+            "type": "obj",
+            "inculde": "res/test.obj",
+            "location": "590,317",
             "scale": "1,1",
             "origin": "0,0",
             "angle": 0.0,

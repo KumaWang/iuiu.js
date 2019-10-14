@@ -2,7 +2,7 @@ function ObjectState(animation) {
     this.frame = 0;
     this.elaspedTime = 0;
     this.isPlaying = true;
-    this.animation = animation;
+    this.object = animation;
     this._init = false;
     this._state = null;
 }
@@ -12,8 +12,8 @@ ObjectState.prototype = {
         if(!this.isPlaying) return;
         
         if(!this._init) {
-            if(this.animation.staties != null) {
-                this.frame = this.animation.staties[this.state];
+            if(this.object.staties != null && this.object.staties[this.state]) {
+                this.frame = this.object.staties[this.state];
                 this.elaspedTime = 0;
                 this._init = true;
             }
@@ -22,12 +22,12 @@ ObjectState.prototype = {
             }
         }
         
-        var frameRate = Math.max(24, this.animation.frameRate);
+        var frameRate = Math.max(24, this.object.frameRate);
         this.elaspedTime = this.elaspedTime + inv;
         this.frame = this.frame + parseInt(this.elaspedTime / frameRate);
         this.elaspedTime = this.elaspedTime % frameRate;
-        if(this.frame > this.animation.getMaxFrame()) { 
-            this.frame = this._state != null && this.animation.staties && this.animation.staties[this._state] ? this.animation.staties[this._state] : 0;
+        if(this.frame > this.object.getMaxFrame()) { 
+            this.frame = this._state != null && this.object.staties && this.object.staties[this._state] ? this.object.staties[this._state] : 0;
         }
     },
     play : function() {
@@ -47,11 +47,11 @@ ObjectState.prototype = {
     }
 }
 
-function Object() {
+function IObject() {
     this.isVisual = true;
 }
 
-Object.prototype  = {
+IObject.prototype  = {
     getMaxFrame : function() {
         var maxFrame = 0;
         for(var i = 0; i < this.items.length; i++) {
@@ -93,15 +93,15 @@ function readKeyframe(json) {
     return frame;
 }
 
-Object.create = function() {
-    var ani = new Animation();
+IObject.create = function() {
+    var ani = new IObject();
     ani.items = [];
     ani.frameRate = 24;
     ani.loop = true;
     return ani;
 }
 
-Object.fromJson = function(json, params, entry) {
+IObject.fromJson = function(json, params, entry) {
     var ani = entry;
     ani.staties = {};
     ani.frameRate = parseFloat(json.framerate);
@@ -192,30 +192,31 @@ Object.fromJson = function(json, params, entry) {
             
           case "spline":
             var spline = {};
+            Spline.addSplineFunctions(spline);
             spline.type = "spline";
             spline.points = [];
             spline.splitCornersThreshold = 120;
             spline.streachThreshold = 0;
             spline.splitWhenDifferent = false;
             spline.smoothFactor = 5;
-            for(var i = 0; i < itemJson.points.length; i++) {
-                var pointStr = itemJson.points[i].split(',');
+            for(var i = 0; i < item.points.length; i++) {
+                var pointStr = item.points[i].split(',');
                 var x = parseFloat(pointStr[0]);
                 var y = parseFloat(pointStr[1]);
                 spline.points.push({ x : x, y : y });
             }
             
-            if(itemJson.uvmapping.fill.inculde != null) spline.downloadCount = 1;
-            if(itemJson.uvmapping.left.inculde != null) obj.downloadCount++;
-            if(itemJson.uvmapping.top.inculde != null) obj.downloadCount++;
-            if(itemJson.uvmapping.right.inculde != null) obj.downloadCount++;
-            if(itemJson.uvmapping.bottom.inculde != null) obj.downloadCount++;
+            if(item.uvmapping.fill.inculde != null) spline.downloadCount = 1;
+            if(item.uvmapping.left.inculde != null) spline.downloadCount++;
+            if(item.uvmapping.top.inculde != null) spline.downloadCount++;
+            if(item.uvmapping.right.inculde != null) spline.downloadCount++;
+            if(item.uvmapping.bottom.inculde != null) spline.downloadCount++;
             
-            spline.fill = Spline.readSegment(itemJson.uvmapping.fill, spline);
-            spline.left = Spline.readSegment(itemJson.uvmapping.left, spline);
-            spline.top = Spline.readSegment(itemJson.uvmapping.top, spline);
-            spline.right = Spline.readSegment(itemJson.uvmapping.right, spline);
-            spline.bottom = Spline.readSegment(itemJson.uvmapping.bottom, spline);
+            spline.fill = Spline.readSegment(item.uvmapping.fill, spline);
+            spline.left = Spline.readSegment(item.uvmapping.left, spline);
+            spline.top = Spline.readSegment(item.uvmapping.top, spline);
+            spline.right = Spline.readSegment(item.uvmapping.right, spline);
+            spline.bottom = Spline.readSegment(item.uvmapping.bottom, spline);
             
             baseItem = spline;
             baseItem.type = "spline";
@@ -243,7 +244,7 @@ Object.fromJson = function(json, params, entry) {
         baseItem.maxFrame = maxFrame;
         
         // Ìí¼Ó·½·¨
-        addAnimationItemFunctions(baseItem);
+        addObjectItemFunctions(baseItem);
         
         ani.items.push(baseItem);
     }
@@ -518,9 +519,9 @@ function ObjectItemMesh() {
                 }
                 
                 this.triangles.push({
-                p1 : { tracker : p1, uv : { x : (v1[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v1[1] + this.drawOffset.y) / this.brush.texture.image.height } },
-                p2 : { tracker : p2, uv : { x : (v2[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v2[1] + this.drawOffset.y) / this.brush.texture.image.height } },
-                p3 : { tracker : p3, uv : { x : (v3[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v3[1] + this.drawOffset.y) / this.brush.texture.image.height } },
+                    p1 : { tracker : p1, uv : { x : (v1[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v1[1] + this.drawOffset.y) / this.brush.texture.image.height } },
+                    p2 : { tracker : p2, uv : { x : (v2[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v2[1] + this.drawOffset.y) / this.brush.texture.image.height } },
+                    p3 : { tracker : p3, uv : { x : (v3[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v3[1] + this.drawOffset.y) / this.brush.texture.image.height } },
                 });
                 
             }
@@ -683,8 +684,8 @@ Spline.addSplineFunctions = function(spline) {
         var start = segment.begin;
         var smoothFactor = Math.max(1, this.smoothFactor);
         
-        var doLeftCap = spline.shouldCloseSegment(segment, "left");
-        var doRightCap = spline.shouldCloseSegment(segment, "right");
+        var doLeftCap = spline.shouldCloseSegment(segment, "left") && segmentUvMapping.leftcap != null;
+        var doRightCap = spline.shouldCloseSegment(segment, "right") && segmentUvMapping.rightcap != null;
         
         if(doLeftCap)
             segment.prevprev = segment.prev = null;
@@ -709,15 +710,15 @@ Spline.addSplineFunctions = function(spline) {
         startOffset = { x : startOffset.x * halfBodyHeightInUnits, y : startOffset.y * halfBodyHeightInUnits };
         
         if(doLeftCap)
-        spline.drawCap(
-            segmentUvMapping.leftcap, 
-            "left", 
-            { x : segment.begin.x - startOffset.x, y : segment.begin.y - startOffset.y },
-            { x : segment.begin.x + startOffset.x, y : segment.begin.y + startOffset.y },
-            edgeList,
-            segmentUvMapping.texture,
-            segment.direction
-            );
+            spline.drawCap(
+                segmentUvMapping.leftcap, 
+                "left", 
+                { x : segment.begin.x - startOffset.x, y : segment.begin.y - startOffset.y },
+                { x : segment.begin.x + startOffset.x, y : segment.begin.y + startOffset.y },
+                edgeList,
+                segmentUvMapping.texture,
+                segment.direction
+                );
         
         if(doLeftCap && doRightCap) 
             smoothFactor = 1;
@@ -773,7 +774,6 @@ Spline.addSplineFunctions = function(spline) {
             if(segment.direction == "top") {
                 edgeList.push({
                     texture : segmentUvMapping.texture.texture.image,
-                    color : this.color,
                     p1 : p1,
                     p2 : p2,
                     p3 : p3,
@@ -784,7 +784,6 @@ Spline.addSplineFunctions = function(spline) {
                 
                 edgeList.push({
                     texture : segmentUvMapping.texture.texture.image,
-                    color : this.color,
                     p1 : p1,
                     p2 : p4,
                     p3 : p3,
@@ -795,7 +794,6 @@ Spline.addSplineFunctions = function(spline) {
             } else {
                 edgeList.unshift({
                     texture : segmentUvMapping.texture.texture.image,
-                    color : this.color,
                     p1 : p1,
                     p2 : p2,
                     p3 : p3,
@@ -806,7 +804,6 @@ Spline.addSplineFunctions = function(spline) {
                 
                 edgeList.unshift({
                     texture : segmentUvMapping.texture.texture.image,
-                    color : this.color,
                     p1 : p1,
                     p2 : p4,
                     p3 : p3,
@@ -871,7 +868,6 @@ Spline.addSplineFunctions = function(spline) {
         if(driection == "top") {
             edges.push({
                 texture : texture.texture.image,
-                color : this.color,
                 p1 : p1,
                 p2 : p2,
                 p3 : p3,
@@ -882,7 +878,6 @@ Spline.addSplineFunctions = function(spline) {
             
             edges.push({
                 texture : texture.texture.image,
-                color : this.color,
                 p1 : p1,
                 p2 : p4,
                 p3 : p3,
@@ -893,7 +888,6 @@ Spline.addSplineFunctions = function(spline) {
         } else {
             edges.unshift({
                 texture : texture.texture.image,
-                color : this.color,
                 p1 : p1,
                 p2 : p2,
                 p3 : p3,
@@ -904,7 +898,6 @@ Spline.addSplineFunctions = function(spline) {
             
             edges.unshift({
                 texture : texture.texture.image,
-                color : this.color,
                 p1 : p1,
                 p2 : p4,
                 p3 : p3,
@@ -981,23 +974,23 @@ Spline.addSplineFunctions = function(spline) {
         
     };
     
-    spline.getEdgeDisplayStates = function() {
+    spline.getEdgeDisplayStates = function(location, origin, scale, angle, color) {
         var result = [];
         if(this.triangles != null) {
             for(var i = 0; i < this.edgeTriangles.length; i++) {
                 var tri = this.edgeTriangles[i];
-                var origin = { x : this.origin.x + this.location.x, y : this.origin.y + this.location.y };
-                var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * this.scale.x, y : tri.p1[1] * this.scale.y }, this.angle);
-                var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * this.scale.x, y : tri.p2[1] * this.scale.y }, this.angle);
-                var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * this.scale.x, y : tri.p3[1] * this.scale.y }, this.angle);
+                var origin = { x : origin.x + location.x, y : origin.y + location.y };
+                var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * scale.x, y : tri.p1[1] * scale.y }, angle);
+                var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * scale.x, y : tri.p2[1] * scale.y }, angle);
+                var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * scale.x, y : tri.p3[1] * scale.y }, angle);
                 
-                p1 = [ p1.x + this.location.x, p1.y + this.location.y ];
-                p2 = [ p2.x + this.location.x, p2.y + this.location.y ];
-                p3 = [ p3.x + this.location.x, p3.y + this.location.y ];
+                p1 = [ p1.x + location.x, p1.y + location.y ];
+                p2 = [ p2.x + location.x, p2.y + location.y ];
+                p3 = [ p3.x + location.x, p3.y + location.y ];
                 
                 result.push({
                     texture : tri.texture,
-                    color : [ tri.color.r, tri.color.g, tri.color.b, tri.color.a ],
+                    color : [ color.r, color.g, color.b, color.a ],
                     p1 : p1,
                     p2 : p2,
                     p3 : p3,
@@ -1010,23 +1003,23 @@ Spline.addSplineFunctions = function(spline) {
         return result;
     };
     
-    spline.getFillDisplayStates = function() {
+    spline.getFillDisplayStates = function(location, origin, scale, angle, color) {
         var result = [];
         if(this.triangles != null) {
             for(var i = 0; i < this.triangles.length; i++) {
                 var tri = this.triangles[i];
-                var origin = { x : this.origin.x + this.location.x, y : this.origin.y + this.location.y };
-                var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * this.scale.x, y : tri.p1[1] * this.scale.y }, this.angle);
-                var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * this.scale.x, y : tri.p2[1] * this.scale.y }, this.angle);
-                var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * this.scale.x, y : tri.p3[1] * this.scale.y }, this.angle);
+                var origin = { x : origin.x + location.x, y : origin.y + location.y };
+                var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * scale.x, y : tri.p1[1] * scale.y }, angle);
+                var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * scale.x, y : tri.p2[1] * scale.y }, angle);
+                var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * scale.x, y : tri.p3[1] * scale.y }, angle);
                 
-                p1 = [ p1.x + this.location.x, p1.y + this.location.y ];
-                p2 = [ p2.x + this.location.x, p2.y + this.location.y ];
-                p3 = [ p3.x + this.location.x, p3.y + this.location.y ];
+                p1 = [ p1.x + location.x, p1.y + location.y ];
+                p2 = [ p2.x + location.x, p2.y + location.y ];
+                p3 = [ p3.x + location.x, p3.y + location.y ];
                 
                 result.push({
                     texture : tri.texture,
-                    color : [ tri.color.r, tri.color.g, tri.color.b, tri.color.a ],
+                    color : [ color.r, color.g, color.b, color.a ],
                     p1 : p1,
                     p2 : p2,
                     p3 : p3,

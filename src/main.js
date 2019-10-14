@@ -97,7 +97,36 @@ function addDisplayBatchMode() {
         hasBegun: false,
         hasClip : false,
         clipRect : null,
-        transformMatrix: Matrix.identity()
+        transformMatrix: Matrix.identity(),
+        mapShader : new Shader('\
+            uniform mat4 MatrixTransform;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            varying vec2 TilePostion;\
+            void main( )\
+            {\
+                gl_Position = MatrixTransform * gl_Vertex;\
+                TilePostion = (gl_Vertex).xy;\
+                diffuseTexCoord = gl_TexCoord;\
+                diffuseColor = gl_Color;\
+            }\
+            ', '\
+            uniform sampler2D Texture;\
+            varying vec4 diffuseColor;\
+            varying vec4 diffuseTexCoord;\
+            varying vec2 TilePostion;\
+            uniform vec2 TileOffset;\
+            uniform vec2 TileSize;\
+            uniform vec2 TileUvOffset;\
+            uniform vec2 TileUvSize;\
+            void main( )\
+            {\
+                vec2 uv = TileUvOffset + fract((TilePostion - TileOffset) / TileSize) * TileUvSize;\
+                uv.y = 1.0 - uv.y;\
+                gl_FragColor = texture2D(Texture, uv) * diffuseColor;\
+            }\
+            '
+            )
     };
     
     Object.defineProperty(gl, 'camera', { get: function() { return displayBatchMode.camera; } });
@@ -180,8 +209,8 @@ function addDisplayBatchMode() {
     };
     
     /**
-    * 渲染动画
-    * @param   {IUIU.Animation}    ani         选中的动画
+    * 渲染物体
+    * @param   {IUIU.IObject}      obj         渲染的物体
     * @param   {int}               frame       所渲染的帧数
     * @param   {IUIU.Vector}       point       渲染的坐标
     * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
@@ -191,13 +220,16 @@ function addDisplayBatchMode() {
     * @date    2019-9-4
     * @author  KumaWang
     */
-    gl.animate = function(ani, frame, point, scale, origin, angle, color) {
+    gl.object = function(obj, frame, point, scale, origin, angle, color) {
         if (displayBatchMode.hasBegun == false)
             throw "begin() must be called before draw()";
         
-        for(var index = 0; index < ani.items.length; index++) {
-            var item = ani.items[index];
+        for(var index = 0; index < obj.items.length; index++) {
+            var item = obj.items[index];
             switch(item.type) {
+              case "spline":
+                gl.spline(item, frame, point, scale, origin, angle, color);
+                break;
               case "mesh":
                 gl.mesh(item, frame, point, scale, origin, angle, color);
                 break;
@@ -226,8 +258,62 @@ function addDisplayBatchMode() {
     };
     
     /**
+    * 渲染地形
+    * @param   {IUIU.IObject}      obj         渲染的地形
+    * @param   {int}               frame       所渲染的帧数
+    * @param   {IUIU.Vector}       point       渲染的坐标
+    * @param   {IUIU.Vector}       scale       渲染时采用的拉伸值
+    * @param   {IUIU.Vector}       origin      渲染时采用的旋转锚点
+    * @param   {int}               angle       渲染时采用的旋转值
+    * @param   {IUIU.Color}        color       渲染时采用的颜色过滤
+    * @date    2019-10-14
+    * @author  KumaWang
+    */
+    gl.spline = function(obj, frame, point, scale, origin, angle, color) {
+        var state = obj.getRealState(frame);
+        if(state == null) return;
+        
+        point = point || IUIU.Vector.zero;
+        scale = scale || IUIU.Vector.one;
+        origin = origin || IUIU.Vector.zero;
+        angle = angle || 0;
+        color = color || IUIU.Color.white;
+        
+        point = { x: point.x + state.x, y: point.y + state.y };
+        scale = { x: scale.x * state.scaleX, y: scale.y * state.scaleY };
+        origin = { x: origin.x + state.originX, y: origin.y + state.originY };
+        angle = (state.angle + angle) % 360;
+        color = { r : state.r / 255 * color.r, g : state.g / 255 * color.g, b : state.b  / 255* color.b, a : state.a / 255 * color.a };
+        
+        if(obj.fill.texture) {
+            gl.end();
+            gl.begin(gl.blendState, gl.camera, displayBatchMode.mapShader);
+            var states = obj.getFillDisplayStates(point, origin, scale, angle, color);
+            if(states != null) {
+                for(var x = 0; x < states.length; x++) {
+                    gl.draw(states[x]);
+                }
+            }
+            gl.end({
+                TileOffset : [ point.x, point.y ],
+                TileSize : [ obj.fill.texture.texture.image.width, obj.fill.texture.texture.image.height ],
+                TileUvOffset : [ obj.fill.texture.x / obj.fill.texture.texture.image.width, obj.fill.texture.y / obj.fill.texture.texture.image.width ],
+                TileUvSize : [ obj.fill.texture.width / obj.fill.texture.texture.image.width, obj.fill.texture.height / obj.fill.texture.texture.image.width ]
+            });
+            gl.begin();
+        }
+        
+        states = obj.getEdgeDisplayStates(point, origin, scale, angle, color);
+        if(states != null) {
+            for(var x = 0; x < states.length; x++) {
+                gl.draw(states[x]);
+            }
+        }
+    };
+    
+    /**
     * 渲染动画状态
-    * @param   {IUIU.AnimationState}   state       所渲染的状态
+    * @param   {IUIU.ObjectState}      state       所渲染的状态
     * @param   {IUIU.Vector}           point       渲染的坐标
     * @param   {IUIU.Vector}           scale       渲染时采用的拉伸值
     * @param   {IUIU.Vector}           origin      渲染时采用的旋转锚点
@@ -240,8 +326,8 @@ function addDisplayBatchMode() {
         if (displayBatchMode.hasBegun == false)
             throw "begin() must be called before draw()";
         
-        state.update(gl.elapsedTime);
-        gl.animate(state.animation, state.frame, point, scale, origin, angle, color);
+        //state.update(gl.elapsedTime);
+        gl.object(state.object, state.frame, point, scale, origin, angle, color);
     };
     
     /**
