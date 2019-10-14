@@ -9,7 +9,7 @@
   <Content Include="build.bat" />
   <Content Include="build.py" />
   <Folder Include="src">
-    <Compile Include="src\animation.js" />
+    <Compile Include="src\object.js" />
     <Compile Include="src\tile.js" />
     <Compile Include="src\color.js" />
     <Compile Include="src\common.js" />
@@ -37,6 +37,7 @@
     <Compile Include="src\WebSound.js" />
     <Compile Include="src\map.js" />
     <Compile Include="src\poly2tri.min.js" />
+    <Compile Include="src\collide.js" />
   </Folder>
   <Folder Include="demo">
     <Compile Include="demo\demo0-5.js" />
@@ -46,6 +47,7 @@
   <Folder Include="res">
     <Content Include="res\demo0-5.img" />
     <Content Include="res\demo0-5.map" />
+    <Content Include="res\test.obj" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />

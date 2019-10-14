@@ -1,0 +1,73 @@
+﻿{
+    "framerate": 30.0,
+    "loop": true,
+    "states": {},
+    "items": [
+        {
+            "name": "新曲线",
+            "visual": "true",
+            "locked": "false",
+            "type": "spline",
+            "points": [
+                "0,0",
+                "100,0",
+                "100,120",
+                "0,100"
+            ],
+            "uvmapping": {
+                "fill": {
+                    "inculde": "res/demo0-5.img&新切片"
+                },
+                "left": {
+                    "inculde": "res/demo0-5.img&新切片12",
+                    "bodies": [
+                        "14,772,232,62"
+                    ]
+                },
+                "top": {
+                    "inculde": "res/demo0-5.img&新切片1",
+                    "leftcap": "0,522,56,212",
+                    "rightcap": "451.5,522,59.5,212",
+                    "bodies": [
+                        "56,522,395.5,212"
+                    ]
+                },
+                "right": {
+                    "inculde": "res/demo0-5.img&新切片12",
+                    "bodies": [
+                        "14,772,232,62"
+                    ]
+                },
+                "bottom": {
+                    "inculde": "res/demo0-5.img&新切片22",
+                    "bodies": [
+                        "280,744,232,93"
+                    ]
+                }
+            },
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "location": "-352,-128",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "color": "116,163,91,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 28.0,
+                    "value": 1.0,
+                    "location": "-111,-33",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "color": "255,255,255,255",
+                    "smooth": "false"
+                }
+            ]
+        }
+    ]
+}

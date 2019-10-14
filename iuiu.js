@@ -8,7 +8,7 @@
 var IUIU = (function() {
 
 // src/animation.js
-function AnimationState(animation) {
+function ObjectState(animation) {
     this.frame = 0;
     this.elaspedTime = 0;
     this.isPlaying = true;
@@ -17,7 +17,7 @@ function AnimationState(animation) {
     this._state = null;
 }
 
-AnimationState.prototype = {
+ObjectState.prototype = {
     update : function(inv) {
         if(!this.isPlaying) return;
         
@@ -57,11 +57,11 @@ AnimationState.prototype = {
     }
 }
 
-function Animation() {
+function Object() {
     this.isVisual = true;
 }
 
-Animation.prototype  = {
+Object.prototype  = {
     getMaxFrame : function() {
         var maxFrame = 0;
         for(var i = 0; i < this.items.length; i++) {
@@ -73,7 +73,7 @@ Animation.prototype  = {
     },
     
     newState : function() {
-        return new AnimationState(this);
+        return new ObjectState(this);
     }
 }
 
@@ -103,15 +103,15 @@ function readKeyframe(json) {
     return frame;
 }
 
-Animation.create = function() {
-    var ani = new Animation();
+Object.create = function() {
+    var ani = nObjection();
     ani.items = [];
     ani.frameRate = 24;
     ani.loop = true;
     return ani;
 }
 
-Animation.fromJson = function(json, params, entry) {
+Object.fromJson = function(json, params, entry) {
     var ani = entry;
     ani.staties = {};
     ani.frameRate = parseFloat(json.framerate);
@@ -186,7 +186,7 @@ Animation.fromJson = function(json, params, entry) {
                 break;
                 
             case "collide":
-                var collide = AnimationItemCollideBox();
+                var collideObjectItemCollideBoxBox();
                 collide.points = [];
                 for(var index2 = 0; index2 < item.points.length; index2++) {
                     var point = item.points[index2];
@@ -455,7 +455,7 @@ function MeshVertexTrackerKeyPoint(key, offset) {
     };
 }
 
-function AnimationItemCollideBox() {
+function ObjectItemCollideBox() {
     return {};
 }
 
@@ -2168,10 +2168,10 @@ AnimationLoader.prototype = {
     responseType : 'text',
     load : function(buffer, params, entry) {
         var jsonObj = JSON.parse(buffer);
-        return Animation.fromJson(jsonObj, params, entry);
+        return Object.fromJson(jsonObj, params, entry);
     },
     create : function() {
-        return Animation.create();
+        return Object.create();
     }
 }
 

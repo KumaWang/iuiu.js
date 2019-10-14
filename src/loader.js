@@ -158,24 +158,24 @@ JsonLoader.prototype = {
     }
 }
 
-function AnimationLoader(loader) {
+function ObjectLoader(loader) {
     this.loader = loader;
 }
-AnimationLoader.prototype = {
+ObjectLoader.prototype = {
     responseType : 'text',
     load : function(buffer, params, entry) {
         var jsonObj = JSON.parse(buffer);
-        return Animation.fromJson(jsonObj, params, entry);
+        return Object.fromJson(jsonObj, params, entry);
     },
     create : function() {
-        return Animation.create();
+        return Object.create();
     }
 }
 
-function SectionLoader(loader) {
+function TilesLoader(loader) {
     this.loader = loader;
 }
-SectionLoader.prototype = {
+TilesLoader.prototype = {
     responseType : 'text',
     load : function(buffer, params, entry) {
         var jsonObj = JSON.parse(buffer);
@@ -240,9 +240,8 @@ function Loader(domain) {
     this.addMode('pak', new PackageLoader(this));
     this.addMode('ini', new IniLoader(this));
     this.addMode('json', new JsonLoader(this));
-    this.addMode("ani", new AnimationLoader(this));
-    this.addMode("img", new SectionLoader(this));
-    //this.addMode("level", new LevelLoader(this));
+    this.addMode("obj", new ObjectLoader(this));
+    this.addMode("img", new TilesLoader(this));
     this.addMode("map", new MapLoader(this));
     this.addMode("font", new FontLoader(this));
 }
