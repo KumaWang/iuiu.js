@@ -9,7 +9,7 @@ var IUIU = (function() {
 
 // src/collide.js
 function Collide() {
-} 
+}
 // src/color.js
 function Color(r, g, b, a) {
 	if (((((r | g) | b) | a) & -256) != 0) {
@@ -2149,11 +2149,13 @@ function addDisplayBatchMode() {
                     gl.draw(states[x]);
                 }
             }
+            
+            var endPoint = point; //MathTools.pointRotate(origin, point, angle);
             gl.end({
-                TileOffset : [ point.x, point.y ],
+                TileOffset : [ endPoint.x, endPoint.y ],
                 TileSize : [ obj.fill.texture.texture.image.width, obj.fill.texture.texture.image.height ],
-                TileUvOffset : [ obj.fill.texture.x / obj.fill.texture.texture.image.width, obj.fill.texture.y / obj.fill.texture.texture.image.width ],
-                TileUvSize : [ obj.fill.texture.width / obj.fill.texture.texture.image.width, obj.fill.texture.height / obj.fill.texture.texture.image.width ]
+                TileUvOffset : [ (obj.fill.texture.bounds.x - 1) / obj.fill.texture.texture.image.width, (obj.fill.texture.bounds.y - 1) / obj.fill.texture.texture.image.height ],
+                TileUvSize : [ obj.fill.texture.bounds.width / obj.fill.texture.texture.image.width, obj.fill.texture.bounds.height / obj.fill.texture.texture.image.height ]
             });
             gl.begin();
         }
@@ -2715,7 +2717,7 @@ function Map() {
 Map.prototype.update = function(gl, inv) {
     for(var i = 0; i < this.objects.length; i++) {
         var obj = this.objects[i];        
-        if(obj.type == "obj") {
+        if(obj.type == "object") {
             if(!this.states[obj]) {
                 this.states[obj] = obj.newState();
             }
@@ -2727,7 +2729,11 @@ Map.prototype.update = function(gl, inv) {
             if(obj.update) obj.update(inv);
         }
     }
-} 
+}
+
+Map.FindCollisions = function() {
+    
+}
 
 Map.create = function() {
     var map = new Map();
@@ -2744,7 +2750,7 @@ Map.fromJson = function(json, params, entry) {
         var itemJson = json.items[x];
         var obj = null;
         switch(itemJson.type) {
-          case "obj":
+          case "object":
             obj = IUIU.Loader.load(itemJson.inculde);
             break;
           case "image":
@@ -5021,7 +5027,7 @@ Spline.addSplineFunctions = function(spline) {
         if(this.triangles != null) {
             for(var i = 0; i < this.edgeTriangles.length; i++) {
                 var tri = this.edgeTriangles[i];
-                var origin = { x : origin.x + location.x, y : origin.y + location.y };
+                //var origin = { x : origin.x + location.x, y : origin.y + location.y };
                 var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * scale.x, y : tri.p1[1] * scale.y }, angle);
                 var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * scale.x, y : tri.p2[1] * scale.y }, angle);
                 var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * scale.x, y : tri.p3[1] * scale.y }, angle);
@@ -5050,7 +5056,7 @@ Spline.addSplineFunctions = function(spline) {
         if(this.triangles != null) {
             for(var i = 0; i < this.triangles.length; i++) {
                 var tri = this.triangles[i];
-                var origin = { x : origin.x + location.x, y : origin.y + location.y };
+                //var origin = { x : origin.x + location.x, y : origin.y + location.y };
                 var p1 = MathTools.pointRotate(origin, { x : tri.p1[0] * scale.x, y : tri.p1[1] * scale.y }, angle);
                 var p2 = MathTools.pointRotate(origin, { x : tri.p2[0] * scale.x, y : tri.p2[1] * scale.y }, angle);
                 var p3 = MathTools.pointRotate(origin, { x : tri.p3[0] * scale.x, y : tri.p3[1] * scale.y }, angle);
@@ -6035,7 +6041,7 @@ Tile.fromJson = function(json, param, entry) {
             keypoints.push(point);
         }
         
-        data.sheets[name] = { x : left, y : top, width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
+        data.sheets[name] = { bounds : bounds, x : left, y : top, width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
     }
     
     return data;

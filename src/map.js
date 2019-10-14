@@ -5,7 +5,7 @@ function Map() {
 Map.prototype.update = function(gl, inv) {
     for(var i = 0; i < this.objects.length; i++) {
         var obj = this.objects[i];        
-        if(obj.type == "obj") {
+        if(obj.type == "object") {
             if(!this.states[obj]) {
                 this.states[obj] = obj.newState();
             }
@@ -17,7 +17,11 @@ Map.prototype.update = function(gl, inv) {
             if(obj.update) obj.update(inv);
         }
     }
-} 
+}
+
+Map.FindCollisions = function() {
+    
+}
 
 Map.create = function() {
     var map = new Map();
@@ -34,7 +38,7 @@ Map.fromJson = function(json, params, entry) {
         var itemJson = json.items[x];
         var obj = null;
         switch(itemJson.type) {
-          case "obj":
+          case "object":
             obj = IUIU.Loader.load(itemJson.inculde);
             break;
           case "image":

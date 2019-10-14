@@ -1,9 +1,9 @@
 ﻿{
     "items": [
         {
-            "type": "obj",
+            "type": "object",
             "inculde": "res/test.obj",
-            "location": "590,317",
+            "location": "401,343",
             "scale": "1,1",
             "origin": "0,0",
             "angle": 0.0,

@@ -130,7 +130,7 @@ Tile.fromJson = function(json, param, entry) {
             keypoints.push(point);
         }
         
-        data.sheets[name] = { x : left, y : top, width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
+        data.sheets[name] = { bounds : bounds, x : left, y : top, width : Math.max(0, right - left), height : Math.max(0, bottom - top), texture : data, keypoints : keypoints }; 
     }
     
     return data;

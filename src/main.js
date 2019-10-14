@@ -294,11 +294,13 @@ function addDisplayBatchMode() {
                     gl.draw(states[x]);
                 }
             }
+            
+            var endPoint = point; //MathTools.pointRotate(origin, point, angle);
             gl.end({
-                TileOffset : [ point.x, point.y ],
+                TileOffset : [ endPoint.x, endPoint.y ],
                 TileSize : [ obj.fill.texture.texture.image.width, obj.fill.texture.texture.image.height ],
-                TileUvOffset : [ obj.fill.texture.x / obj.fill.texture.texture.image.width, obj.fill.texture.y / obj.fill.texture.texture.image.width ],
-                TileUvSize : [ obj.fill.texture.width / obj.fill.texture.texture.image.width, obj.fill.texture.height / obj.fill.texture.texture.image.width ]
+                TileUvOffset : [ (obj.fill.texture.bounds.x - 1) / obj.fill.texture.texture.image.width, (obj.fill.texture.bounds.y - 1) / obj.fill.texture.texture.image.height ],
+                TileUvSize : [ obj.fill.texture.bounds.width / obj.fill.texture.texture.image.width, obj.fill.texture.bounds.height / obj.fill.texture.texture.image.height ]
             });
             gl.begin();
         }
