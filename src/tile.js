@@ -111,8 +111,8 @@ Tile.fromJson = function(json, param, entry) {
         var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
         for(var i = 0; i < sheetJson.out.length; i++) {
             var values = sheetJson.out[i].split(',');
-            var x = parseFloat(values[0]) + bounds.x;
-            var y = parseFloat(values[1]) + bounds.y;
+            var x = parseFloat(values[0]);
+            var y = parseFloat(values[1]);
             var point = { x : x, y : y };
             keypoints.push(point);
             

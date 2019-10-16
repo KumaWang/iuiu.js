@@ -128,12 +128,23 @@ IObject.fromJson = function(json, params, entry) {
                 var tb = mesh2.brush;
                 var minX = Number.MAX_VALUE;
                 var minY = Number.MAX_VALUE;
+                var minX2 = Number.MAX_VALUE;
+                var minY2 = Number.MAX_VALUE;
+                
                 for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
                     var keypoint = mesh2.keypoints[index2];
                     var point = tb.keypoints[index2];
-                    var drawOffset = { x : point.x, y : point.y };
+                    
+                    if(minX2 > point.x + tb.bounds.x) minX2 = point.x + tb.bounds.x;
+                    if(minY2 > point.y + tb.bounds.y) minY2 = point.y + tb.bounds.y;
+                }
+                
+                for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
+                    var keypoint = mesh2.keypoints[index2];
+                    var point = tb.keypoints[index2];
+                    var drawOffset = { x : point.x + minX2, y : point.y + minY2 };
                     keypoint.drawOffset = drawOffset;
-                    keypoint.bindingUV = [ point.x / tb.texture.image.width, point.y / tb.texture.image.height ];
+                    keypoint.bindingUV = [ drawOffset.x / tb.texture.image.width, drawOffset.y / tb.texture.image.height ];
                     
                     if(minX > drawOffset.x) minX = drawOffset.x;
                     if(minY > drawOffset.y) minY = drawOffset.y;
@@ -149,7 +160,7 @@ IObject.fromJson = function(json, params, entry) {
                 key.parent = mesh;
                 key.keyframes = [];
                 // Ìí¼Ó·½·¨
-                addAnimationItemFunctions(key);
+                addObjectItemFunctions(key);
                 for(var index3 = 0; index3 < keypoint.keyframes.length; index3++) {
                     var keyframe = keypoint.keyframes[index3];
                     key.keyframes.push(readKeyframe(keyframe));
@@ -180,10 +191,14 @@ IObject.fromJson = function(json, params, entry) {
             collide.points = [];
             for(var index2 = 0; index2 < item.points.length; index2++) {
                 var point = item.points[index2];
-                var pointStr = point.split(',');
-                var x = parseFloat(pointStr[0]);
-                var y = parseFloat(pointStr[1]);
-                collide.points.push({ x : x, y : y });
+                var key = {};
+                key.keyframes = [];
+                addObjectItemFunctions(key);
+                for(var index3 = 0; index3 < point.keyframes.length; index3++) {
+                    var keyframe = point.keyframes[index3];
+                    key.keyframes.push(readKeyframe(keyframe));
+                }
+                collide.points.push(key);
             }
             
             baseItem = collide;
@@ -218,7 +233,7 @@ IObject.fromJson = function(json, params, entry) {
             spline.right = Spline.readSegment(item.uvmapping.right, spline);
             spline.bottom = Spline.readSegment(item.uvmapping.bottom, spline);
             
-            baseItem = spline;
+            baseItem = spline; 
             baseItem.type = "spline";
             break;
             
@@ -248,6 +263,9 @@ IObject.fromJson = function(json, params, entry) {
         
         ani.items.push(baseItem);
     }
+    
+    ani.body = CreateBody(ani);
+    
     return ani;
 }
 

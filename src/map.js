@@ -19,8 +19,37 @@ Map.prototype.update = function(gl, inv) {
     }
 }
 
-Map.FindCollisions = function() {
+Map.prototype.test = function(obj2, x, y) {
+    var collisions = [];
+    for(var i = 0; i < this.objects.length; i++) {
+        var obj = this.objects[i];
+        if(obj2 == obj) continue;
+        
+        for(x = 0; x < obj.body.parts.length; x++) {
+            for(var y = 0; y < obj2.body.parts.length; y++) {
+                var part = obj2.body.parts[y];
+                for(var l = 0; l < part.vertices.length; l++) {
+                    var curr = part.vertices[l];
+                    var next = part.vertices[l == part.vertices.length - 1 ? 0 : l + 1];
+                    
+                    curr = { x : curr.x * obj2.scale.x, y : curr.y * obj2.scale.y };
+                    next = { x : next.x * obj2.scale.x, y : next.y * obj2.scale.y };
+                    
+                    curr = MathTools.pointRotate(obj2.origin, curr, obj2.angle) + obj2.location;
+                    next = MathTools.pointRotate(obj2.origin, next, obj2.angle) + obj2.location;
+                    
+                    if(MathTools.collideLinePoly(curr.x, curr.y, next.x, next.y, obj.body.parts[x])) {
+                        collisions.push({ bodyA : obj, bodyB : obj2, partA : obj.body.parts[x], partB : obj2.body.parts[y] });
+                        
+                        break;
+                    }
+                
+                }
+            }
+        }
+    }
     
+    return collisions.length > 0 ? collisions : false;
 }
 
 Map.create = function() {

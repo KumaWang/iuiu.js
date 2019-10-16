@@ -251,6 +251,9 @@ function addDisplayBatchMode() {
                     gl.text(item.font, item.text, item.size, point, scale, origin, angle, color);
                 }
                 break;
+              case "collide":
+                
+                break;
               default:
                 throw "not yet support";
             }

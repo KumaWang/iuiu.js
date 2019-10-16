@@ -7,7 +7,7 @@ output_path = 'iuiu.js'
 import re, os, sys, time, tempfile
 
 header = '''/*
- * lightgl.js
+ * iuiu.js
  * http://github.com/KumaWang/iuiu.js/
  *
  * Copyright 2018 KumaWang

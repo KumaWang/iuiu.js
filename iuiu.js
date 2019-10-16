@@ -1,5 +1,5 @@
 /*
- * lightgl.js
+ * iuiu.js
  * http://github.com/KumaWang/iuiu.js/
  *
  * Copyright 2018 KumaWang
@@ -8,8 +8,25 @@
 var IUIU = (function() {
 
 // src/collide.js
-function Collide() {
+function CreateBody(object) {
+    var body = new Body();
+    for(var i = 0; i < object.items.length; i++) {
+        var item = object.items[i];
+        if(item.type == "collide") {
+            body.parts.push(new BodyPart(item));
+        }
+    }
 }
+
+function Body() {
+    this.parts = [];
+}
+
+function BodyPart(item) {
+    this.vertices = item.points;
+}
+
+
 // src/color.js
 function Color(r, g, b, a) {
 	if (((((r | g) | b) | a) & -256) != 0) {
@@ -2106,6 +2123,9 @@ function addDisplayBatchMode() {
                     gl.text(item.font, item.text, item.size, point, scale, origin, angle, color);
                 }
                 break;
+              case "collide":
+                
+                break;
               default:
                 throw "not yet support";
             }
@@ -2731,8 +2751,37 @@ Map.prototype.update = function(gl, inv) {
     }
 }
 
-Map.FindCollisions = function() {
+Map.prototype.test = function(obj2, x, y) {
+    var collisions = [];
+    for(var i = 0; i < this.objects.length; i++) {
+        var obj = this.objects[i];
+        if(obj2 == obj) continue;
+        
+        for(x = 0; x < obj.body.parts.length; x++) {
+            for(var y = 0; y < obj2.body.parts.length; y++) {
+                var part = obj2.body.parts[y];
+                for(var l = 0; l < part.vertices.length; l++) {
+                    var curr = part.vertices[l];
+                    var next = part.vertices[l == part.vertices.length - 1 ? 0 : l + 1];
+                    
+                    curr = { x : curr.x * obj2.scale.x, y : curr.y * obj2.scale.y };
+                    next = { x : next.x * obj2.scale.x, y : next.y * obj2.scale.y };
+                    
+                    curr = MathTools.pointRotate(obj2.origin, curr, obj2.angle) + obj2.location;
+                    next = MathTools.pointRotate(obj2.origin, next, obj2.angle) + obj2.location;
+                    
+                    if(MathTools.collideLinePoly(curr.x, curr.y, next.x, next.y, obj.body.parts[x])) {
+                        collisions.push({ bodyA : obj, bodyB : obj2, partA : obj.body.parts[x], partB : obj2.body.parts[y] });
+                        
+                        break;
+                    }
+                
+                }
+            }
+        }
+    }
     
+    return collisions.length > 0 ? collisions : false;
 }
 
 Map.create = function() {
@@ -2792,7 +2841,7 @@ function MathTools() {
 }
 
 MathTools.pointRotate = function(center, p1, angle) {
-	var tmp = {};
+    var tmp = {};
     var angleHude = -angle * Math.PI / 180;/*角度变成弧度*/
     var x1 = (p1.x - center.x) * Math.cos(angleHude) + (p1.y - center.y) * Math.sin(angleHude) + center.x;
     var y1 = -(p1.x - center.x) * Math.sin(angleHude) + (p1.y - center.y) * Math.cos(angleHude) + center.y;
@@ -2802,20 +2851,20 @@ MathTools.pointRotate = function(center, p1, angle) {
 }
 
 MathTools.getDistance = function(p1, p2) {
-	var a = p1.x - p2.x;
-	var b = p1.y - p2.y;
-	var distance = Math.sqrt(a * a + b * b);
-	return distance;
+    var a = p1.x - p2.x;
+    var b = p1.y - p2.y;
+    var distance = Math.sqrt(a * a + b * b);
+    return distance;
 }
 
 MathTools.getExtendPoint = function(p1, p2, length) {
-	var rotation = MathTools.getAngle(p1, p2);
-	var target = MathTools.pointRotate(p1, { x : p1.x, y : p1.y - length }, rotation);
-	return target;
+    var rotation = MathTools.getAngle(p1, p2);
+    var target = MathTools.pointRotate(p1, { x : p1.x, y : p1.y - length }, rotation);
+    return target;
 }
 
 MathTools.getAngle = function(p1, p2) {
-	var xDiff = p2.x - p1.x;
+    var xDiff = p2.x - p1.x;
     var yDiff = p2.y - p1.y;
 
     if (xDiff == 0 && yDiff == 0) return 0;
@@ -2825,9 +2874,9 @@ MathTools.getAngle = function(p1, p2) {
 }
 
 MathTools.maskPolygon = function(polygon, mask) {
-	var v = new [];
-	var intersectPoints = MathTools.intersectionPolygons(mask, polygon);
-	if (intersectPoints.length % 2 == 0 && intersectPoints.length > 0) {
+    var v = new [];
+    var intersectPoints = MathTools.intersectionPolygons(mask, polygon);
+    if (intersectPoints.length % 2 == 0 && intersectPoints.length > 0) {
         for (var c = 0; c < polygon.length; c++) {
             for (var k = intersectPoints.length - 2; k >= 0; k = k - 2) {
                 var start = intersectPoints[k];
@@ -2860,34 +2909,34 @@ MathTools.maskPolygon = function(polygon, mask) {
                 }
             }
         }
-	}
-	
-	return v;
+    }
+    
+    return v;
 }
 
 MathTools.intersectionPolygons = function(v1, v2) {
-	var result = [];
-	var temp = false;
-	
-	for(var i = 0; i < v2.length; i++) {
-		var curr = v2[i];
-		var next = v2[i == v2.length - 1 ? 0 : 1 ];
-		
-		var clipPoints = MathTools.clipLineWithPolygon(curr, next, v1);
-		for(var x = 0; x < clipPoints.length; i++) {
-			result.push({
-				index : i,
-				point : clipPoints[x].point,
-				outside : clipPoints[x].outsdie
-			});
-		}
-	}
-	
-	return result;
+    var result = [];
+    var temp = false;
+    
+    for(var i = 0; i < v2.length; i++) {
+        var curr = v2[i];
+        var next = v2[i == v2.length - 1 ? 0 : 1 ];
+        
+        var clipPoints = MathTools.clipLineWithPolygon(curr, next, v1);
+        for(var x = 0; x < clipPoints.length; i++) {
+            result.push({
+                index : i,
+                point : clipPoints[x].point,
+                outside : clipPoints[x].outsdie
+            });
+        }
+    }
+    
+    return result;
 }
 
 MathTools.clipLineWithPolygon = function(point1, point2, polygon_points) {
-	// Make lists to hold points of
+    // Make lists to hold points of
     // intersection and their t values.
     var intersections = [];
     var t_values = [];
@@ -2929,26 +2978,26 @@ MathTools.clipLineWithPolygon = function(point1, point2, polygon_points) {
 
     // Sort the points of intersection by t value.
     var s_array = [];
-	for(var i = 0; i < intersections.length; i++) {
-		s_array.push({ id : t_values[i], value : intersections[i] });
-	}
-	s_array.sort(function(a,b){
-		return a.id - b.id;
-	});
+    for(var i = 0; i < intersections.length; i++) {
+        s_array.push({ id : t_values[i], value : intersections[i] });
+    }
+    s_array.sort(function(a,b){
+        return a.id - b.id;
+    });
     
     var intersections_array = [];
-	for(var i = 0; i < s_array.length; i++) {
-		intersections_array.push(s_array[i].value);
-	}
-	
+    for(var i = 0; i < s_array.length; i++) {
+        intersections_array.push(s_array[i].value);
+    }
+    
     // Return the intersections.
     return intersections_array;
 }
 
 
 MathTools.findIntersection = function(p1, p2, p3, p4) {
-	var lines_intersect, segments_intersect, intersection, close_p1, close_p2, t1, t2;
-	
+    var lines_intersect, segments_intersect, intersection, close_p1, close_p2, t1, t2;
+    
     // Get the segments' parameters.
     var dx12 = p2.x - p1.x;
     var dy12 = p2.y - p1.y;
@@ -2963,7 +3012,7 @@ MathTools.findIntersection = function(p1, p2, p3, p4) {
         // The lines are parallel (or close enough to it).
         lines_intersect = false;
         segments_intersect = false;
-		intersection = { x : Number.NaN, y : Number.NaN };
+        intersection = { x : Number.NaN, y : Number.NaN };
         close_p1 = { x : Number.NaN, y : Number.NaN };
         close_p2 = { x : Number.NaN, y : Number.NaN };
         t2 = Number.POSITIVE_INFINITY;
@@ -2974,7 +3023,7 @@ MathTools.findIntersection = function(p1, p2, p3, p4) {
     t2 = ((p3.x - p1.x) * dy12 + (p1.y - p3.y) * dx12) / -denominator;
 
     // Find the point of intersection.
-	intersection = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
+    intersection = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
 
     // The segments intersect if t1 and t2 are between 0 and 1.
     segments_intersect = ((t1 >= 0) && (t1 <= 1) && (t2 >= 0) && (t2 <= 1));
@@ -2986,18 +3035,18 @@ MathTools.findIntersection = function(p1, p2, p3, p4) {
     if (t2 < 0) t2 = 0;
     else if (t2 > 1) t2 = 1;
 
-	close_p1 = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
-	close_p2 = { x : p3.x + dx34 * t2, y : p3.y + dy34 * t2 };
-	
-	return {
-		lines_intersect : lines_intersect,
-		segments_intersect : segments_intersect,
-		intersection : intersection,
-		close_p1 : close_p1,
-		close_p2 : close_p2,
-		t1 : t1,
-		t2 : t2
-	};
+    close_p1 = { x : p1.x + dx12 * t1, y : p1.y + dy12 * t1 };
+    close_p2 = { x : p3.x + dx34 * t2, y : p3.y + dy34 * t2 };
+    
+    return {
+        lines_intersect : lines_intersect,
+        segments_intersect : segments_intersect,
+        intersection : intersection,
+        close_p1 : close_p1,
+        close_p2 : close_p2,
+        t1 : t1,
+        t2 : t2
+    };
 }
 
 MathTools.pointIsInPolygon = function(x, y, polygon_points) {
@@ -3026,27 +3075,27 @@ MathTools.pointIsInPolygon = function(x, y, polygon_points) {
 }
 
 MathTools.getAngle2 = function(Ax, Ay, Bx, By, Cx, Cy) {
-	// Get the dot product.
-	var dot_product = MathTools.dotProduct(Ax, Ay, Bx, By, Cx, Cy);
+    // Get the dot product.
+    var dot_product = MathTools.dotProduct(Ax, Ay, Bx, By, Cx, Cy);
 
-	// Get the cross product.
-	var cross_product = MathTools.crossProductLength(Ax, Ay, Bx, By, Cx, Cy);
+    // Get the cross product.
+    var cross_product = MathTools.crossProductLength(Ax, Ay, Bx, By, Cx, Cy);
 
-	// Calculate the angle.
-	return Math.atan2(cross_product, dot_product);
+    // Calculate the angle.
+    return Math.atan2(cross_product, dot_product);
 }
 
 // Return the dot product AB · BC.
 // Note that AB · BC = |AB| * |BC| * Cos(theta).
 MathTools.dotProduct = function(Ax, Ay, Bx, By, Cx, Cy) {
-	// Get the vectors' coordinates.
-	var BAx = Ax - Bx;
-	var BAy = Ay - By;
-	var BCx = Cx - Bx;
-	var BCy = Cy - By;
+    // Get the vectors' coordinates.
+    var BAx = Ax - Bx;
+    var BAy = Ay - By;
+    var BCx = Cx - Bx;
+    var BCy = Cy - By;
 
-	// Calculate the dot product.
-	return (BAx * BCx + BAy * BCy);
+    // Calculate the dot product.
+    return (BAx * BCx + BAy * BCy);
 }
 
 MathTools.crossProductLength = function(Ax, Ay, Bx, By, Cx, Cy)
@@ -3060,6 +3109,101 @@ MathTools.crossProductLength = function(Ax, Ay, Bx, By, Cx, Cy)
     // Calculate the Z coordinate of the cross product.
     return (BAx * BCy - BAy * BCx);
 }
+
+MathTools.collideLineLine = function(x1, y1, x2, y2, x3, y3, x4, y4,calcIntersection) {
+    
+    var intersection;
+    
+    // calculate the distance to intersection point
+    var uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+    var uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+    
+    // if uA and uB are between 0-1, lines are colliding
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+        
+        if(this._collideDebug || calcIntersection){
+            // calc the point where the lines meet
+            var intersectionX = x1 + (uA * (x2-x1));
+            var intersectionY = y1 + (uA * (y2-y1));
+        }
+        
+        if(calcIntersection){
+            intersection = {
+                "x":intersectionX,
+                "y":intersectionY
+            }
+            return intersection;
+        }else{
+            return true;
+        }
+    }
+    if(calcIntersection){
+        intersection = {
+            "x":false,
+            "y":false
+        }
+        return intersection;
+    }
+    return false;
+}
+
+MathTools.collideLinePoly = function(x1, y1, x2, y2, vertices) {
+    
+    // go through each of the vertices, plus the next vertex in the list
+    var next = 0;
+    for (var current=0; current<vertices.length; current++) {
+        
+        // get next vertex in list if we've hit the end, wrap around to 0
+        next = current+1;
+        if (next == vertices.length) next = 0;
+        
+        // get the PVectors at our current position extract X/Y coordinates from each
+        var x3 = vertices[current].x;
+        var y3 = vertices[current].y;
+        var x4 = vertices[next].x;
+        var y4 = vertices[next].y;
+        
+        // do a Line/Line comparison if true, return 'true' immediately and stop testing (faster)
+        var hit = MathTools.collideLineLine(x1, y1, x2, y2, x3, y3, x4, y4);
+        if (hit) {
+            return true;
+        }
+    }
+    // never got a hit
+    return false;
+}
+
+MathTools.collidePolyPoly = function(p1, p2, interior) {
+    if (interior == undefined){
+        interior = false;
+    }
+    
+    // go through each of the vertices, plus the next vertex in the list
+    var next = 0;
+    for (var current=0; current<p1.length; current++) {
+        
+        // get next vertex in list, if we've hit the end, wrap around to 0
+        next = current+1;
+        if (next == p1.length) next = 0;
+        
+        // get the PVectors at our current position this makes our if statement a little cleaner
+        var vc = p1[current];    // c for "current"
+        var vn = p1[next];       // n for "next"
+        
+        //use these two points (a line) to compare to the other polygon's vertices using polyLine()
+        var collision = this.collideLinePoly(vc.x,vc.y,vn.x,vn.y,p2);
+        if (collision) return true;
+        
+        //check if the 2nd polygon is INSIDE the first
+        if(interior == true){
+            collision = this.collidePointPoly(p2[0].x, p2[0].y, p1);
+            if (collision) return true;
+        }
+    }
+    
+    return false;
+}
+
 // src/matrix.js
 // Represents a 4x4 matrix stored in row-major order that uses Float32Arrays
 // when available. Matrix operations can either be done using convenient
@@ -4176,12 +4320,23 @@ IObject.fromJson = function(json, params, entry) {
                 var tb = mesh2.brush;
                 var minX = Number.MAX_VALUE;
                 var minY = Number.MAX_VALUE;
+                var minX2 = Number.MAX_VALUE;
+                var minY2 = Number.MAX_VALUE;
+                
                 for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
                     var keypoint = mesh2.keypoints[index2];
                     var point = tb.keypoints[index2];
-                    var drawOffset = { x : point.x, y : point.y };
+                    
+                    if(minX2 > point.x + tb.bounds.x) minX2 = point.x + tb.bounds.x;
+                    if(minY2 > point.y + tb.bounds.y) minY2 = point.y + tb.bounds.y;
+                }
+                
+                for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
+                    var keypoint = mesh2.keypoints[index2];
+                    var point = tb.keypoints[index2];
+                    var drawOffset = { x : point.x + minX2, y : point.y + minY2 };
                     keypoint.drawOffset = drawOffset;
-                    keypoint.bindingUV = [ point.x / tb.texture.image.width, point.y / tb.texture.image.height ];
+                    keypoint.bindingUV = [ drawOffset.x / tb.texture.image.width, drawOffset.y / tb.texture.image.height ];
                     
                     if(minX > drawOffset.x) minX = drawOffset.x;
                     if(minY > drawOffset.y) minY = drawOffset.y;
@@ -4197,7 +4352,7 @@ IObject.fromJson = function(json, params, entry) {
                 key.parent = mesh;
                 key.keyframes = [];
                 // 添加方法
-                addAnimationItemFunctions(key);
+                addObjectItemFunctions(key);
                 for(var index3 = 0; index3 < keypoint.keyframes.length; index3++) {
                     var keyframe = keypoint.keyframes[index3];
                     key.keyframes.push(readKeyframe(keyframe));
@@ -4228,10 +4383,14 @@ IObject.fromJson = function(json, params, entry) {
             collide.points = [];
             for(var index2 = 0; index2 < item.points.length; index2++) {
                 var point = item.points[index2];
-                var pointStr = point.split(',');
-                var x = parseFloat(pointStr[0]);
-                var y = parseFloat(pointStr[1]);
-                collide.points.push({ x : x, y : y });
+                var key = {};
+                key.keyframes = [];
+                addObjectItemFunctions(key);
+                for(var index3 = 0; index3 < point.keyframes.length; index3++) {
+                    var keyframe = point.keyframes[index3];
+                    key.keyframes.push(readKeyframe(keyframe));
+                }
+                collide.points.push(key);
             }
             
             baseItem = collide;
@@ -4266,7 +4425,7 @@ IObject.fromJson = function(json, params, entry) {
             spline.right = Spline.readSegment(item.uvmapping.right, spline);
             spline.bottom = Spline.readSegment(item.uvmapping.bottom, spline);
             
-            baseItem = spline;
+            baseItem = spline; 
             baseItem.type = "spline";
             break;
             
@@ -4296,6 +4455,9 @@ IObject.fromJson = function(json, params, entry) {
         
         ani.items.push(baseItem);
     }
+    
+    ani.body = CreateBody(ani);
+    
     return ani;
 }
 
@@ -6022,8 +6184,8 @@ Tile.fromJson = function(json, param, entry) {
         var left = Number.MAX_VALUE, top = Number.MAX_VALUE, right = Number.MIN_VALUE, bottom = Number.MIN_VALUE;
         for(var i = 0; i < sheetJson.out.length; i++) {
             var values = sheetJson.out[i].split(',');
-            var x = parseFloat(values[0]) + bounds.x;
-            var y = parseFloat(values[1]) + bounds.y;
+            var x = parseFloat(values[0]);
+            var y = parseFloat(values[1]);
             var point = { x : x, y : y };
             keypoints.push(point);
             
