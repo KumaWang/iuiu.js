@@ -1,15 +1,9 @@
-var json;
-
-for(var x = 0; x < json.items.length; x++) {
-    var itemJson = json.items[x] + KKCv1();
-    itemJson
-} 
-
-function KKCv1() {
-    
+function foo() {
+        this.fooA = 1;
+        this.fooB = { interA : 1 };
 }
 
-function ItemName()
+function A(arg)
 {
-    
+    arg.a = 1;
 }

@@ -111,6 +111,10 @@ IObject.fromJson = function(json, params, entry) {
         ani.staties[json.states[index].name] = json.states[index].frame;
     }
     
+    var meshBoneInfos = {};
+    var boneParents = {};
+    var boneChildrens = {};
+    
     for(var index = 0; index < json.items.length; index++) {
         var item = json.items[index];
         var baseItem = null;
@@ -122,52 +126,37 @@ IObject.fromJson = function(json, params, entry) {
             mesh.keypoints = [];
             mesh.brush = new VoidBrush();
             
-            Tile.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
+            Tile.fromName(item.inculde, { mesh : mesh, json : item }, function(sheet, userToken) {
                 var mesh2 = userToken.mesh;
-                mesh2.brush = sheet;
+                var json2 = userToken.json;
                 var tb = mesh2.brush;
-                var minX = Number.MAX_VALUE;
-                var minY = Number.MAX_VALUE;
-                var minX2 = Number.MAX_VALUE;
-                var minY2 = Number.MAX_VALUE;
                 
+                mesh2.brush = sheet;
                 for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
-                    var keypoint = mesh2.keypoints[index2];
+                    var keypoint = {};
                     var point = tb.keypoints[index2];
                     
-                    if(minX2 > point.x + tb.bounds.x) minX2 = point.x + tb.bounds.x;
-                    if(minY2 > point.y + tb.bounds.y) minY2 = point.y + tb.bounds.y;
-                }
-                
-                for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
-                    var keypoint = mesh2.keypoints[index2];
-                    var point = tb.keypoints[index2];
-                    var drawOffset = { x : point.x + minX2, y : point.y + minY2 };
-                    keypoint.drawOffset = drawOffset;
-                    keypoint.bindingUV = [ drawOffset.x / tb.texture.image.width, drawOffset.y / tb.texture.image.height ];
+                    keypoint.offset = { x : point.x, y : point.y };
+                    keypoint.uv = { x : (point.x + tb.bounds.x) / tb.width, y : (point.y + tb.bounds.y) / tb.height };
                     
-                    if(minX > drawOffset.x) minX = drawOffset.x;
-                    if(minY > drawOffset.y) minY = drawOffset.y;
+                    mesh2.keypoints.push(keypoint);
                 }
-                mesh2.drawOffset = { x : minX, y : minY };          
-                mesh2.triangulate();
+                    
+                mesh2.triangulate(); 
+                for(var index2 = 0; index2 < json2.weights.length; index2++) {
+                    var weightJson = json2.weights[index2];
+                    var weight = parseInt(weightJson.value);
+                    var boneIndex = parseInt(weightJson.bone);
+                    var keyIndex = parseInt(weightJson.key);
+                    
+                    var keypoint = mesh2.keypoints[keyIndex];
+                    if(!meshBoneInfos[keypoint]) {
+                        meshBoneInfos[keypoint] = [];
+                    }
+                    
+                    meshBoneInfos[keypoint].push({ index : boneIndex, value : weight });
+                }
             });
-            
-            for(var index2 = 0; index2 < item.vertices.length; index2++) {
-                var keypoint = item.vertices[index2];
-                var key = {};
-                key.index = keypoint.index;
-                key.parent = mesh;
-                key.keyframes = [];
-                // Ìí¼Ó·½·¨
-                addObjectItemFunctions(key);
-                for(var index3 = 0; index3 < keypoint.keyframes.length; index3++) {
-                    var keyframe = keypoint.keyframes[index3];
-                    key.keyframes.push(readKeyframe(keyframe));
-                }
-                mesh.keypoints.push(key);
-                
-            }
             
             baseItem = mesh;
             baseItem.type = "mesh";
@@ -478,11 +467,12 @@ function MeshVertexTrackerDefault(position) {
     };
 }
 
-function MeshVertexTrackerKeyPoint(key, offset) {
+function MeshVertexTrackerKeyPoint(mesh, key) {
     return {
         key : key,
-        offset : offset,
+        mesh : mesh,
         getPostion : function(frame) {
+            /*
             var ps = this.key.parent.getRealState(frame);
             var state = this.key.getRealState(frame);
             if (state != null) {
@@ -491,6 +481,8 @@ function MeshVertexTrackerKeyPoint(key, offset) {
             else {
                 return { x : 0, y : 0 };
             }
+            */
+            return this.mesh.getPosition(this.key, frame);
         }
     };
 }
@@ -507,13 +499,75 @@ function ObjectItemMesh() {
     return {
         triangles : null,
         fixedUVs : {},
-        triangulate : function() {
+        getPositon : function(point, frame) 
+        {
+            var state = this.getRealState(frame);
+            if(state != null) 
+            {
+                var real = 
+                    { 
+                        x : point.offset.x + this.brush.bounds.x - this.brush.x,
+                        y : point.offset.y + this.brush.bounds.y - this.brush.y 
+                    };
+                
+                var d = MathTools.getDistance(
+                    real, 
+                    { 
+                        x : state.control.x + this.bounds.x + this.bounds.width / 2,
+                        y : state.control.y + this.bounds.y + this.bounds.height / 2
+                    });
+                    
+                real = this.getBonePoint(real, point, frame);
+                real = 
+                    { 
+                        x : real.x * this.scale.x + this.position.x,
+                        y : real.y * this.scale.y + this.position.y
+                    };
+                    
+                return MathTools.pointRotate(this.position, real, this.angle);
+            }
+        },
+        getBonePoint : function(real, point, frame)
+        {
+            for(var i = 0; i < point.weights.length; i++)
+            {
+                var weight = point.weights[i];
+                var state = weight.binding.getRealState(frame);
+                if(state != null && weight.weight != 0) 
+                {
+                    var start = 
+                    { 
+                        x : weight.binding.position.x - this.position.x,
+                        y : weight.binding.position.y - this.position.y
+                    };
+                    
+                    real = MathTools.pointRotate(start, real, (state.angle - weight.binding.angle) * weight.weight / 100);
+                    real = 
+                    {
+                        x : real.x + (weight.binding.start.x - weight.binding.position.y) * weight.weight / 100,
+                        y : real.y + (weight.binding.start.y - weight.binding.position.y) * weight.weight / 100
+                    };
+                }
+            }  
+            
+            return real;
+        },
+        triangulate : function() 
+        {
             var vertices = [];
-            this.fixedUVs = [];
+            
+            var minX = Number.MAX_VALUE, minY = Number.MAX_VALUE, maxX = Number.MIN_VALUE, maxY = Number.MIN_VALUE;            
             for(var i = 0; i < this.keypoints.length; i++) {
                 var keypoint = this.keypoints[i];
-                vertices.push([ keypoint.drawOffset.x - this.drawOffset.x, keypoint.drawOffset.y - this.drawOffset.y ]);
+                vertices.push([ keypoint.offset.x, keypoint.offset.y ]);
+                
+                if(keypoint.offset.x < minX) minX = keypoint.offset.x;
+                if(keypoint.offset.x > maxX) maxX = keypoint.offset.x;
+                if(keypoint.offset.y < minY) minY = keypoint.offset.y;
+                if(keypoint.offset.y > maxY) maxY = keypoint.offset.y;
             }
+            
+            this.bounds = { x : minX, y : minY, width : maxX - minX, height : maxY - minY };
             
             this.triangles = [];
             var delau_triangles = Delaunay.triangulate(vertices);
@@ -528,18 +582,16 @@ function ObjectItemMesh() {
                 var p3 = new MeshVertexTrackerDefault(v3);
                 
                 for(var i = 0; i < this.keypoints.length; i++) {
-                    var keypoint = this.keypoints[i];
-                    var real = { x : keypoint.drawOffset.x - this.drawOffset.x, y : keypoint.drawOffset.y - this.drawOffset.y };
-                    
-                    if (v1[0] == real.x && v1[1] == real.y) p1 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
-                    if (v2[0] == real.x && v2[1] == real.y) p2 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
-                    if (v3[0] == real.x && v3[1] == real.y) p3 = new MeshVertexTrackerKeyPoint(keypoint, this.drawOffset);
+                    var keypoint = this.keypoints[i];                   
+                    if (v1[0] == keypoint.offset.x && v1[1] == keypoint.offset.y) p1 = new MeshVertexTrackerKeyPoint(this, keypoint);
+                    if (v2[0] == keypoint.offset.x && v2[1] == keypoint.offset.y) p2 = new MeshVertexTrackerKeyPoint(this, keypoint);
+                    if (v3[0] == keypoint.offset.x && v3[1] == keypoint.offset.y) p3 = new MeshVertexTrackerKeyPoint(this, keypoint);
                 }
                 
                 this.triangles.push({
-                    p1 : { tracker : p1, uv : { x : (v1[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v1[1] + this.drawOffset.y) / this.brush.texture.image.height } },
-                    p2 : { tracker : p2, uv : { x : (v2[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v2[1] + this.drawOffset.y) / this.brush.texture.image.height } },
-                    p3 : { tracker : p3, uv : { x : (v3[0] + this.drawOffset.x) / this.brush.texture.image.width, y : (v3[1] + this.drawOffset.y) / this.brush.texture.image.height } },
+                    p1 : { tracker : p1, uv : { x : (v1[0] + this.brush.bounds.x) / this.brush.texture.image.width, y : (v1[1] + this.brush.bounds.y) / this.brush.texture.image.height } },
+                    p2 : { tracker : p2, uv : { x : (v2[0] + this.brush.bounds.x) / this.brush.texture.image.width, y : (v2[1] + this.brush.bounds.y) / this.brush.texture.image.height } },
+                    p3 : { tracker : p3, uv : { x : (v3[0] + this.brush.bounds.x) / this.brush.texture.image.width, y : (v3[1] + this.brush.bounds.y) / this.brush.texture.image.height } },
                 });
                 
             }
@@ -1077,4 +1129,9 @@ Spline.addSegmentFunctions = function(seg) {
         
         return angle < 0 ? angle + 360 : angle;
     };
+}
+
+function ObjectBone()
+{
+    
 }

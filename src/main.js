@@ -362,11 +362,11 @@ function addDisplayBatchMode() {
                 color = color || IUIU.Color.white;
                 
                 // »æÖÆÄÚ²¿Ìî³ä
-                var offset = { x : state.x + point.x, y : state.y + point.y };
+                var offset = { x : mesh.position.x + point.x, y : mesh.position.y + point.y };
                 color = { r : state.r * color.r, g : state.g * color.g, b : state.b * color.b, a : state.a * color.a };
-                origin = { x : offset.x + state.originX + origin.x, y : offset.y + state.originY + origin.y };
-                angle = (state.angle + angle) % 360;
-                scale = { x : state.scaleX * scale.x, y : state.scaleY * scale.y };
+                origin = { x : offset.x + mesh.origin.x + origin.x, y : offset.y + mesh.origin.y + origin.y };
+                angle = (mesh.angle + angle) % 360;
+                scale = { x : mesh.scale.x * scale.x, y : mesh.scale.y * scale.y };
                 var size = { x : img.width, y : img.height };
                 
                 for (var i = 0; i < mesh.triangles.length; i++)
