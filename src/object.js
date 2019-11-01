@@ -45,7 +45,7 @@ ObjectState.prototype = {
             this._init = false;
         }
     }
-}
+} 
 
 function IObject() {
     this.isVisual = true;
@@ -65,32 +65,6 @@ IObject.prototype  = {
     newState : function() {
         return new ObjectState(this);
     }
-}
-
-function readKeyframe(json) {
-    var locStr = json.location.split(',');
-    var scaleStr = json.scale.split(',');
-    var originStr = json.origin.split(',');
-    var colorStr = json.color.split(',');
-    
-    var frame = { 
-        frame : json.frame,
-        value : json.value,
-        x : parseFloat(locStr[0]),
-        y : parseFloat(locStr[1]),
-        originX : parseFloat(originStr[0]),
-        originY : parseFloat(originStr[1]),
-        angle : json.angle,
-        r : parseFloat(colorStr[0]),
-        g : parseFloat(colorStr[1]),
-        b : parseFloat(colorStr[2]),
-        a : parseFloat(colorStr[3]),
-        smooth : json.smooth,
-        scaleX : parseFloat(scaleStr[0]),
-        scaleY : parseFloat(scaleStr[1]),
-    };
-    
-    return frame;
 }
 
 IObject.create = function() {
@@ -133,9 +107,11 @@ IObject.fromJson = function(json, params, entry) {
                 
                 mesh2.brush = sheet;
                 for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
-                    var keypoint = {};
-                    var point = tb.keypoints[index2];
+                    var keypoint = {
+                        weights : []
+                    };
                     
+                    var point = tb.keypoints[index2];
                     keypoint.offset = { x : point.x, y : point.y };
                     keypoint.uv = { x : (point.x + tb.bounds.x) / tb.width, y : (point.y + tb.bounds.y) / tb.height };
                     
@@ -183,10 +159,6 @@ IObject.fromJson = function(json, params, entry) {
                 var key = {};
                 key.keyframes = [];
                 addObjectItemFunctions(key);
-                for(var index3 = 0; index3 < point.keyframes.length; index3++) {
-                    var keyframe = point.keyframes[index3];
-                    key.keyframes.push(readKeyframe(keyframe));
-                }
                 collide.points.push(key);
             }
             
@@ -195,9 +167,8 @@ IObject.fromJson = function(json, params, entry) {
             break;
             
           case "spline":
-            var spline = {};
-            Spline.addSplineFunctions(spline);
-            spline.type = "spline";
+            var spline = new ObjectSpline();
+            ObjectSpline.addSplineFunctions(spline);
             spline.points = [];
             spline.splitCornersThreshold = 120;
             spline.streachThreshold = 0;
@@ -216,26 +187,50 @@ IObject.fromJson = function(json, params, entry) {
             if(item.uvmapping.right.inculde != null) spline.downloadCount++;
             if(item.uvmapping.bottom.inculde != null) spline.downloadCount++;
             
-            spline.fill = Spline.readSegment(item.uvmapping.fill, spline);
-            spline.left = Spline.readSegment(item.uvmapping.left, spline);
-            spline.top = Spline.readSegment(item.uvmapping.top, spline);
-            spline.right = Spline.readSegment(item.uvmapping.right, spline);
-            spline.bottom = Spline.readSegment(item.uvmapping.bottom, spline);
+            spline.fill = ObjectSpline.readSegment(item.uvmapping.fill, spline);
+            spline.left = ObjectSpline.readSegment(item.uvmapping.left, spline);
+            spline.top = ObjectSpline.readSegment(item.uvmapping.top, spline);
+            spline.right = ObjectSpline.readSegment(item.uvmapping.right, spline);
+            spline.bottom = ObjectSpline.readSegment(item.uvmapping.bottom, spline);
             
             baseItem = spline; 
             baseItem.type = "spline";
+            break;
+            
+          case "bone":
+            var bone = new ObjectBone();
+            bone.length = item.length;            
+            boneParents[bone] = item.parent;
+            boneChildrens[bone] = [];
+            for(var i = 0; i < item.childrens.length; i++) {
+                boneChildrens[bone].push(item.childrens[i]);
+            }
+            
+            baseItem = bone;
+            baseItem.type = "bone";
             break;
             
           default:
             throw "not support data type";
         }
         
+        // 设置基础信息
+        var locStr = json.position.split(',');
+        var scaleStr = json.scale.split(',');
+        var originStr = json.origin.split(',');
+        
         baseItem.isVisual = Boolean(item.visual);
         baseItem.isLocked = Boolean(item.locked);
+        baseItem.position = { x : parseFloat(locStr[0]), y : parseFloat(locStr[1]) };
+        baseItem.scale = { x : parseFloat(scaleStr[0]), y : parseFloat(scaleStr[1]) };
+        baseItem.origin = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
+        baseItem.angle = parseFloat(json.angle);
+        
+        // 设置关键帧
         baseItem.keyframes = [];
         for(var index2 = 0; index2 < item.keyframes.length; index2++) {
             var keyframe = item.keyframes[index2];
-            baseItem.keyframes.push(readKeyframe(keyframe));
+            baseItem.keyframes.push(baseItem.readKeyframe(keyframe));
         }
         
         // 查找最大帧
@@ -250,9 +245,34 @@ IObject.fromJson = function(json, params, entry) {
         // 添加方法
         addObjectItemFunctions(baseItem);
         
+        // 添加物体
         ani.items.push(baseItem);
     }
     
+    // 引用关系
+    for(var key in meshBoneInfos) {
+        for(var i = 0; i < meshBoneInfos[key].length; i++) {
+            var bone = meshBoneInfos[key][i];
+            
+            key.weights.push({
+                binding : ani.items[bone.index],
+                weight : bone.value
+            });
+        }
+    }
+    
+    for(var info in boneParents) {
+        if(boneParents[info] != -1) {
+            info.parent = ani.items[boneParents[info]];
+        }
+    }
+    
+    for(var info in boneChildrens) {
+        for(var i = 0; i < boneChildrens[info].length; i++) {
+            info.childrens.push(ani.items[boneChildrens[info][i]]);
+        }
+    }
+       
     ani.body = CreateBody(ani);
     
     return ani;
@@ -348,107 +368,6 @@ function addObjectItemFunctions(baseItem) {
         
         return state;
     };
-    
-    baseItem.getRealState = function(frame) {
-        var lastState = this.getState(frame) || this.getLastState(frame);
-        if (lastState == null || (lastState.frame != frame && !lastState.smooth))
-            return null;
-        
-        var nextState = this.getNextState(frame);
-        var value = this.evaluate(frame);
-        var x, y, scalex, scaley, rotateZ, originX, originY;
-        var r, g, b, a;
-        if (lastState == null) {
-            if (nextState == null) {
-                return null;
-            }
-            
-            x = nextState.x;
-            y = nextState.y;
-            scalex = nextState.scaleX;
-            scaley = nextState.scaleY;
-            rotateZ = nextState.angle;
-            r = nextState.r;
-            g = nextState.g;
-            b = nextState.b;
-            a = nextState.a;
-            originX = nextState.originX;
-            originY = nextState.originY;
-        }
-        else if (nextState == null) {
-            if (lastState == null || lastState.frame != frame) {
-                return null;
-            }
-            
-            x = lastState.x;
-            y = lastState.y;
-            scalex = lastState.scaleX;
-            scaley = lastState.scaleY;
-            rotateZ = lastState.angle;
-            r = lastState.r;
-            g = lastState.g;
-            b = lastState.b;
-            a = lastState.a;
-            originX = lastState.originX;
-            originY = lastState.originY;
-        }
-        else {
-            value = value * (frame - lastState.frame) / (nextState.frame - lastState.frame);
-            
-            x = lastState.x + (nextState.x - lastState.x) * value;
-            y = lastState.y + (nextState.y - lastState.y) * value;
-            scalex = lastState.scaleX + (nextState.scaleX - lastState.scaleX) * value;
-            scaley = lastState.scaleY + (nextState.scaleY - lastState.scaleY) * value;
-            
-            rotateZ = lastState.angle + (nextState.angle - lastState.angle) * value;
-            
-            r = parseInt(lastState.r + (nextState.r - lastState.r) * value);
-            g = parseInt(lastState.g + (nextState.g - lastState.g) * value);
-            b = parseInt(lastState.b + (nextState.b - lastState.b) * value);
-            a = parseInt(lastState.a + (nextState.a - lastState.a) * value);
-            
-            originX = lastState.originX + (nextState.originX - lastState.originX) * value;
-            originY = lastState.originY + (nextState.originY - lastState.originY) * value;
-        }
-        
-        if (this.parent != null) {
-            var ps = this.parent.getRealState(frame);
-            if (ps != null) {
-                return {
-                    frame : frame,
-                    value : value,
-                    x : x + ps.x,
-                    y : y + ps.y,
-                    scaleX : scalex * ps.scaleX,
-                    scaleY : scaley * ps.scaleY,
-                    angle : rotateZ + ps.angle,
-                    r : r / 255 * ps.r,
-                    g : g / 255 * ps.g,
-                    b : b / 255 * ps.b,
-                    a : a / 255 * ps.a,
-                    originX : originX + ps.originX,
-                    originY : originY + ps.originY
-                };
-            }
-        }
-        else {
-            return {
-                frame : frame,
-                value : value,
-                x : x,
-                y : y,
-                scaleX : scalex,
-                scaleY : scaley,
-                angle : rotateZ,
-                r : r,
-                g : g,
-                b : b,
-                a : a,
-                originX : originX,
-                originY : originY
-            };
-        }
-    };
 }
 
 function VoidBrush() {
@@ -472,54 +391,168 @@ function MeshVertexTrackerKeyPoint(mesh, key) {
         key : key,
         mesh : mesh,
         getPostion : function(frame) {
-            /*
-            var ps = this.key.parent.getRealState(frame);
-            var state = this.key.getRealState(frame);
-            if (state != null) {
-                return { x : state.x - ps.x - this.offset.x, y : state.y - ps.y - this.offset.y };
-            }
-            else {
-                return { x : 0, y : 0 };
-            }
-            */
             return this.mesh.getPosition(this.key, frame);
         }
     };
 }
 
 function ObjectItemCollideBox() {
-    return {};
+    return {
+        readKeyframe : function (json) {
+            var offsetStr = json.offset.split(',');
+
+            var frame = {};
+            frame.frame = json.frame;
+            frame.value = json.value;
+            frame.smooth = json.smooth;
+            frame.offset = { x : parseFloat(offsetStr[0]), y : parseFloat(offsetStr[1]) };
+            return frame;
+        },
+        getRealState : function (frame) {
+            var lastState = this.getState(frame) || this.getLastState(frame);
+            if (lastState == null || (lastState.frame != frame && !lastState.smooth))
+                return null;
+        
+            var nextState = this.getNextState(frame);
+            var value = this.evaluate(frame);
+            
+            if(lastState == null) {
+                return nextState;
+            }
+            else if(nextState == null) {
+                return lastState;
+            }
+            else {
+                value = value * (frame - lastState.frame) / (nextState.frame - lastState.frame);
+                var x = lastState.control.x + (nextState.control.x - lastState.control.x) * value;
+                var y = lastState.control.y + (nextState.control.y - lastState.control.y) * value;
+
+                return {
+                    frame : frame,
+                    value : value,
+                    offset : { x : x, y : y }
+                };
+            }
+        }
+    };
 }
 
 function ObjectItemLabel() {
-    return {};
+    return {
+        readKeyframe : function (json) {
+            var colorStr = json.color.split(',');
+            
+            var frame = {};
+            frame.frame = json.frame;
+            frame.value = json.value;
+            frame.smooth = json.smooth;
+            frame.color = {
+                r : parseFloat(colorStr[0]),
+                g : parseFloat(colorStr[1]),
+                b : parseFloat(colorStr[2]),
+                a : parseFloat(colorStr[3])
+            };
+            return frame;
+        },
+        getRealState : function (frame) {
+            var lastState = this.getState(frame) || this.getLastState(frame);
+            if (lastState == null || (lastState.frame != frame && !lastState.smooth))
+                return null;
+        
+            var nextState = this.getNextState(frame);
+            var value = this.evaluate(frame);
+            
+            if(lastState == null) {
+                return nextState;
+            }
+            else if(nextState == null) {
+                return lastState;
+            }
+            else {
+                value = value * (frame - lastState.frame) / (nextState.frame - lastState.frame);
+                var r = parseInt(lastState.color.r + (nextState.color.r - lastState.color.r) * value);
+                var g = parseInt(lastState.color.g + (nextState.color.g - lastState.color.g) * value);
+                var b = parseInt(lastState.color.b + (nextState.color.b - lastState.color.b) * value);
+                var a = parseInt(lastState.color.a + (nextState.color.a - lastState.color.a) * value);
+                
+                return {
+                    frame : frame,
+                    value : value,
+                    color : { r : r, g : g, b : b, a : a }
+                };
+            }
+        }
+    };
 }
 
 function ObjectItemMesh() {
     return {
         triangles : null,
-        fixedUVs : {},
-        getPositon : function(point, frame) 
-        {
+        readKeyframe : function (json) {
+            var controlStr = json.control.split(',');
+            var colorStr = json.color.split(',');
+            
+            var frame = {};
+            frame.frame = json.frame;
+            frame.value = json.value;
+            frame.smooth = json.smooth;
+            frame.control = { x : parseFloat(controlStr[0]), y : parseFloat(controlStr[1]) };
+            frame.color = {
+                r : parseFloat(colorStr[0]),
+                g : parseFloat(colorStr[1]),
+                b : parseFloat(colorStr[2]),
+                a : parseFloat(colorStr[3])
+            };
+            return frame;
+        },
+        getRealState : function (frame) {
+            var lastState = this.getState(frame) || this.getLastState(frame);
+            if (lastState == null || (lastState.frame != frame && !lastState.smooth))
+                return null;
+        
+            var nextState = this.getNextState(frame);
+            var value = this.evaluate(frame);
+            
+            if(lastState == null) {
+                return nextState;
+            }
+            else if(nextState == null) {
+                return lastState;
+            }
+            else {
+                value = value * (frame - lastState.frame) / (nextState.frame - lastState.frame);
+                var x = lastState.control.x + (nextState.control.x - lastState.control.x) * value;
+                var y = lastState.control.y + (nextState.control.y - lastState.control.y) * value;
+                var r = parseInt(lastState.color.r + (nextState.color.r - lastState.color.r) * value);
+                var g = parseInt(lastState.color.g + (nextState.color.g - lastState.color.g) * value);
+                var b = parseInt(lastState.color.b + (nextState.color.b - lastState.color.b) * value);
+                var a = parseInt(lastState.color.a + (nextState.color.a - lastState.color.a) * value);
+                
+                return {
+                    frame : frame,
+                    value : value,
+                    control : { x : x, y : y },
+                    color : { r : r, g : g, b : b, a : a }
+                };
+            }
+        },
+        getPositon : function(point, frame) {
             var state = this.getRealState(frame);
             if(state != null) 
             {
-                var real = 
-                    { 
+                var real = { 
                         x : point.offset.x + this.brush.bounds.x - this.brush.x,
                         y : point.offset.y + this.brush.bounds.y - this.brush.y 
                     };
                 
                 var d = MathTools.getDistance(
-                    real, 
-                    { 
+                    real, { 
                         x : state.control.x + this.bounds.x + this.bounds.width / 2,
                         y : state.control.y + this.bounds.y + this.bounds.height / 2
                     });
                     
                 real = this.getBonePoint(real, point, frame);
-                real = 
-                    { 
+                real = { 
                         x : real.x * this.scale.x + this.position.x,
                         y : real.y * this.scale.y + this.position.y
                     };
@@ -527,33 +560,29 @@ function ObjectItemMesh() {
                 return MathTools.pointRotate(this.position, real, this.angle);
             }
         },
-        getBonePoint : function(real, point, frame)
-        {
+        getBonePoint : function(real, point, frame) {
             for(var i = 0; i < point.weights.length; i++)
             {
                 var weight = point.weights[i];
                 var state = weight.binding.getRealState(frame);
-                if(state != null && weight.weight != 0) 
-                {
-                    var start = 
-                    { 
+                if(state != null && weight.weight != 0) {
+                    var start = { 
                         x : weight.binding.position.x - this.position.x,
                         y : weight.binding.position.y - this.position.y
                     };
                     
+                    var start2 = weight.binding.start(frame);
                     real = MathTools.pointRotate(start, real, (state.angle - weight.binding.angle) * weight.weight / 100);
-                    real = 
-                    {
-                        x : real.x + (weight.binding.start.x - weight.binding.position.y) * weight.weight / 100,
-                        y : real.y + (weight.binding.start.y - weight.binding.position.y) * weight.weight / 100
+                    real = {
+                        x : real.x + (start2.x - weight.binding.position.y) * weight.weight / 100,
+                        y : real.y + (start2.y - weight.binding.position.y) * weight.weight / 100
                     };
                 }
             }  
             
             return real;
         },
-        triangulate : function() 
-        {
+        triangulate : function() {
             var vertices = [];
             
             var minX = Number.MAX_VALUE, minY = Number.MAX_VALUE, maxX = Number.MIN_VALUE, maxY = Number.MIN_VALUE;            
@@ -599,10 +628,60 @@ function ObjectItemMesh() {
     };
 }
 
-function Spline() {
+function ObjectSpline() {
+    return {
+        readKeyframe : function (json) {
+            var positionStr = json.position.split(',');
+            var colorStr = json.color.split(',');
+            
+            var frame = {};
+            frame.frame = json.frame;
+            frame.value = json.value;
+            frame.smooth = json.smooth;
+            frame.control = { x : parseFloat(positionStr[0]), y : parseFloat(positionStr[1]) };
+            frame.color = {
+                r : parseFloat(colorStr[0]),
+                g : parseFloat(colorStr[1]),
+                b : parseFloat(colorStr[2]),
+                a : parseFloat(colorStr[3])
+            };
+            return frame;
+        },
+        getRealState : function (frame) {
+            var lastState = this.getState(frame) || this.getLastState(frame);
+            if (lastState == null || (lastState.frame != frame && !lastState.smooth))
+                return null;
+        
+            var nextState = this.getNextState(frame);
+            var value = this.evaluate(frame);
+            
+            if(lastState == null) {
+                return nextState;
+            }
+            else if(nextState == null) {
+                return lastState;
+            }
+            else {
+                value = value * (frame - lastState.frame) / (nextState.frame - lastState.frame);
+                var x = lastState.position.x + (nextState.position.x - lastState.position.x) * value;
+                var y = lastState.position.y + (nextState.position.y - lastState.position.y) * value;
+                var r = parseInt(lastState.color.r + (nextState.color.r - lastState.color.r) * value);
+                var g = parseInt(lastState.color.g + (nextState.color.g - lastState.color.g) * value);
+                var b = parseInt(lastState.color.b + (nextState.color.b - lastState.color.b) * value);
+                var a = parseInt(lastState.color.a + (nextState.color.a - lastState.color.a) * value);
+                
+                return {
+                    frame : frame,
+                    value : value,
+                    position : { x : x, y : y },
+                    color : { r : r, g : g, b : b, a : a }
+                };
+            }
+        }
+    }
 }
 
-Spline.readSegment = function(json, spline) {
+ObjectSpline.readSegment = function(json, spline) {
     var seg = {};
     if(json.inculde) {
         Tile.fromName(json.inculde, { segment : seg, spline : spline }, function(sheet, userToken) {
@@ -650,7 +729,7 @@ Spline.readSegment = function(json, spline) {
     return seg;
 }
 
-Spline.addSplineFunctions = function(spline) {
+ObjectSpline.addSplineFunctions = function(spline) {
     spline.shouldCloseSegment = function(segment, side) {
         if(this.splitWhenDifferent && (side == "left" && segment.direction != segment.prevDirection || (side == "right" && segment.direction != segment.nextDirection)))
             return true;
@@ -765,7 +844,7 @@ Spline.addSplineFunctions = function(spline) {
         
         if(segment.prevprev != null && segment.prev != null) {
             var seg2 = { prev : segment.prevprev, begin : segment.prev, end : segment.begin };
-            Spline.addSegmentFunctions(seg2);
+            ObjectSpline.addSegmentFunctions(seg2);
             if(spline.shouldCloseSegment(seg2, "left")) {
                 segment.prevprev = null;
             }
@@ -999,7 +1078,7 @@ Spline.addSplineFunctions = function(spline) {
             seg.prevDirection = prev2 == null ? "none" : spline.calculateDirection(prev2, prev);
             seg.nextDirection = next == null ? "none" : spline.calculateDirection(cur, next);
             
-            Spline.addSegmentFunctions(seg);
+            ObjectSpline.addSegmentFunctions(seg);
             
             result.push(seg);
         }
@@ -1103,7 +1182,7 @@ Spline.addSplineFunctions = function(spline) {
     };
 }
 
-Spline.addSegmentFunctions = function(seg) {
+ObjectSpline.addSegmentFunctions = function(seg) {
     seg.angleBetween = function(v1, v2) {
         var y = v1.x * v2.y - v2.x * v1.y;
         var x = v1.x * v2.x + v1.y * v2.y;
@@ -1133,5 +1212,49 @@ Spline.addSegmentFunctions = function(seg) {
 
 function ObjectBone()
 {
-    
+    return {
+        start : function(frame) {
+           return this.parent == null ? this.position : this.parent.end(frame);
+        },
+        end : function(frame) {
+            var state = this.getRealState(frame);
+            var angle = state == null ? 0 : state.angle;
+            var start = this.start(frame);
+            return MathTools.pointRotate(start, { x : start.x, y : start.y - this.length }, angle);
+        },
+        readKeyframe : function (json) {
+            var frame = {};
+            frame.frame = json.frame;
+            frame.value = json.value;
+            frame.smooth = json.smooth;
+            frame.angle = json.angle;
+            return frame;
+        },
+        getRealState : function (frame) {
+            var lastState = this.getState(frame) || this.getLastState(frame);
+            if (lastState == null || (lastState.frame != frame && !lastState.smooth))
+                return null;
+        
+            var nextState = this.getNextState(frame);
+            var value = this.evaluate(frame);
+            
+            if(lastState == null) {
+                return nextState;
+            }
+            else if(nextState == null) {
+                return lastState;
+            }
+            else {
+                value = value * (frame - lastState.frame) / (nextState.frame - lastState.frame);
+                var angle = lastState.angle + (nextState.angle - lastState.angle) * value;
+
+                return {
+                    frame : frame,
+                    value : value,
+                    angle : angle
+                };
+            }
+        }
+    };
 }
+

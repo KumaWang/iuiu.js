@@ -242,11 +242,11 @@ function addDisplayBatchMode() {
                     angle = angle || 0;
                     color = color || IUIU.Color.white;
                     
-                    point = { x: point.x + state.x, y: point.y + state.y };
-                    scale = { x: scale.x * state.scaleX, y: scale.y * state.scaleY };
-                    origin = { x: origin.x + state.originX, y: origin.y + state.originY };
-                    angle = (state.angle + angle) % 360;
-                    color = { r : state.r * color.r, g : state.g * color.g, b : state.b * color.b, a : state.a * color.a };
+                    point = { x: point.x + item.position.x, y: point.y + item.position.y };
+                    scale = { x: scale.x * item.scale.x, y: scale.y * item.scale.y };
+                    origin = { x: origin.x + item.origin.x, y: origin.y + item.origin.y };
+                    angle = (item.angle + angle) % 360;
+                    color = { r : state.color.r * color.r, g : state.color.g * color.g, b : state.color.b * color.b, a : state.color.a * color.a };
                     
                     gl.text(item.font, item.text, item.size, point, scale, origin, angle, color);
                 }
@@ -282,11 +282,15 @@ function addDisplayBatchMode() {
         angle = angle || 0;
         color = color || IUIU.Color.white;
         
-        point = { x: point.x + state.x, y: point.y + state.y };
-        scale = { x: scale.x * state.scaleX, y: scale.y * state.scaleY };
-        origin = { x: origin.x + state.originX, y: origin.y + state.originY };
-        angle = (state.angle + angle) % 360;
-        color = { r : state.r / 255 * color.r, g : state.g / 255 * color.g, b : state.b  / 255* color.b, a : state.a / 255 * color.a };
+        point = { x: point.x + state.position.x, y: point.y + state.position.y };
+        //scale = { x: scale.x * state.scaleX, y: scale.y * state.scaleY };
+        origin = { x: origin.x + point.x, y: origin.y + point.y };
+        angle = (obj.angle + angle) % 360;
+        color = { 
+            r : state.color.r / 255 * color.r, 
+            g : state.color.g / 255 * color.g, 
+            b : state.color.b  / 255* color.b, 
+            a : state.color.a / 255 * color.a };
         
         if(obj.fill.texture) {
             gl.end();
@@ -298,7 +302,7 @@ function addDisplayBatchMode() {
                 }
             }
             
-            var endPoint = point; //MathTools.pointRotate(origin, point, angle);
+            var endPoint = point;
             gl.end({
                 TileOffset : [ endPoint.x, endPoint.y ],
                 TileSize : [ obj.fill.texture.texture.image.width, obj.fill.texture.texture.image.height ],
@@ -363,7 +367,7 @@ function addDisplayBatchMode() {
                 
                 // »æÖÆÄÚ²¿Ìî³ä
                 var offset = { x : mesh.position.x + point.x, y : mesh.position.y + point.y };
-                color = { r : state.r * color.r, g : state.g * color.g, b : state.b * color.b, a : state.a * color.a };
+                color = { r : state.color.r * color.r, g : state.color.g * color.g, b : state.color.b * color.b, a : state.color.a * color.a };
                 origin = { x : offset.x + mesh.origin.x + origin.x, y : offset.y + mesh.origin.y + origin.y };
                 angle = (mesh.angle + angle) % 360;
                 scale = { x : mesh.scale.x * scale.x, y : mesh.scale.y * scale.y };
