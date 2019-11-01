@@ -252,7 +252,7 @@ function addDisplayBatchMode() {
                 }
                 break;
               case "collide":
-                
+              case "bone":
                 break;
               default:
                 throw "not yet support";
@@ -282,7 +282,7 @@ function addDisplayBatchMode() {
         angle = angle || 0;
         color = color || IUIU.Color.white;
         
-        point = { x: point.x + state.position.x, y: point.y + state.position.y };
+        point = { x: point.x + obj.position.x, y: point.y + obj.position.y };
         //scale = { x: scale.x * state.scaleX, y: scale.y * state.scaleY };
         origin = { x: origin.x + point.x, y: origin.y + point.y };
         angle = (obj.angle + angle) % 360;
@@ -335,7 +335,7 @@ function addDisplayBatchMode() {
         if (displayBatchMode.hasBegun == false)
             throw "begin() must be called before draw()";
         
-        //state.update(gl.elapsedTime);
+        state.update(gl.elapsedTime);
         gl.object(state.object, state.frame, point, scale, origin, angle, color);
     };
     
@@ -366,7 +366,7 @@ function addDisplayBatchMode() {
                 color = color || IUIU.Color.white;
                 
                 // »æÖÆÄÚ²¿Ìî³ä
-                var offset = { x : mesh.position.x + point.x, y : mesh.position.y + point.y };
+                var offset = point;
                 color = { r : state.color.r * color.r, g : state.color.g * color.g, b : state.color.b * color.b, a : state.color.a * color.a };
                 origin = { x : offset.x + mesh.origin.x + origin.x, y : offset.y + mesh.origin.y + origin.y };
                 angle = (mesh.angle + angle) % 360;

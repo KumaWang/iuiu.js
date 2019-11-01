@@ -47,9 +47,10 @@
   <Folder Include="res">
     <Content Include="res\demo0-5.img" />
     <Content Include="res\demo0-5.map" />
-    <Content Include="res\test.obj" />
     <Content Include="res\a.font" />
     <Content Include="res\simhei.font" />
+    <Content Include="res\test.obj" />
+    <Content Include="res\test.img" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />

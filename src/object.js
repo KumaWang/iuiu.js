@@ -87,7 +87,7 @@ IObject.fromJson = function(json, params, entry) {
     
     var meshBoneInfos = {};
     var boneParents = {};
-    var boneChildrens = {};
+    //var boneChildrens = {};
     
     for(var index = 0; index < json.items.length; index++) {
         var item = json.items[index];
@@ -100,40 +100,53 @@ IObject.fromJson = function(json, params, entry) {
             mesh.keypoints = [];
             mesh.brush = new VoidBrush();
             
-            Tile.fromName(item.inculde, { mesh : mesh, json : item }, function(sheet, userToken) {
+            Tile.fromName(item.inculde, { mesh : mesh }, function(sheet, userToken) {
                 var mesh2 = userToken.mesh;
                 var json2 = userToken.json;
-                var tb = mesh2.brush;
+                var tb = sheet;
                 
                 mesh2.brush = sheet;
-                for(var index2 = 0; index2 < mesh2.keypoints.length; index2++) {
-                    var keypoint = {
-                        weights : []
-                    };
+                for(var index2 = 0; index2 < tb.keypoints.length; index2++) {
+                    var keypoint;
+                    if(index2 < mesh2.keypoints.length) {
+                        keypoint = mesh2.keypoints[index2];
+                    }
+                    else {
+                        keypoint = {
+                            weights : []
+                        };
+                        mesh2.keypoints.push(keypoint);
+                    }
                     
                     var point = tb.keypoints[index2];
                     keypoint.offset = { x : point.x, y : point.y };
-                    keypoint.uv = { x : (point.x + tb.bounds.x) / tb.width, y : (point.y + tb.bounds.y) / tb.height };
-                    
-                    mesh2.keypoints.push(keypoint);
+                    keypoint.uv = { x : (point.x + tb.bounds.x) / tb.texture.image.width, y : (point.y + tb.bounds.y) / tb.texture.image.height };
                 }
                     
                 mesh2.triangulate(); 
-                for(var index2 = 0; index2 < json2.weights.length; index2++) {
-                    var weightJson = json2.weights[index2];
-                    var weight = parseInt(weightJson.value);
-                    var boneIndex = parseInt(weightJson.bone);
-                    var keyIndex = parseInt(weightJson.key);
-                    
-                    var keypoint = mesh2.keypoints[keyIndex];
-                    if(!meshBoneInfos[keypoint]) {
-                        meshBoneInfos[keypoint] = [];
-                    }
-                    
-                    meshBoneInfos[keypoint].push({ index : boneIndex, value : weight });
-                }
             });
             
+            for(var index2 = 0; index2 < item.weights.length; index2++) {
+                var weightJson = item.weights[index2];
+                var weight = parseInt(weightJson.value);
+                var boneIndex = parseInt(weightJson.bone);
+                var keyIndex = parseInt(weightJson.key);
+                
+                for(var i = mesh.keypoints.length; i <= keyIndex; i++) {
+                    var keypoint = {
+                        weights : []
+                    };
+                    mesh.keypoints.push(keypoint);
+                }
+                
+                var keypoint = mesh.keypoints[keyIndex];
+                if(!meshBoneInfos[keypoint]) {
+                    meshBoneInfos[keypoint] = [];
+                }
+                
+                meshBoneInfos[keypoint].push({ key : keypoint, index : boneIndex, value : weight });
+            }
+        
             baseItem = mesh;
             baseItem.type = "mesh";
             break;
@@ -200,12 +213,13 @@ IObject.fromJson = function(json, params, entry) {
           case "bone":
             var bone = new ObjectBone();
             bone.length = item.length;            
-            boneParents[bone] = item.parent;
+            boneParents[bone] = { item : bone, parent : item.parent };
+            /*
             boneChildrens[bone] = [];
             for(var i = 0; i < item.childrens.length; i++) {
-                boneChildrens[bone].push(item.childrens[i]);
+                boneChildrens[bone].push({ item : item, child : item.childrens[i] });
             }
-            
+            */
             baseItem = bone;
             baseItem.type = "bone";
             break;
@@ -215,16 +229,16 @@ IObject.fromJson = function(json, params, entry) {
         }
         
         // 设置基础信息
-        var locStr = json.position.split(',');
-        var scaleStr = json.scale.split(',');
-        var originStr = json.origin.split(',');
+        var locStr = item.position.split(',');
+        var scaleStr = item.scale.split(',');
+        var originStr = item.origin.split(',');
         
         baseItem.isVisual = Boolean(item.visual);
         baseItem.isLocked = Boolean(item.locked);
         baseItem.position = { x : parseFloat(locStr[0]), y : parseFloat(locStr[1]) };
         baseItem.scale = { x : parseFloat(scaleStr[0]), y : parseFloat(scaleStr[1]) };
         baseItem.origin = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
-        baseItem.angle = parseFloat(json.angle);
+        baseItem.angle = parseFloat(item.angle);
         
         // 设置关键帧
         baseItem.keyframes = [];
@@ -252,9 +266,8 @@ IObject.fromJson = function(json, params, entry) {
     // 引用关系
     for(var key in meshBoneInfos) {
         for(var i = 0; i < meshBoneInfos[key].length; i++) {
-            var bone = meshBoneInfos[key][i];
-            
-            key.weights.push({
+            var bone = meshBoneInfos[key][i];      
+            bone.key.weights.push({
                 binding : ani.items[bone.index],
                 weight : bone.value
             });
@@ -262,17 +275,20 @@ IObject.fromJson = function(json, params, entry) {
     }
     
     for(var info in boneParents) {
-        if(boneParents[info] != -1) {
-            info.parent = ani.items[boneParents[info]];
+        var bone = boneParents[info];
+        if(bone.parent != -1) {
+            bone.item.parent = ani.items[bone.parent];
         }
     }
     
+    /*
     for(var info in boneChildrens) {
         for(var i = 0; i < boneChildrens[info].length; i++) {
             info.childrens.push(ani.items[boneChildrens[info][i]]);
         }
     }
-       
+    */
+    
     ani.body = CreateBody(ani);
     
     return ani;
@@ -402,9 +418,9 @@ function ObjectItemCollideBox() {
             var offsetStr = json.offset.split(',');
 
             var frame = {};
-            frame.frame = json.frame;
-            frame.value = json.value;
-            frame.smooth = json.smooth;
+            frame.frame = parseFloat(json.frame);
+            frame.value = parseFloat(json.value);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.offset = { x : parseFloat(offsetStr[0]), y : parseFloat(offsetStr[1]) };
             return frame;
         },
@@ -443,9 +459,9 @@ function ObjectItemLabel() {
             var colorStr = json.color.split(',');
             
             var frame = {};
-            frame.frame = json.frame;
-            frame.value = json.value;
-            frame.smooth = json.smooth;
+            frame.frame = parseFloat(json.frame);
+            frame.value = parseFloat(json.value);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.color = {
                 r : parseFloat(colorStr[0]),
                 g : parseFloat(colorStr[1]),
@@ -493,9 +509,9 @@ function ObjectItemMesh() {
             var colorStr = json.color.split(',');
             
             var frame = {};
-            frame.frame = json.frame;
-            frame.value = json.value;
-            frame.smooth = json.smooth;
+            frame.frame = parseFloat(json.frame);
+            frame.value = parseFloat(json.value);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.control = { x : parseFloat(controlStr[0]), y : parseFloat(controlStr[1]) };
             frame.color = {
                 r : parseFloat(colorStr[0]),
@@ -536,13 +552,13 @@ function ObjectItemMesh() {
                 };
             }
         },
-        getPositon : function(point, frame) {
+        getPosition : function(point, frame) {
             var state = this.getRealState(frame);
             if(state != null) 
             {
                 var real = { 
-                        x : point.offset.x + this.brush.bounds.x - this.brush.x,
-                        y : point.offset.y + this.brush.bounds.y - this.brush.y 
+                        x : point.offset.x - this.brush.x,
+                        y : point.offset.y - this.brush.y 
                     };
                 
                 var d = MathTools.getDistance(
@@ -574,7 +590,7 @@ function ObjectItemMesh() {
                     var start2 = weight.binding.start(frame);
                     real = MathTools.pointRotate(start, real, (state.angle - weight.binding.angle) * weight.weight / 100);
                     real = {
-                        x : real.x + (start2.x - weight.binding.position.y) * weight.weight / 100,
+                        x : real.x + (start2.x - weight.binding.position.x) * weight.weight / 100,
                         y : real.y + (start2.y - weight.binding.position.y) * weight.weight / 100
                     };
                 }
@@ -631,14 +647,12 @@ function ObjectItemMesh() {
 function ObjectSpline() {
     return {
         readKeyframe : function (json) {
-            var positionStr = json.position.split(',');
             var colorStr = json.color.split(',');
             
             var frame = {};
-            frame.frame = json.frame;
-            frame.value = json.value;
-            frame.smooth = json.smooth;
-            frame.control = { x : parseFloat(positionStr[0]), y : parseFloat(positionStr[1]) };
+            frame.frame = parseFloat(json.frame);
+            frame.value = parseFloat(json.value);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.color = {
                 r : parseFloat(colorStr[0]),
                 g : parseFloat(colorStr[1]),
@@ -663,8 +677,6 @@ function ObjectSpline() {
             }
             else {
                 value = value * (frame - lastState.frame) / (nextState.frame - lastState.frame);
-                var x = lastState.position.x + (nextState.position.x - lastState.position.x) * value;
-                var y = lastState.position.y + (nextState.position.y - lastState.position.y) * value;
                 var r = parseInt(lastState.color.r + (nextState.color.r - lastState.color.r) * value);
                 var g = parseInt(lastState.color.g + (nextState.color.g - lastState.color.g) * value);
                 var b = parseInt(lastState.color.b + (nextState.color.b - lastState.color.b) * value);
@@ -673,7 +685,6 @@ function ObjectSpline() {
                 return {
                     frame : frame,
                     value : value,
-                    position : { x : x, y : y },
                     color : { r : r, g : g, b : b, a : a }
                 };
             }
@@ -1224,10 +1235,10 @@ function ObjectBone()
         },
         readKeyframe : function (json) {
             var frame = {};
-            frame.frame = json.frame;
-            frame.value = json.value;
-            frame.smooth = json.smooth;
-            frame.angle = json.angle;
+            frame.frame = parseFloat(json.frame);
+            frame.value = parseFloat(json.value);
+            frame.smooth = json.smooth == "true" ? true : false;
+            frame.angle = parseFloat(json.angle);
             return frame;
         },
         getRealState : function (frame) {

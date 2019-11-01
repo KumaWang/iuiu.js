@@ -4,22 +4,15 @@
     "states": {},
     "items": [
         {
-            "name": "新曲线",
+            "name": "新曲线1",
             "visual": "true",
             "locked": "false",
             "type": "spline",
             "points": [
-                "-185,38",
-                "-43.25,52.75",
-                "-25.875,-130.875",
-                "188.5,-134.5",
-                "211.25,52.74999",
-                "357,42",
-                "406,237.5",
-                "402,410.2501",
-                "158,440",
-                "-5.499995,417.5",
-                "-169,395"
+                "0,0",
+                "100,0",
+                "100,120",
+                "0,100"
             ],
             "uvmapping": {
                 "fill": {
@@ -27,34 +20,28 @@
                 },
                 "left": {
                     "inculde": "res/demo0-5.img&新切片12",
-                    "leftcap": "14,772,5.068493,62",
-                    "rightcap": "211.3425,772,20.6575,62",
                     "bodies": [
-                        "19.06849,772,192.274,62"
+                        "14,772,232,62"
                     ]
                 },
                 "top": {
                     "inculde": "res/demo0-5.img&新切片1",
-                    "leftcap": "0,522,56,212",
-                    "rightcap": "451.5,522,59.5,212",
+                    "leftcap": "0,522,72.45522,212",
+                    "rightcap": "434.7314,522,76.26865,212",
                     "bodies": [
-                        "56,522,395.5,212"
+                        "72.45522,522,362.2761,212"
                     ]
                 },
                 "right": {
                     "inculde": "res/demo0-5.img&新切片12",
-                    "leftcap": "14,772,9.835617,62",
-                    "rightcap": "206.5754,772,25.42461,62",
                     "bodies": [
-                        "23.83562,772,182.7398,62"
+                        "14,772,232,62"
                     ]
                 },
                 "bottom": {
-                    "inculde": "res/demo0-5.img&新切片22",
-                    "leftcap": "280,744,-249.8082,93",
-                    "rightcap": "209.7535,744,22.24651,93",
+                    "inculde": "res/demo0-5.img&新切片12",
                     "bodies": [
-                        "30.19178,744,179.5617,93"
+                        "14,772,232,62"
                     ]
                 }
             },
@@ -63,24 +50,273 @@
                 {
                     "frame": 0.0,
                     "value": 1.0,
-                    "location": "-81,-259",
-                    "scale": "1,1",
-                    "origin": "0,0",
-                    "angle": 0.0,
                     "color": "255,255,255,255",
                     "smooth": "true"
                 },
                 {
-                    "frame": 28.0,
+                    "frame": 67.0,
                     "value": 1.0,
-                    "location": "-111,-33",
-                    "scale": "1,1",
-                    "origin": "0,0",
-                    "angle": 0.0,
                     "color": "255,255,255,255",
                     "smooth": "false"
                 }
-            ]
+            ],
+            "position": "-183,-80",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 0.0
+        },
+        {
+            "name": "新曲线",
+            "visual": "true",
+            "locked": "false",
+            "type": "spline",
+            "points": [
+                "0,0",
+                "204,-36",
+                "398,76",
+                "347,311",
+                "10,310"
+            ],
+            "uvmapping": {
+                "fill": {
+                    "inculde": "res/demo0-5.img&新切片"
+                },
+                "left": {
+                    "inculde": "res/demo0-5.img&新切片12",
+                    "bodies": [
+                        "14,772,232,62"
+                    ]
+                },
+                "top": {
+                    "inculde": "res/demo0-5.img&新切片1",
+                    "leftcap": "0,522,72.45522,212",
+                    "rightcap": "427.1045,522,83.89551,212",
+                    "bodies": [
+                        "72.45522,522,354.6493,212"
+                    ]
+                },
+                "right": {
+                    "inculde": "res/demo0-5.img&新切片12",
+                    "bodies": [
+                        "14,772,232,62"
+                    ]
+                },
+                "bottom": {
+                    "inculde": "res/demo0-5.img&新切片12",
+                    "bodies": [
+                        "14,772,232,62"
+                    ]
+                }
+            },
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 67.0,
+                    "value": 1.0,
+                    "color": "255,255,255,255",
+                    "smooth": "false"
+                },
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "604,391",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\test.img&新切片30",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 3.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 3.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 3.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 4.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 4.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 4.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 4.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 4.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 4.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 4.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 3.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 3.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 3.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 3.0,
+                    "key": 13.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "control": "3.11215,-2.780374",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 67.0,
+                    "value": 1.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "false"
+                }
+            ],
+            "position": "-33,-78",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新骨骼",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 50.3587151,
+            "parent": -1.0,
+            "childrens": [
+                0.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "angle": 186.842773,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 67.0,
+                    "value": 1.0,
+                    "angle": 215.323364,
+                    "smooth": "false"
+                }
+            ],
+            "position": "6,-65",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 186.842773
+        },
+        {
+            "name": "新骨骼1",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 34.7131081,
+            "parent": 3.0,
+            "childrens": {},
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "angle": 191.633636,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 67.0,
+                    "value": 1.0,
+                    "angle": 268.4578,
+                    "smooth": "false"
+                }
+            ],
+            "position": "0,-15",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 191.633636
+        },
+        {
+            "name": "新文字",
+            "visual": "true",
+            "locked": "false",
+            "type": "text",
+            "inculde": "res/a.font",
+            "size": 14.0,
+            "text": "IUIU",
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 67.0,
+                    "value": 1.0,
+                    "color": "255,255,255,255",
+                    "smooth": "false"
+                }
+            ],
+            "position": "-13,48",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
         }
     ]
 }
