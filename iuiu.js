@@ -2098,6 +2098,8 @@ function addDisplayBatchMode() {
         
         for(var index = 0; index < obj.items.length; index++) {
             var item = obj.items[index];
+            if(!item.visual) continue;
+            
             switch(item.type) {
               case "spline":
                 gl.spline(item, frame, point, scale, origin, angle, color);
@@ -4429,8 +4431,8 @@ IObject.fromJson = function(json, params, entry) {
         var scaleStr = item.scale.split(',');
         var originStr = item.origin.split(',');
         
-        baseItem.isVisual = Boolean(item.visual);
-        baseItem.isLocked = Boolean(item.locked);
+        baseItem.visual = item.visual == "true" ? true : false;
+        baseItem.locked = item.locked == "true" ? true : false;
         baseItem.position = { x : parseFloat(locStr[0]), y : parseFloat(locStr[1]) };
         baseItem.scale = { x : parseFloat(scaleStr[0]), y : parseFloat(scaleStr[1]) };
         baseItem.origin = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
@@ -4616,7 +4618,7 @@ function ObjectItemCollideBox() {
             var frame = {};
             frame.frame = parseFloat(json.frame);
             frame.value = parseFloat(json.value);
-            frame.smooth = Boolean(json.smooth);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.offset = { x : parseFloat(offsetStr[0]), y : parseFloat(offsetStr[1]) };
             return frame;
         },
@@ -4707,7 +4709,7 @@ function ObjectItemMesh() {
             var frame = {};
             frame.frame = parseFloat(json.frame);
             frame.value = parseFloat(json.value);
-            frame.smooth = Boolean(json.smooth);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.control = { x : parseFloat(controlStr[0]), y : parseFloat(controlStr[1]) };
             frame.color = {
                 r : parseFloat(colorStr[0]),
@@ -4769,7 +4771,12 @@ function ObjectItemMesh() {
                         y : real.y * this.scale.y + this.position.y
                     };
                     
-                return MathTools.pointRotate(this.position, real, this.angle);
+                var origin = {
+                    x : this.position.x + this.origin.x,
+                    y : this.position.y + this.origin.y
+                };
+                    
+                return MathTools.pointRotate(origin, real, this.angle);
             }
         },
         getBonePoint : function(real, point, frame) {
@@ -4848,7 +4855,7 @@ function ObjectSpline() {
             var frame = {};
             frame.frame = parseFloat(json.frame);
             frame.value = parseFloat(json.value);
-            frame.smooth = Boolean(json.smooth);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.color = {
                 r : parseFloat(colorStr[0]),
                 g : parseFloat(colorStr[1]),
@@ -5421,7 +5428,12 @@ function ObjectBone()
 {
     return {
         start : function(frame) {
-           return this.parent == null ? this.position : this.parent.end(frame);
+            if(this.parent == null) {
+                return this.position;
+            }
+            else {
+                return this.parent.end(frame);
+            }
         },
         end : function(frame) {
             var state = this.getRealState(frame);
@@ -5433,7 +5445,7 @@ function ObjectBone()
             var frame = {};
             frame.frame = parseFloat(json.frame);
             frame.value = parseFloat(json.value);
-            frame.smooth = Boolean(json.smooth);
+            frame.smooth = json.smooth == "true" ? true : false;
             frame.angle = parseFloat(json.angle);
             return frame;
         },

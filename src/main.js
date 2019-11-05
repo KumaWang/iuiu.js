@@ -226,6 +226,8 @@ function addDisplayBatchMode() {
         
         for(var index = 0; index < obj.items.length; index++) {
             var item = obj.items[index];
+            if(!item.visual) continue;
+            
             switch(item.type) {
               case "spline":
                 gl.spline(item, frame, point, scale, origin, angle, color);

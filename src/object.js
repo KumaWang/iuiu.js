@@ -64,6 +64,20 @@ IObject.prototype  = {
     
     newState : function() {
         return new ObjectState(this);
+    },
+    
+    attach : function(object) {
+        for(var x = 0; x < this.items.length; x++) {
+            var item2 = this.items[x];
+            if(item2.type == "mesh") {
+                for(var i = 0; i < object.items.length; i++) {
+                    var item = object.items[i];
+                    if(item.type == "bone") {
+                        
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -233,8 +247,8 @@ IObject.fromJson = function(json, params, entry) {
         var scaleStr = item.scale.split(',');
         var originStr = item.origin.split(',');
         
-        baseItem.isVisual = Boolean(item.visual);
-        baseItem.isLocked = Boolean(item.locked);
+        baseItem.visual = item.visual == "true" ? true : false;
+        baseItem.locked = item.locked == "true" ? true : false;
         baseItem.position = { x : parseFloat(locStr[0]), y : parseFloat(locStr[1]) };
         baseItem.scale = { x : parseFloat(scaleStr[0]), y : parseFloat(scaleStr[1]) };
         baseItem.origin = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
@@ -280,14 +294,6 @@ IObject.fromJson = function(json, params, entry) {
             bone.item.parent = ani.items[bone.parent];
         }
     }
-    
-    /*
-    for(var info in boneChildrens) {
-        for(var i = 0; i < boneChildrens[info].length; i++) {
-            info.childrens.push(ani.items[boneChildrens[info][i]]);
-        }
-    }
-    */
     
     ani.body = CreateBody(ani);
     
@@ -504,6 +510,15 @@ function ObjectItemLabel() {
 function ObjectItemMesh() {
     return {
         triangles : null,
+        attach : function (bone) {
+            for(var i = 0; i < this.keypoints.length; i++) {
+                var keypoint = this.keypoints[i];
+                keypoint.weights.push({
+                    binding : bone,
+                    weight : 100
+                });
+            }
+        },
         readKeyframe : function (json) {
             var controlStr = json.control.split(',');
             var colorStr = json.color.split(',');
@@ -573,7 +588,12 @@ function ObjectItemMesh() {
                         y : real.y * this.scale.y + this.position.y
                     };
                     
-                return MathTools.pointRotate(this.position, real, this.angle);
+                var origin = {
+                    x : this.position.x + this.origin.x,
+                    y : this.position.y + this.origin.y
+                };
+                    
+                return MathTools.pointRotate(origin, real, this.angle);
             }
         },
         getBonePoint : function(real, point, frame) {
@@ -1225,7 +1245,12 @@ function ObjectBone()
 {
     return {
         start : function(frame) {
-           return this.parent == null ? this.position : this.parent.end(frame);
+            if(this.parent == null) {
+                return this.position;
+            }
+            else {
+                return this.parent.end(frame);
+            }
         },
         end : function(frame) {
             var state = this.getRealState(frame);
@@ -1268,4 +1293,3 @@ function ObjectBone()
         }
     };
 }
-

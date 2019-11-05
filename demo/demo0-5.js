@@ -1,7 +1,7 @@
 // 新建渲染器
 var gl = IUIU.create(null, { hittest : false, useGL : true });
 
-var state = IUIU.Loader.load("res/test.obj").newState();
+var state = IUIU.Loader.load("res/base.obj").newState();
 
 // 设置每帧更新
 gl.onupdate = function(inv) 

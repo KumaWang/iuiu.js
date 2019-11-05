@@ -51,6 +51,15 @@
     <Content Include="res\simhei.font" />
     <Content Include="res\test.obj" />
     <Content Include="res\test.img" />
+    <Folder Include="res\config">
+      <Folder Include="res\config\character" />
+    </Folder>
+    <Folder Include="res\object">
+      <Folder Include="res\object\character" />
+    </Folder>
+    <Content Include="res\test.map" />
+    <Content Include="res\base.img" />
+    <Content Include="res\base.obj" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />
@@ -59,5 +68,10 @@
     <Compile Include="test\test.js" />
     <Compile Include="test\comment.js" />
     <Compile Include="test\document.js" />
+  </Folder>
+  <Folder Include="framework">
+    <Compile Include="framework\character.js" />
+    <Compile Include="framework\equip.js" />
+    <Compile Include="framework\scene.js" />
   </Folder>
 </Project>

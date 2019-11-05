@@ -66,69 +66,6 @@
             "angle": 0.0
         },
         {
-            "name": "新曲线",
-            "visual": "true",
-            "locked": "false",
-            "type": "spline",
-            "points": [
-                "0,0",
-                "204,-36",
-                "398,76",
-                "347,311",
-                "10,310"
-            ],
-            "uvmapping": {
-                "fill": {
-                    "inculde": "res/demo0-5.img&新切片"
-                },
-                "left": {
-                    "inculde": "res/demo0-5.img&新切片12",
-                    "bodies": [
-                        "14,772,232,62"
-                    ]
-                },
-                "top": {
-                    "inculde": "res/demo0-5.img&新切片1",
-                    "leftcap": "0,522,72.45522,212",
-                    "rightcap": "427.1045,522,83.89551,212",
-                    "bodies": [
-                        "72.45522,522,354.6493,212"
-                    ]
-                },
-                "right": {
-                    "inculde": "res/demo0-5.img&新切片12",
-                    "bodies": [
-                        "14,772,232,62"
-                    ]
-                },
-                "bottom": {
-                    "inculde": "res/demo0-5.img&新切片12",
-                    "bodies": [
-                        "14,772,232,62"
-                    ]
-                }
-            },
-            "modules": {},
-            "keyframes": [
-                {
-                    "frame": 67.0,
-                    "value": 1.0,
-                    "color": "255,255,255,255",
-                    "smooth": "false"
-                },
-                {
-                    "frame": 0.0,
-                    "value": 1.0,
-                    "color": "255,255,255,255",
-                    "smooth": "true"
-                }
-            ],
-            "position": "604,391",
-            "origin": "0,0",
-            "scale": "0,0",
-            "angle": 0.0
-        },
-        {
             "name": "新切片",
             "visual": "true",
             "locked": "false",
@@ -137,72 +74,72 @@
             "weights": [
                 {
                     "value": 100.0,
-                    "bone": 3.0,
+                    "bone": 2.0,
                     "key": 0.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 3.0,
+                    "bone": 2.0,
                     "key": 1.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 3.0,
+                    "bone": 2.0,
                     "key": 2.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 4.0,
+                    "bone": 3.0,
                     "key": 3.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 4.0,
+                    "bone": 3.0,
                     "key": 4.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 4.0,
+                    "bone": 3.0,
                     "key": 5.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 4.0,
+                    "bone": 3.0,
                     "key": 6.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 4.0,
+                    "bone": 3.0,
                     "key": 7.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 4.0,
+                    "bone": 3.0,
                     "key": 8.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 4.0,
+                    "bone": 3.0,
                     "key": 9.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 3.0,
+                    "bone": 2.0,
                     "key": 10.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 3.0,
+                    "bone": 2.0,
                     "key": 11.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 3.0,
+                    "bone": 2.0,
                     "key": 12.0
                 },
                 {
                     "value": 100.0,
-                    "bone": 3.0,
+                    "bone": 2.0,
                     "key": 13.0
                 }
             ],
@@ -268,7 +205,7 @@
             "minLimiter": -3.14159274,
             "maxLimiter": 3.14159274,
             "length": 34.7131081,
-            "parent": 3.0,
+            "parent": 2.0,
             "childrens": {},
             "modules": {},
             "keyframes": [
