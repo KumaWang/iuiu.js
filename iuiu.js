@@ -29,55 +29,55 @@ function BodyPart(item) {
 
 // src/color.js
 function Color(r, g, b, a) {
-    if (((((r | g) | b) | a) & -256) != 0) {
-        r = r < 0 ? 0 : (r > 255 ? 255 : r);
+	if (((((r | g) | b) | a) & -256) != 0) {
+    	r = r < 0 ? 0 : (r > 255 ? 255 : r);
         g = g < 0 ? 0 : (g > 255 ? 255 : g);
         b = b < 0 ? 0 : (b > 255 ? 255 : b);
         a = a < 0 ? 0 : (a > 255 ? 255 : a);
     } else {
-        r = r / 255;
-        g = g / 255;
-        b = b / 255;
-        a = a / 255;
-    }
-    
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
+    	r = r / 255;
+    	g = g / 255;
+    	b = b / 255;
+    	a = a / 255;
+	}
+	
+	this.r = r;
+	this.g = g;
+	this.b = b;
+	this.a = a;
 }
 Color.prototype = {
-    toArray : function(n) {
-        return [this.r, this.g, this.b, this.a].slice(0, n || 4);
-    },
-    multiply : function multiply(other) {
-        return new Color(
-            Math.floor(this.r * other.r / 255.0),
-            Math.floor(this.g * other.g / 255.0),
-            Math.floor(this.b * other.b / 255.0),
-            Math.floor(this.a * other.a / 255.0));
-    },
-    clone : function() {
-        var result = new Color();
-        result.r = this.r;
-        result.g = this.g;
-        result.b = this.b;
-        result.a = this.a;
-        return result;
-    }
+	toArray : function(n) {
+		return [this.r, this.g, this.b, this.a].slice(0, n || 4);
+	},
+	multiply : function multiply(other) {
+	    return new Color(
+	    	Math.floor(this.r * other.r / 255.0),
+	    	Math.floor(this.g * other.g / 255.0),
+	    	Math.floor(this.b * other.b / 255.0),
+	    	Math.floor(this.a * other.a / 255.0));
+	},
+	clone : function() {
+		var result = new Color();
+		result.r = this.r;
+		result.g = this.g;
+		result.b = this.b;
+		result.a = this.a;
+		return result;
+	}
 };
 
 Color.multiply = function(value, scale) {
-    var r = value.r;
-    var g = value.g;
-    var b = value.b;
-    var a = value.a;
-    
-    var value = scale*65536;
-    var min = 0;
-    var max = 0xffffff;
-    
-    value = (value > max) ? max : value;
+	var r = value.r;
+	var g = value.g;
+	var b = value.b;
+	var a = value.a;
+	
+ 	var value = scale*65536;
+ 	var min = 0;
+ 	var max = 0xffffff;
+	
+	value = (value > max) ? max : value;
     value = (value < min) ? min : value;
     var uintScale = value < 0 ? 0 : value;
     
@@ -95,26 +95,26 @@ Color.multiply = function(value, scale) {
 };
 
 Color.lerp = function(value1, value2, amount) {
-    var r1 = value1.r;
-    var g1 = valur1.g;
-    var b1 = value1.b;
-    var a1 = value1.a;
-    
-    var r2 = value2.r;
-    var g2 = valur2.g;
-    var b2 = value2.b;
-    var a2 = value2.a;
-    
-    amount *= 65536;
-    if(isNaN(amount) || amount < 0)
-        amount = 0
-    else if(amount == Number.POSITIVE_INFINITY)
-        amount = amount == Number.NEGATIVE_INFINITY ? 0 : 65536;
+	var r1 = value1.r;
+	var g1 = valur1.g;
+	var b1 = value1.b;
+	var a1 = value1.a;
+	
+	var r2 = value2.r;
+	var g2 = valur2.g;
+	var b2 = value2.b;
+	var a2 = value2.a;
+	
+	amount *= 65536;
+	if(isNaN(amount) || amount < 0)
+		amount = 0
+	else if(amount == Number.POSITIVE_INFINITY)
+		amount = amount == Number.NEGATIVE_INFINITY ? 0 : 65536;
 
-    return new Color(r1 + (((r2 - r1)*factor) >> 16),
-                     g1 + (((g2 - g1)*factor) >> 16),
-                     b1 + (((b2 - b1)*factor) >> 16),
-                     a1 + (((a2 - a1)*factor) >> 16));
+	return new Color(r1 + (((r2 - r1)*factor) >> 16),
+					 g1 + (((g2 - g1)*factor) >> 16),
+					 b1 + (((b2 - b1)*factor) >> 16),
+					 a1 + (((a2 - a1)*factor) >> 16));
 };
 
 Color.aliceBlue=new Color(240,248,255,255);
@@ -264,7 +264,7 @@ Array.prototype.insert = function (index, item) {
 };  
 
 Array.prototype.removeAt=function(index) {
-    this.splice(index, 1);
+	this.splice(index, 1);
 }
 
 function Common() {
@@ -298,7 +298,7 @@ function deepCopyObj(oldObj){
   var newObj={};
   if(oldObj &&  typeof oldObj=="object" ){
     for(var i in oldObj ) {
-        
+    	
       if(typeof oldObj[i]=="object"){//如果子还是对象那么循环调用值赋值
         newObj[i]=deepCopyObj(oldObj[i]);
       }else{//直接值赋值
@@ -609,253 +609,253 @@ Font.fromJson = function(json, params, entry) {
  * @module iuiu/HTMLAudio
  */
 function HTMLAudio(properties) {   
-    var obj = {
-        src: null,
-        loop: false,
-        autoPlay: false,
-        loaded: false,
-        playing: false,
-        duration: 0,
-        volume: 1,
-        muted: false,
+	var obj = {
+	    src: null,
+	    loop: false,
+	    autoPlay: false,
+	    loaded: false,
+	    playing: false,
+	    duration: 0,
+	    volume: 1,
+	    muted: false,
 
-        _element: null, //HTMLAudioElement对象
-        _listeners: null,
+	    _element: null, //HTMLAudioElement对象
+	    _listeners: null,
 
-        /**
-         * @language=zh
-         * 增加一个事件监听。
-         * @param {String} type 要监听的事件类型。
-         * @param {Function} listener 事件监听回调函数。
-         * @param {Boolean} once 是否是一次性监听，即回调函数响应一次后即删除，不再响应。
-         * @returns {Object} 对象本身。链式调用支持。
-         */
-        on: function(type, listener, once){
-            var listeners = (this._listeners = this._listeners || {});
-            var eventListeners = (listeners[type] = listeners[type] || []);
-            for(var i = 0, len = eventListeners.length; i < len; i++){
-                var el = eventListeners[i];
-                if(el.listener === listener) return;
-            }
-            eventListeners.push({listener:listener, once:once});
-            return this;
-        },
+	    /**
+	     * @language=zh
+	     * 增加一个事件监听。
+	     * @param {String} type 要监听的事件类型。
+	     * @param {Function} listener 事件监听回调函数。
+	     * @param {Boolean} once 是否是一次性监听，即回调函数响应一次后即删除，不再响应。
+	     * @returns {Object} 对象本身。链式调用支持。
+	     */
+	    on: function(type, listener, once){
+	        var listeners = (this._listeners = this._listeners || {});
+	        var eventListeners = (listeners[type] = listeners[type] || []);
+	        for(var i = 0, len = eventListeners.length; i < len; i++){
+	            var el = eventListeners[i];
+	            if(el.listener === listener) return;
+	        }
+	        eventListeners.push({listener:listener, once:once});
+	        return this;
+	    },
 
-        /**
-         * @language=zh
-         * 删除一个事件监听。如果不传入任何参数，则删除所有的事件监听；如果不传入第二个参数，则删除指定类型的所有事件监听。
-         * @param {String} type 要删除监听的事件类型。
-         * @param {Function} listener 要删除监听的回调函数。
-         * @returns {Object} 对象本身。链式调用支持。
-         */
-        off: function(type, listener){
-            //remove all event listeners
-            if(arguments.length == 0){
-                this._listeners = null;
-                return this;
-            }
+	    /**
+	     * @language=zh
+	     * 删除一个事件监听。如果不传入任何参数，则删除所有的事件监听；如果不传入第二个参数，则删除指定类型的所有事件监听。
+	     * @param {String} type 要删除监听的事件类型。
+	     * @param {Function} listener 要删除监听的回调函数。
+	     * @returns {Object} 对象本身。链式调用支持。
+	     */
+	    off: function(type, listener){
+	        //remove all event listeners
+	        if(arguments.length == 0){
+	            this._listeners = null;
+	            return this;
+	        }
 
-            var eventListeners = this._listeners && this._listeners[type];
-            if(eventListeners){
-                //remove event listeners by specified type
-                if(arguments.length == 1){
-                    delete this._listeners[type];
-                    return this;
-                }
+	        var eventListeners = this._listeners && this._listeners[type];
+	        if(eventListeners){
+	            //remove event listeners by specified type
+	            if(arguments.length == 1){
+	                delete this._listeners[type];
+	                return this;
+	            }
 
-                for(var i = 0, len = eventListeners.length; i < len; i++){
-                    var el = eventListeners[i];
-                    if(el.listener === listener){
-                        eventListeners.splice(i, 1);
-                        if(eventListeners.length === 0) delete this._listeners[type];
-                        break;
-                    }
-                }
-            }
-            return this;
-        },
+	            for(var i = 0, len = eventListeners.length; i < len; i++){
+	                var el = eventListeners[i];
+	                if(el.listener === listener){
+	                    eventListeners.splice(i, 1);
+	                    if(eventListeners.length === 0) delete this._listeners[type];
+	                    break;
+	                }
+	            }
+	        }
+	        return this;
+	    },
 
-        /**
-         * @language=zh
-         * 发送事件。当第一个参数类型为Object时，则把它作为一个整体事件对象。
-         * @param {String} type 要发送的事件类型。
-         * @param {Object} detail 要发送的事件的具体信息，即事件随带参数。
-         * @returns {Boolean} 是否成功调度事件。
-         */
-        fire: function(type, detail){
-            var event, eventType;
-            if(typeof type === 'string'){
-                eventType = type;
-            }else{
-                event = type;
-                eventType = type.type;
-            }
+	    /**
+	     * @language=zh
+	     * 发送事件。当第一个参数类型为Object时，则把它作为一个整体事件对象。
+	     * @param {String} type 要发送的事件类型。
+	     * @param {Object} detail 要发送的事件的具体信息，即事件随带参数。
+	     * @returns {Boolean} 是否成功调度事件。
+	     */
+	    fire: function(type, detail){
+	        var event, eventType;
+	        if(typeof type === 'string'){
+	            eventType = type;
+	        }else{
+	            event = type;
+	            eventType = type.type;
+	        }
 
-            var listeners = this._listeners;
-            if(!listeners) return false;
+	        var listeners = this._listeners;
+	        if(!listeners) return false;
 
-            var eventListeners = listeners[eventType];
-            if(eventListeners){
-                var eventListenersCopy = eventListeners.slice(0);
-                event = event || new EventObject(eventType, this, detail);
-                if(event._stopped) return false;
+	        var eventListeners = listeners[eventType];
+	        if(eventListeners){
+	            var eventListenersCopy = eventListeners.slice(0);
+	            event = event || new EventObject(eventType, this, detail);
+	            if(event._stopped) return false;
 
-                for(var i = 0; i < eventListenersCopy.length; i++){
-                    var el = eventListenersCopy[i];
-                    el.listener.call(this, event);
-                    if(el.once) {
-                        var index = eventListeners.indexOf(el);
-                        if(index > -1){
-                            eventListeners.splice(index, 1);
-                        }
-                    }
-                }
+	            for(var i = 0; i < eventListenersCopy.length; i++){
+	                var el = eventListenersCopy[i];
+	                el.listener.call(this, event);
+	                if(el.once) {
+	                    var index = eventListeners.indexOf(el);
+	                    if(index > -1){
+	                        eventListeners.splice(index, 1);
+	                    }
+	                }
+	            }
 
-                if(eventListeners.length == 0) delete listeners[eventType];
-                return true;
-            }
-            return false;
-        },
-        /**
-         * @language=zh
-         * 加载音频文件。
-         */
-        load: function(){
-            if(!this._element){
-                var elem;
-                try{
-                    elem = this._element = new Audio();
-                    elem.addEventListener('canplaythrough', this._onAudioEvent, false);
-                    elem.addEventListener('ended', this._onAudioEvent, false);
-                    elem.addEventListener('error', this._onAudioEvent, false);
-                    elem.src = this.src;
-                    elem.volume = this.volume;
-                    elem.load();
-                }
-                catch(err){
-                    //ie9 某些版本有Audio对象，但是执行play,pause会报错！
-                    elem = this._element = {};
-                    elem.play = elem.pause = function(){
+	            if(eventListeners.length == 0) delete listeners[eventType];
+	            return true;
+	        }
+	        return false;
+	    },
+	    /**
+	     * @language=zh
+	     * 加载音频文件。
+	     */
+	    load: function(){
+	        if(!this._element){
+	            var elem;
+	            try{
+	                elem = this._element = new Audio();
+	                elem.addEventListener('canplaythrough', this._onAudioEvent, false);
+	                elem.addEventListener('ended', this._onAudioEvent, false);
+	                elem.addEventListener('error', this._onAudioEvent, false);
+	                elem.src = this.src;
+	                elem.volume = this.volume;
+	                elem.load();
+	            }
+	            catch(err){
+	                //ie9 某些版本有Audio对象，但是执行play,pause会报错！
+	                elem = this._element = {};
+	                elem.play = elem.pause = function(){
 
-                    };
-                }
-            }
-            return this;
-        },
+	                };
+	            }
+	        }
+	        return this;
+	    },
 
-        /**
-         * @language=zh
-         * @private
-         */
-        _onAudioEvent: function(e){
-            // console.log('onAudioEvent:', e.type);
-            var type = e.type;
+	    /**
+	     * @language=zh
+	     * @private
+	     */
+	    _onAudioEvent: function(e){
+	        // console.log('onAudioEvent:', e.type);
+	        var type = e.type;
 
-            switch(type){
-                case 'canplaythrough':
-                    e.target.removeEventListener(type, this._onAudioEvent);
-                    this.loaded = true;
-                    this.duration = this._element.duration;
-                    this.fire('load');
-                    if(obj.autoPlay) this._doPlay();
-                    break;
-                case 'ended':
-                    this.playing = false;
-                    this.fire('end');
-                    if(this.loop) this._doPlay();
-                    break;
-                case 'error':
-                    this.fire('error');
-                    break;
-            }
-        },
+	        switch(type){
+	            case 'canplaythrough':
+	                e.target.removeEventListener(type, this._onAudioEvent);
+	                this.loaded = true;
+	                this.duration = this._element.duration;
+	                this.fire('load');
+	                if(obj.autoPlay) this._doPlay();
+	                break;
+	            case 'ended':
+	                this.playing = false;
+	                this.fire('end');
+	                if(this.loop) this._doPlay();
+	                break;
+	            case 'error':
+	                this.fire('error');
+	                break;
+	        }
+	    },
 
-        /**
-         * @language=zh
-         * @private
-         */
-        _doPlay: function(){
-            if(!this.playing){
-                this._element.volume = this.muted ? 0 : this.volume;
-                this._element.play();
-                this.playing = true;
-            }
-        },
-        /**
-         * @language=zh
-         * 播放音频。如果正在播放，则会重新开始。
-         * 注意：为了避免第一次播放不成功，建议在load音频后再播放。
-         */
-        play: function(){
-            if(this.playing) this.stop();
+	    /**
+	     * @language=zh
+	     * @private
+	     */
+	    _doPlay: function(){
+	        if(!this.playing){
+	            this._element.volume = this.muted ? 0 : this.volume;
+	            this._element.play();
+	            this.playing = true;
+	        }
+	    },
+	    /**
+	     * @language=zh
+	     * 播放音频。如果正在播放，则会重新开始。
+	     * 注意：为了避免第一次播放不成功，建议在load音频后再播放。
+	     */
+	    play: function(){
+	        if(this.playing) this.stop();
 
-            if(!this._element){
-                this.autoPlay = true;
-                this.load();
-            }else if(this.loaded){
-                this._doPlay();
-            }
+	        if(!this._element){
+	            this.autoPlay = true;
+	            this.load();
+	        }else if(this.loaded){
+	            this._doPlay();
+	        }
 
-            return this;
-        },
-        /**
-         * @language=zh
-         * 暂停音频。
-         */
-        pause: function(){
-            if(this.playing){
-                this._element.pause();
-                this.playing = false;
-            }
-            return this;
-        },
-        /**
-         * @language=zh
-         * 恢复音频播放。
-         */
-        resume: function(){
-            if(!this.playing){
-                this._doPlay();
-            }
-            return this;
-        },
-        /**
-         * @language=zh
-         * 停止音频播放。
-         */
-        stop: function(){
-            if(this.playing){
-                this._element.pause();
-                this._element.currentTime = 0;
-                this.playing = false;
-            }
-            return this;
-        },
-        /**
-         * @language=zh
-         * 设置音量。注意: iOS设备无法设置音量。
-         */
-        setVolume: function(volume){
-            if(this.volume != volume){
-                this.volume = volume;
-                this._element.volume = volume;
-            }
-            return this;
-        },
-        /**
-         * @language=zh
-         * 设置静音模式。注意: iOS设备无法设置静音模式。
-         */
-        setMute: function(muted){
-            if(this.muted != muted){
-                this.muted = muted;
-                this._element.volume = muted ? 0 : this.volume;
-            }
-            return this;
-        }
-    };
-    
-    Common.copy(obj, properties, true);
+	        return this;
+	    },
+	    /**
+	     * @language=zh
+	     * 暂停音频。
+	     */
+	    pause: function(){
+	        if(this.playing){
+	            this._element.pause();
+	            this.playing = false;
+	        }
+	        return this;
+	    },
+	    /**
+	     * @language=zh
+	     * 恢复音频播放。
+	     */
+	    resume: function(){
+	        if(!this.playing){
+	            this._doPlay();
+	        }
+	        return this;
+	    },
+	    /**
+	     * @language=zh
+	     * 停止音频播放。
+	     */
+	    stop: function(){
+	        if(this.playing){
+	            this._element.pause();
+	            this._element.currentTime = 0;
+	            this.playing = false;
+	        }
+	        return this;
+	    },
+	    /**
+	     * @language=zh
+	     * 设置音量。注意: iOS设备无法设置音量。
+	     */
+	    setVolume: function(volume){
+	        if(this.volume != volume){
+	            this.volume = volume;
+	            this._element.volume = volume;
+	        }
+	        return this;
+	    },
+	    /**
+	     * @language=zh
+	     * 设置静音模式。注意: iOS设备无法设置静音模式。
+	     */
+	    setMute: function(muted){
+	        if(this.muted != muted){
+	            this.muted = muted;
+	            this._element.volume = muted ? 0 : this.volume;
+	        }
+	        return this;
+	    }
+	};
+	
+	Common.copy(obj, properties, true);
        obj._onAudioEvent = obj._onAudioEvent.bind(obj);
        return obj;
 };
@@ -865,133 +865,133 @@ function DefaultDecoder() {
 }
 
 DefaultDecoder.prototype = {
-    getCharCode : function(charCode) {
-        return String.fromCharCode(charCode);
-    }
+	getCharCode : function(charCode) {
+		return String.fromCharCode(charCode);
+	}
 };
 
 function BinaryReader(dataView, start, length, decoder) {
-    if(!dataView)
-        throw "data";
+	if(!dataView)
+    	throw "data";
         
-    this.data = dataView;
-    this.position = start || 0;
-    var up = start + length;
+	this.data = dataView;
+	this.position = start || 0;
+	var up = start + length;
     this.length = up > dataView.byteLength ? dataView.byteLength - start : up;
     this.decoder = decoder || new DefaultDecoder();
 }
 
 BinaryReader.prototype = {
-    readByte : function() {
-        return this.data.getUint8(this.position++);
-    },
-    readSByte : function() {
-        return this.data.getInt8(this.position++);
-    },
-    readInt16 : function() {
-        var result = this.data.getInt16(this.position);
+	readByte : function() {
+		return this.data.getUint8(this.position++);
+	},
+	readSByte : function() {
+		return this.data.getInt8(this.position++);
+	},
+	readInt16 : function() {
+		var result = this.data.getInt16(this.position);
         this.position = this.position + 2;
         return result;
-    },
-    readUint16 : function() {
-        var result = this.data.getUint16(this.position);
+	},
+	readUint16 : function() {
+		var result = this.data.getUint16(this.position);
         this.position = this.position + 2;
         return result;
-    },
-    readInt32 : function() {
-        var result = this.data.getInt32(this.position);
+	},
+	readInt32 : function() {
+		var result = this.data.getInt32(this.position);
         this.position = this.position + 4;
         return result;
-    },
-    readUint32 : function() {
-        var result = this.data.getUint32(this.position);
+	},
+	readUint32 : function() {
+		var result = this.data.getUint32(this.position);
         this.position = this.position + 4;
         return result;
-    },
-    readSingle : function() {
-        var result = this.data.getFloat32(this.position);
+	},
+	readSingle : function() {
+		var result = this.data.getFloat32(this.position);
         this.position = this.position + 4;
         return result;
-    },
-    readDouble : function() {
-        var result = this.data.getFloat64(this.position);
+	},
+	readDouble : function() {
+		var result = this.data.getFloat64(this.position);
         this.position = this.position + 8;
         return result;
-    },
-    readBoolean : function() {
-        return this.data.getInt8(this.position++) == 1;
-    },
-    readChar : function() {
-        return this.decoder.getCharCode(this.readByte());
-    },
-    readString : function(length) {
-        var result = "";
+	},
+	readBoolean : function() {
+		return this.data.getInt8(this.position++) == 1;
+	},
+	readChar : function() {
+		return this.decoder.getCharCode(this.readByte());
+	},
+	readString : function(length) {
+		var result = "";
         var num = 0;        // int
         var capacity = length || this.read7BitEncodedInt();
         if (capacity < 0) {
-            throw "IO.IO_InvalidStringLen_Len";
+        	throw "IO.IO_InvalidStringLen_Len";
         }
         
         if (capacity == 0) {
-            return result;
+        	return result;
         }
         
         for(var i = 0; i < capacity; i++) {
-            result += this.readChar();
+        	result += this.readChar();
         }
         
         return result;
-    },
-    read7BitEncodedInt : function() {
-        var num3;           // byte
-        var num = 0;        // int
-        var num2 = 0;       // int
-        do {
-            if (num2 == 0x23) {
-                throw "Format_Bad7BitInt32";
-            }
-            num3 = this.readByte();
-            num |= (num3 & 0x7f) << num2;
-            num2 += 7;
-        } while ((num3 & 0x80) != 0);
-        
-        this.position = this.position + 7;
-        return num;
-    },
-    readBytes : function(num) {
-        var result = [];
-        for (var i = 0; i < num; i++) {
-            result[i] = this.readByte();
-        }
-        
-        return result;
-    },
-    readFixed : function() {
-        var val = this.readInt32() / 65536.0;
-        return Math.ceil(val * 100000) / 100000;
-    },
-    readLongDateTime : function() {
-        // 1970.1.1 - 1904.1.1
-        var delta = -2080198800000;// (new Date(1904, 1, 1)).getTime();
-        var date = new Date();
-        this.position = this.position + 4;
-        date.setTime(this.readUint32());
-        return date;
-    },
-    getFixed : function(byteOffset) {
-        var temp = this.position;
-        this.position = byteOffset;
-        var result = this.readFixed();
-        this.position = temp;
-        return result;
-    },
-    getLongDateTime : function(byteOffset) {
-        var temp = this.position;
-        this.position = byteOffset;
-        var result = readLongDateTime();
-        this.position = temp;
-        return result;
-    }
+	},
+	read7BitEncodedInt : function() {
+		var num3;           // byte
+       	var num = 0;        // int
+		var num2 = 0;       // int
+		do {
+			if (num2 == 0x23) {
+				throw "Format_Bad7BitInt32";
+			}
+			num3 = this.readByte();
+			num |= (num3 & 0x7f) << num2;
+			num2 += 7;
+		} while ((num3 & 0x80) != 0);
+		
+		this.position = this.position + 7;
+		return num;
+	},
+	readBytes : function(num) {
+		var result = [];
+		for (var i = 0; i < num; i++) {
+			result[i] = this.readByte();
+		}
+		
+		return result;
+	},
+	readFixed : function() {
+		var val = this.readInt32() / 65536.0;
+		return Math.ceil(val * 100000) / 100000;
+	},
+	readLongDateTime : function() {
+		// 1970.1.1 - 1904.1.1
+		var delta = -2080198800000;// (new Date(1904, 1, 1)).getTime();
+		var date = new Date();
+		this.position = this.position + 4;
+		date.setTime(this.readUint32());
+		return date;
+	},
+	getFixed : function(byteOffset) {
+		var temp = this.position;
+		this.position = byteOffset;
+		var result = this.readFixed();
+		this.position = temp;
+		return result;
+	},
+	getLongDateTime : function(byteOffset) {
+		var temp = this.position;
+		this.position = byteOffset;
+		var result = readLongDateTime();
+		this.position = temp;
+		return result;
+	}
 };
 // src/keyboard.js
 const isff = typeof navigator !== 'undefined' ? navigator.userAgent.toLowerCase().indexOf('firefox') > 0 : false;
@@ -1325,7 +1325,7 @@ function update() {
   const asterisk = _handlers['*'];
   
   if (!asterisk) return;
-    
+	
   // 获取范围 默认为all
   const scope = getScope();
 
@@ -1412,8 +1412,8 @@ function hotkeys(key, option, method) {
     addEvent(element, 'keydown', (e) => {
       dispatch(e);
       event.preventDefault();
-      event.stopPropagation();
-      event.cancelBubble = true;
+	  event.stopPropagation();
+ 	  event.cancelBubble = true;
     });
     addEvent(window, 'focus', () => {
       _downKeys = [];
@@ -1456,70 +1456,70 @@ function Level() {
 }
 
 Level.create = function() {
-    var level = new Level();
-    level.objects = [];
-    return level;
+	var level = new Level();
+	level.objects = [];
+	return level;
 }
 
 Level.prototype.init = function() {
-    var json = this.json;
-    for(var i = 0; i < json.items.length; i++) {
-        var item = json.items[i];
-        
-        IUIU.Module.load(item.fileName, function (sender) {
-            var json2 = sender.data;
-            var content = sender.src;
-            
-            var obj = null;
-            for(var x = 0; x < content.objects.length; x++) {
-                var obj2 = content.objects[x];
-                if(obj2.name == item.name) {
-                    obj = obj2;
-                }
-            }
-                        
-            if(obj != null) {
-                try {
-                    Common.copy(obj, IUIU.Component.create(json2.header), false);
-                }
-                catch(ex) {
-                    //obj = createErrorObject();
-                }
-                
-                obj.fileName = json2.fileName;
-                obj.header = json2.header;
-                
-                for (var property in json2) {
-                    var value = json2[property];
-                    var type = typeof value;
-                    if (obj[property] && (type == "number" || type == "boolean" || type == "string")) {
-                        obj[property] = json2[property];
-                    }
-                }
-                
-                content.objects.push(obj);
-            }
+	var json = this.json;
+	for(var i = 0; i < json.items.length; i++) {
+		var item = json.items[i];
+		
+	    IUIU.Module.load(item.fileName, function (sender) {
+	    	var json2 = sender.data;
+	    	var content = sender.src;
+	    	
+	        var obj = null;
+	    	for(var x = 0; x < content.objects.length; x++) {
+	    		var obj2 = content.objects[x];
+	    		if(obj2.name == item.name) {
+	    			obj = obj2;
+	    		}
+	    	}
+	        	    	
+			if(obj != null) {
+				try {
+	            	Common.copy(obj, IUIU.Component.create(json2.header), false);
+	    		}
+	        	catch(ex) {
+	            	//obj = createErrorObject();
+	    		}
+				
+		        obj.fileName = json2.fileName;
+		        obj.header = json2.header;
+		        
+		        for (var property in json2) {
+		            var value = json2[property];
+		            var type = typeof value;
+		            if (obj[property] && (type == "number" || type == "boolean" || type == "string")) {
+		                obj[property] = json2[property];
+		            }
+		        }
+		        
+		        content.objects.push(obj);
+		    }
 
-        }, { data : item, src : level });
-    }
-    
-    delete this.json;
+	    }, { data : item, src : level });
+	}
+	
+	delete this.json;
 }
 
 Level.fromJson = function(json, params, entry) {
-    var level = entry;
-    
-    for(var i = 0; i < json.items.length; i++) {
-        level.objects.push({ name : json.items[i].name });
-    }
-    
-    level.json = json;
-        
-    for(var i = 0; i < json.trigger.length; i++) {
-        Trigger.load(level, json.trigger[i]);
-    }
+	var level = entry;
+	
+	for(var i = 0; i < json.items.length; i++) {
+		level.objects.push({ name : json.items[i].name });
+	}
+	
+	level.json = json;
+		
+	for(var i = 0; i < json.trigger.length; i++) {
+		Trigger.load(level, json.trigger[i]);
+	}
 
-    return level;
+	return level;
 }
 // src/loader.js
 var parseINIString = function (data){ 
@@ -2125,8 +2125,16 @@ function addDisplayBatchMode() {
                     gl.text(item.font, item.text, item.size, point, scale, origin, angle, color);
                 }
                 break;
-              case "collide":
               case "bone":
+                var start = item.start(frame);
+                var end = item.end(frame);
+                
+                start = { x : start.x + point.x, y : start.y + point.y };
+                end = { x : end.x + point.y, y : end.y + point.y };
+                
+                gl.line(start, end, IUIU.Color.white, 1);
+                break;
+              case "collide":
                 break;
               default:
                 throw "not yet support";
@@ -2749,7 +2757,7 @@ Map.prototype.update = function(gl, inv) {
             }
             
             this.states[obj].update(inv);
-            gl.state(this.states[obj], obj.location, obj.scale, obj.origin, obj.angle, obj.color);
+            gl.state(this.states[obj], obj.location, obj.scale, obj.location, obj.angle, obj.color);
         }
         else {
             if(obj.update) obj.update(inv);
@@ -2822,12 +2830,12 @@ Map.fromJson = function(json, params, entry) {
             obj.type = itemJson.type;
             var locationStr = itemJson.location.split(',');
             var scaleStr = itemJson.scale.split(',');
-            var originStr = itemJson.origin.split(',');
+            //var originStr = itemJson.origin.split(',');
             var colorStr = itemJson.color.split(',');
             
             obj.location = { x : parseFloat(locationStr[0]), y : parseFloat(locationStr[1]) };
             obj.scale    = { x : parseFloat(scaleStr[0]), y : parseFloat(scaleStr[1]) };
-            obj.origin   = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
+            //obj.origin   = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
             obj.angle    = parseFloat(itemJson.angle);
             obj.color    = { 
                 r : parseFloat(colorStr[0]) / 255,
@@ -4122,78 +4130,78 @@ Mesh.load = function(json, options) {
  * @returns {String}
  */
 function getSiteRoot(isVirtual) {
-    var siteRoot = window.location.protocol +"//"+ window.location.host +"/";
-    if(!isVirtual) return siteRoot;
-    
-    var relativePath = window.location.pathname;
-    if(relativePath != "" && relativePath.substring(0,1) == "/"){
-        //此处重要，不同的浏览器可能返回的relativePath不一样
-        relativePath = relativePath.substring(1);
-    }
-    var virtualPath = (relativePath == "") ? "" : relativePath.substring(0, relativePath.indexOf("/") + 1);
+	var siteRoot = window.location.protocol +"//"+ window.location.host +"/";
+	if(!isVirtual) return siteRoot;
+	
+	var relativePath = window.location.pathname;
+	if(relativePath != "" && relativePath.substring(0,1) == "/"){
+		//此处重要，不同的浏览器可能返回的relativePath不一样
+		relativePath = relativePath.substring(1);
+	}
+	var virtualPath = (relativePath == "") ? "" : relativePath.substring(0, relativePath.indexOf("/") + 1);
 
-    return siteRoot + virtualPath;
+	return siteRoot + virtualPath;
 }
 
 function Module() {
 }
 
 Module.load = function(path, callback, param) {
-    var root = getSiteRoot(false);
+	var root = getSiteRoot(false);
 
-    var needAdd = true;
-    // 检查脚本是否存在
-    var eleList = document.querySelectorAll('script')
-    for (var i = 0; i < eleList.length; i++) {
-        // 遍历操作
-        var ele = eleList[i];
-        var src = ele.src.replace(root, '');
-        if(src == path) {
-            needAdd = false;
-        }
-    }
-    
-    if(needAdd) {
-        var script=document.createElement("script");
-        script.type="text/javascript";
-        script.src = path;
-        document.getElementsByTagName('head')[0].appendChild(script); 
-        script.onload = function(){
-            script.loaded = true;
-            if(callback) callback(param);
-        }//js加载完成执行方法
-    }
-    else {
-        if(callback) callback(param);
-    }
+	var needAdd = true;
+	// 检查脚本是否存在
+	var eleList = document.querySelectorAll('script')
+	for (var i = 0; i < eleList.length; i++) {
+	  	// 遍历操作
+	  	var ele = eleList[i];
+	  	var src = ele.src.replace(root, '');
+		if(src == path) {
+			needAdd = false;
+		}
+	}
+	
+	if(needAdd) {
+		var script=document.createElement("script");
+		script.type="text/javascript";
+		script.src = path;
+		document.getElementsByTagName('head')[0].appendChild(script); 
+		script.onload = function(){
+			script.loaded = true;
+			if(callback) callback(param);
+		}//js加载完成执行方法
+	}
+	else {
+		if(callback) callback(param);
+	}
 }
 
 Module.replace = function(path, callback) {
-    var root = getSiteRoot(false);
-    
-    // 检查脚本是否存在
-    var exist = false;
-    var eleList = document.querySelectorAll('script')
-    for (var i = 0; i < eleList.length; i++) {
-        // 遍历操作
-        var ele = eleList[i];
-        var src = ele.src.replace(root, '');
-        if(src == path) {
-            ele.parentNode.removeChild(ele); 
-            exist = true;
-        }
-    }
-    
-    if(exist) {
-        var script=document.createElement("script");
-        script.type="text/javascript";
-        script.src=path;
-        document.getElementsByTagName('head')[0].appendChild(script); 
-        script.onload = function(){
-            script.loaded = true;
-            if(callback) callback();
-        }//js加载完成执行方法
-    }
+	var root = getSiteRoot(false);
+	
+	// 检查脚本是否存在
+	var exist = false;
+	var eleList = document.querySelectorAll('script')
+	for (var i = 0; i < eleList.length; i++) {
+	  	// 遍历操作
+	  	var ele = eleList[i];
+	  	var src = ele.src.replace(root, '');
+		if(src == path) {
+			ele.parentNode.removeChild(ele); 
+			exist = true;
+		}
+	}
+	
+	if(exist) {
+		var script=document.createElement("script");
+		script.type="text/javascript";
+		script.src=path;
+		document.getElementsByTagName('head')[0].appendChild(script); 
+		script.onload = function(){
+			script.loaded = true;
+			if(callback) callback();
+		}//js加载完成执行方法
+	}
 }
 // src/object.js
 function ObjectState(animation) {
@@ -4262,6 +4270,20 @@ IObject.prototype  = {
     
     newState : function() {
         return new ObjectState(this);
+    },
+    
+    attach : function(object) {
+        for(var x = 0; x < this.items.length; x++) {
+            var item2 = this.items[x];
+            if(item2.type == "mesh") {
+                for(var i = 0; i < object.items.length; i++) {
+                    var item = object.items[i];
+                    if(item.type == "bone") {
+                        
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -4284,7 +4306,7 @@ IObject.fromJson = function(json, params, entry) {
     }
     
     var meshBoneInfos = {};
-    var boneParents = {};
+    var boneParents = [];
     //var boneChildrens = {};
     
     for(var index = 0; index < json.items.length; index++) {
@@ -4411,13 +4433,7 @@ IObject.fromJson = function(json, params, entry) {
           case "bone":
             var bone = new ObjectBone();
             bone.length = item.length;            
-            boneParents[bone] = { item : bone, parent : item.parent };
-            /*
-            boneChildrens[bone] = [];
-            for(var i = 0; i < item.childrens.length; i++) {
-                boneChildrens[bone].push({ item : item, child : item.childrens[i] });
-            }
-            */
+            boneParents.push({ item : bone, parent : item.parent });
             baseItem = bone;
             baseItem.type = "bone";
             break;
@@ -4472,20 +4488,12 @@ IObject.fromJson = function(json, params, entry) {
         }
     }
     
-    for(var info in boneParents) {
-        var bone = boneParents[info];
-        if(bone.parent != -1) {
-            bone.item.parent = ani.items[bone.parent];
+    for(var i = 0; i < boneParents.length; i++) {
+        var info = boneParents[i];
+        if(info.parent != -1) {
+            info.item.parent = ani.items[info.parent];
         }
     }
-    
-    /*
-    for(var info in boneChildrens) {
-        for(var i = 0; i < boneChildrens[info].length; i++) {
-            info.childrens.push(ani.items[boneChildrens[info][i]]);
-        }
-    }
-    */
     
     ani.body = CreateBody(ani);
     
@@ -4702,6 +4710,15 @@ function ObjectItemLabel() {
 function ObjectItemMesh() {
     return {
         triangles : null,
+        attach : function (bone) {
+            for(var i = 0; i < this.keypoints.length; i++) {
+                var keypoint = this.keypoints[i];
+                keypoint.weights.push({
+                    binding : bone,
+                    weight : 100
+                });
+            }
+        },
         readKeyframe : function (json) {
             var controlStr = json.control.split(',');
             var colorStr = json.color.split(',');
@@ -5476,8 +5493,6 @@ function ObjectBone()
         }
     };
 }
-
-
 // src/pointer.js
 function initPointer() {
     var body = document;
@@ -5568,19 +5583,19 @@ function initPointer() {
 initPointer();
 
 function pointer(event, method) {
-    if(!pointer.handler[event]) pointer.handler[event] = [];
-    
-    pointer.handler[event].push(method);
+	if(!pointer.handler[event]) pointer.handler[event] = [];
+	
+	pointer.handler[event].push(method);
 }
 
 pointer.update = function() {
-    if(pointer.button != 0) {
-        if(!pointer.handler['down']) return;
-    
-        for (var i = 0; i < pointer.handler['down'].length; i++) {
-            pointer.handler['down'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-        }
-    }
+	if(pointer.button != 0) {
+		if(!pointer.handler['down']) return;
+	
+		for (var i = 0; i < pointer.handler['down'].length; i++) {
+	        pointer.handler['down'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
+		}
+	}
 }
 
 pointer.handler = {};
@@ -5589,63 +5604,63 @@ pointer.x = 0;
 pointer.y = 0;
 
 document.addEventListener('pointerdown', function(e) {
-    pointer.button = e.buttons;
-    pointer.x = e.x;
-    pointer.y = e.y;
-    
-    if(!pointer.handler['down']) return;
-    
-    for (var i = 0; i < pointer.handler['down'].length; i++) {
+	pointer.button = e.buttons;
+	pointer.x = e.x;
+	pointer.y = e.y;
+	
+	if(!pointer.handler['down']) return;
+	
+	for (var i = 0; i < pointer.handler['down'].length; i++) {
         pointer.handler['down'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-    }
+	}
 });
 
 document.addEventListener('pointerup', function(e) {
-    pointer.button = e.buttons;
-    pointer.x = e.x;
-    pointer.y = e.y;
-    
-    if(!pointer.handler['up']) return;
-    
+	pointer.button = e.buttons;
+	pointer.x = e.x;
+	pointer.y = e.y;
+	
+	if(!pointer.handler['up']) return;
+	
     for (var i = 0; i < pointer.handler['up'].length; i++) {
         pointer.handler['up'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-    }
+	}
 });
 
 document.addEventListener('pointermove', function(e) {
-    pointer.button = e.buttons;
-    pointer.x = e.x;
-    pointer.y = e.y;
-    
-    if(!pointer.handler['move']) return;
-    
-    for (var i = 0; i < pointer.handler['move'].length; i++) {
+	pointer.button = e.buttons;
+	pointer.x = e.x;
+	pointer.y = e.y;
+	
+	if(!pointer.handler['move']) return;
+	
+	for (var i = 0; i < pointer.handler['move'].length; i++) {
         pointer.handler['move'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-    }
+	}
 });
 
 document.addEventListener('pointerleave', function(e) {
-    pointer.button = e.buttons;
-    pointer.x = e.x;
-    pointer.y = e.y;
-    
-    if(!pointer.handler['leave']) return;
-    
-    for (var i = 0; i < pointer.handler['leave'].length; i++) {
+	pointer.button = e.buttons;
+	pointer.x = e.x;
+	pointer.y = e.y;
+	
+	if(!pointer.handler['leave']) return;
+	
+	for (var i = 0; i < pointer.handler['leave'].length; i++) {
         pointer.handler['leave'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-    }
+	}
 });
 
 document.addEventListener('pointerclick', function(e) {
-    pointer.button = e.buttons;
-    pointer.x = e.x;
-    pointer.y = e.y;
-    
-    if(!pointer.handler['click']) return;
-    
-    for (var i = 0; i < pointer.handler['click'].length; i++) {
+	pointer.button = e.buttons;
+	pointer.x = e.x;
+	pointer.y = e.y;
+	
+	if(!pointer.handler['click']) return;
+	
+	for (var i = 0; i < pointer.handler['click'].length; i++) {
         pointer.handler['click'][i]({ x : pointer.x, y : pointer.y, button : pointer.button });
-    }
+	}
 });
 
 if (typeof window !== 'undefined') {
@@ -6062,7 +6077,7 @@ Shader.prototype = {
 function Texture(width, height, options) {
   this.oneOverWidth = 1.0 / width;
   this.oneOverHeight = 1.0 / height;
-    
+	
   options = options || {};
   this.id = gl.createTexture();
   this.width = width;
@@ -6205,13 +6220,13 @@ Texture.fromImage = function(image, options) {
 };
 
 Texture.getPixel = function() {
-    pixelTexture = pixelTexture || (function() {    
-        var c = document.createElement('canvas').getContext('2d');
-        c.canvas.width = c.canvas.height = 2;
-        c.fillStyle = '#FFF';
-        c.fillRect(0, 0, 2, 2);
-        return Texture.fromImage(c.canvas);
-    })();
+    pixelTexture = pixelTexture || (function() {	
+	    var c = document.createElement('canvas').getContext('2d');
+	    c.canvas.width = c.canvas.height = 2;
+	    c.fillStyle = '#FFF';
+	    c.fillRect(0, 0, 2, 2);
+	    return Texture.fromImage(c.canvas);
+	})();
     return pixelTexture;
 };
 
@@ -6423,195 +6438,195 @@ function Trigger() {
 }
 
 Trigger.eval = function(header) {
-    if(triggers[header]) {
-        var triggerCollection = triggers[header];
-        for(var i = 0; i < triggerCollection.length; i++) {
-            var level = triggerCollection[i].level;
-            var trigger = triggerCollection[i].trigger;
-            
-            var loaded = true;
-            if(trigger.loadedFiles) {
-                var names = Object.getOwnPropertyNames(trigger.loadedFiles);
-                for(var x = 0; x < names.length; x++) {
-                    if(!trigger.loadedFiles[names[x]]) {
-                        loaded = false;
-                        break;
-                    }
-                }
-            }
-            else {
-                loaded = false;
-            }
-            
-            
-            if(trigger.enabled && loaded) {
-                var run = true;
-                for(var x = 0; x < trigger.conditions.length; x++) {
-                    if(!Trigger.action(level, trigger.conditions[x])) {
-                        run = false;
-                        break;
-                    }
-                }
-                
-                if(run) {
-                    for(var x = 0; x < trigger.actions.length; x++) {
-                        Trigger.action(level, trigger.actions[x]);
-                    }
-                }
-            }
-        }
-    }
+	if(triggers[header]) {
+		var triggerCollection = triggers[header];
+		for(var i = 0; i < triggerCollection.length; i++) {
+			var level = triggerCollection[i].level;
+			var trigger = triggerCollection[i].trigger;
+			
+			var loaded = true;
+			if(trigger.loadedFiles) {
+				var names = Object.getOwnPropertyNames(trigger.loadedFiles);
+				for(var x = 0; x < names.length; x++) {
+					if(!trigger.loadedFiles[names[x]]) {
+						loaded = false;
+						break;
+					}
+				}
+			}
+			else {
+				loaded = false;
+			}
+			
+			
+			if(trigger.enabled && loaded) {
+				var run = true;
+				for(var x = 0; x < trigger.conditions.length; x++) {
+					if(!Trigger.action(level, trigger.conditions[x])) {
+						run = false;
+						break;
+					}
+				}
+				
+				if(run) {
+					for(var x = 0; x < trigger.actions.length; x++) {
+						Trigger.action(level, trigger.actions[x]);
+					}
+				}
+			}
+		}
+	}
 }
 
 Trigger.bind = function(token, header, callback) {
-    triggerActions[header] = callback;
+	triggerActions[header] = callback;
 }
 
 Trigger.load = function(level, trigger) {
-    for(var i = 0; i < trigger.events.length; i++) {
-        var event = trigger.events[i];
-        var item = { level : level, trigger : trigger };
-        
-        var itemKey = null;
-        for(var key in event.value) {
-            itemKey = key;
-            break;
-        }
-        
-        if(!triggers[itemKey]) 
-            triggers[itemKey] = [];
-        
-        triggers[itemKey].push(item);
-    }
-    
-    trigger.loadedFiles = {};
+	for(var i = 0; i < trigger.events.length; i++) {
+		var event = trigger.events[i];
+		var item = { level : level, trigger : trigger };
+		
+		var itemKey = null;
+		for(var key in event.value) {
+			itemKey = key;
+    		break;
+ 		}
+		
+		if(!triggers[itemKey]) 
+			triggers[itemKey] = [];
+		
+		triggers[itemKey].push(item);
+	}
+	
+	trigger.loadedFiles = {};
     var inculdes = Trigger.parseInculde(trigger);
-    if(inculdes.length == 0) {
-        level.init();
-    }
-    else {
-        for(var i = 0; i < inculdes.length; i++) {
-            trigger.loadedFiles[inculdes[i]] = false;
-            Module.load(inculdes[i], function(sender) {
-                var inculde = sender.inculde;
-                var trigger = sender.trigger;   
-                trigger.loadedFiles[inculde] = true;
-                
-                var loaded = true;
-                var names = Object.getOwnPropertyNames(trigger.loadedFiles);
-                for(var x = 0; x < names.length; x++) {
-                    if(!trigger.loadedFiles[names[x]]) {
-                        loaded = false;
-                        break;
-                    }
-                }
-                
-                if(loaded) {
-                    level.init();
-                }
-                
-            }, { inculde : inculdes[i], trigger : trigger });
-        }
-    }
+	if(inculdes.length == 0) {
+		level.init();
+	}
+	else {
+		for(var i = 0; i < inculdes.length; i++) {
+			trigger.loadedFiles[inculdes[i]] = false;
+			Module.load(inculdes[i], function(sender) {
+				var inculde = sender.inculde;
+				var trigger = sender.trigger;	
+				trigger.loadedFiles[inculde] = true;
+				
+				var loaded = true;
+				var names = Object.getOwnPropertyNames(trigger.loadedFiles);
+				for(var x = 0; x < names.length; x++) {
+					if(!trigger.loadedFiles[names[x]]) {
+						loaded = false;
+						break;
+					}
+				}
+				
+				if(loaded) {
+					level.init();
+				}
+				
+			}, { inculde : inculdes[i], trigger : trigger });
+		}
+	}
 }
 
 Trigger.unload = function(level) {
-    for(var header in triggers) {
-        for(var i = 0; i < triggers[header].length; i++) {
-            var trigger = triggers[header][i];
-            if(trigger.level == level) {
-                triggers[header].splice(i, 1);
-            }
-        }
-    }
+	for(var header in triggers) {
+		for(var i = 0; i < triggers[header].length; i++) {
+			var trigger = triggers[header][i];
+			if(trigger.level == level) {
+				triggers[header].splice(i, 1);
+			}
+		}
+	}
 }
 
 Trigger.parseInculde = function(trigger) {
-    var result = [];
-    for(var i = 0; i < trigger.conditions.length; i++) {
-        Trigger.parseInculdeItem(result, trigger.conditions[i]);
-    }
-    
-    for(var i = 0; i < trigger.actions.length; i++) {
-        Trigger.parseInculdeItem(result, trigger.actions[i]);
-    }
-    return result;
+	var result = [];
+	for(var i = 0; i < trigger.conditions.length; i++) {
+		Trigger.parseInculdeItem(result, trigger.conditions[i]);
+	}
+	
+	for(var i = 0; i < trigger.actions.length; i++) {
+		Trigger.parseInculdeItem(result, trigger.actions[i]);
+	}
+	return result;
 }
 
 Trigger.parseInculdeItem = function(result, sender) {
-    switch(sender.type) {
-        case "action":
-            result.push(sender.inculde);
-            var item = null;
-            for(var key in sender.value) {
-                item = sender.value[key];
-                break;
-            }
-            
-            if(item != null) {
-                Trigger.parseInculdeItem(result, item);
-            }
-            
-            break;
-    }
+	switch(sender.type) {
+		case "action":
+			result.push(sender.inculde);
+			var item = null;
+			for(var key in sender.value) {
+	    		item = sender.value[key];
+	    		break;
+	 		}
+	 		
+	 		if(item != null) {
+	 			Trigger.parseInculdeItem(result, item);
+	 		}
+	 		
+			break;
+	}
 }
 
 Trigger.action = function(level, act) {
-    switch(act.type) {
-        case "action":
-            var action = null;
-            var itemKey = null;
-            var item = null;
-            var value = null;
-            //var inculde = act.inculde;
-            for(var key in act.value) {
-                itemKey = key;
-                item = act.value[key];
-                break;
-            }
+	switch(act.type) {
+		case "action":
+			var action = null;
+			var itemKey = null;
+			var item = null;
+			var value = null;
+			//var inculde = act.inculde;
+			for(var key in act.value) {
+				itemKey = key;
+        		item = act.value[key];
+        		break;
+     		}
             
-            // 取值   
-            var key = typeof item == 'object' ? itemKey : '__Unknown';
-            if(key != '__Unknown') {
-                action = triggerActions[key];
-            }
-            
-            if(action != null) {
-                var params = [];
-                
-                var names = Object.getOwnPropertyNames(item);
-                for(var x = 0; x < names.length; x++) {
-                    params.push(Trigger.action(level, item[names[x]]));
-                }
+            // 取值	
+			var key = typeof item == 'object' ? itemKey : '__Unknown';
+			if(key != '__Unknown') {
+				action = triggerActions[key];
+			}
+			
+			if(action != null) {
+				var params = [];
+				
+				var names = Object.getOwnPropertyNames(item);
+				for(var x = 0; x < names.length; x++) {
+					params.push(Trigger.action(level, item[names[x]]));
+				}
 
-                value = action.apply(null, params);
-            }
-            
-            return value;
-        case "number":
-            return parseFloat(act.value);
-        case "string":
-            return act.value;
-        case "boolean":
-            return Boolean(act.value);
-        default:
-            var obj = null;
-            for(var i = 0; i < level.objects.length; i++) {
-                var obj2 = level.objects[i];
-                if(obj2.name == act.value) {
-                    obj = obj2;
-                    break;
-                }
-            }
-            return obj;
-    }
+				value = action.apply(null, params);
+			}
+			
+			return value;
+		case "number":
+			return parseFloat(act.value);
+		case "string":
+			return act.value;
+		case "boolean":
+			return Boolean(act.value);
+		default:
+			var obj = null;
+			for(var i = 0; i < level.objects.length; i++) {
+				var obj2 = level.objects[i];
+				if(obj2.name == act.value) {
+					obj = obj2;
+					break;
+				}
+			}
+			return obj;
+	}
 }
 // src/vector.js
 /**
  * 向量
- * @param   {Number}    x   向量X值
- * @param   {Number}    y   向量X值
- * @param   {Number}    z   向量X值
+ * @param 	{Number} 	x	向量X值
+ * @param 	{Number} 	y	向量X值
+ * @param 	{Number} 	z	向量X值
  */
 function Vector(x, y, z) {
   this.x = x || 0;
@@ -6628,7 +6643,7 @@ Vector.prototype = {
   },
   /**
    * 得到向量和
-   * @param {Vector}    v   求和的向量
+   * @param	{Vector}	v	求和的向量
    */
   add: function(v) {
     if (v instanceof Vector) return new Vector(this.x + v.x, this.y + v.y, this.z + v.z);
@@ -6705,10 +6720,10 @@ Vector.negative = function(a, b) {
 
 /**
  * 得到向量和
- * @param   {Number}    a   求和的向量
- * @param   {Number}    b   求和的向量
- * @param   {Number}    c   求和的向量
- * @return  Vector
+ * @param	{Number}	a	求和的向量
+ * @param	{Number}	b	求和的向量
+ * @param	{Number}	c	求和的向量
+ * @return	Vector
  */
 Vector.add = function(a, b, c) {
   if (b instanceof Vector) { c.x = a.x + b.x; c.y = a.y + b.y; c.z = a.z + b.z; }

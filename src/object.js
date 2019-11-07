@@ -100,7 +100,7 @@ IObject.fromJson = function(json, params, entry) {
     }
     
     var meshBoneInfos = {};
-    var boneParents = {};
+    var boneParents = [];
     //var boneChildrens = {};
     
     for(var index = 0; index < json.items.length; index++) {
@@ -227,13 +227,7 @@ IObject.fromJson = function(json, params, entry) {
           case "bone":
             var bone = new ObjectBone();
             bone.length = item.length;            
-            boneParents[bone] = { item : bone, parent : item.parent };
-            /*
-            boneChildrens[bone] = [];
-            for(var i = 0; i < item.childrens.length; i++) {
-                boneChildrens[bone].push({ item : item, child : item.childrens[i] });
-            }
-            */
+            boneParents.push({ item : bone, parent : item.parent });
             baseItem = bone;
             baseItem.type = "bone";
             break;
@@ -288,10 +282,10 @@ IObject.fromJson = function(json, params, entry) {
         }
     }
     
-    for(var info in boneParents) {
-        var bone = boneParents[info];
-        if(bone.parent != -1) {
-            bone.item.parent = ani.items[bone.parent];
+    for(var i = 0; i < boneParents.length; i++) {
+        var info = boneParents[i];
+        if(info.parent != -1) {
+            info.item.parent = ani.items[info.parent];
         }
     }
     

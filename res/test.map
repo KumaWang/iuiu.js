@@ -1,1 +1,13 @@
-{ "items" : [], "trigger" : [] }
+﻿{
+    "items": [
+        {
+            "type": "object",
+            "inculde": "res/test.obj",
+            "location": "285,237",
+            "scale": "1,1",
+            "angle": 0.0,
+            "color": "255,255,255,255"
+        }
+    ],
+    "trigger": {}
+}

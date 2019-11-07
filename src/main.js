@@ -253,8 +253,16 @@ function addDisplayBatchMode() {
                     gl.text(item.font, item.text, item.size, point, scale, origin, angle, color);
                 }
                 break;
-              case "collide":
               case "bone":
+                var start = item.start(frame);
+                var end = item.end(frame);
+                
+                start = { x : start.x + point.x, y : start.y + point.y };
+                end = { x : end.x + point.y, y : end.y + point.y };
+                
+                gl.line(start, end, IUIU.Color.white, 1);
+                break;
+              case "collide":
                 break;
               default:
                 throw "not yet support";

@@ -11,7 +11,7 @@ Map.prototype.update = function(gl, inv) {
             }
             
             this.states[obj].update(inv);
-            gl.state(this.states[obj], obj.location, obj.scale, obj.origin, obj.angle, obj.color);
+            gl.state(this.states[obj], obj.location, obj.scale, obj.location, obj.angle, obj.color);
         }
         else {
             if(obj.update) obj.update(inv);
@@ -84,12 +84,12 @@ Map.fromJson = function(json, params, entry) {
             obj.type = itemJson.type;
             var locationStr = itemJson.location.split(',');
             var scaleStr = itemJson.scale.split(',');
-            var originStr = itemJson.origin.split(',');
+            //var originStr = itemJson.origin.split(',');
             var colorStr = itemJson.color.split(',');
             
             obj.location = { x : parseFloat(locationStr[0]), y : parseFloat(locationStr[1]) };
             obj.scale    = { x : parseFloat(scaleStr[0]), y : parseFloat(scaleStr[1]) };
-            obj.origin   = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
+            //obj.origin   = { x : parseFloat(originStr[0]), y : parseFloat(originStr[1]) };
             obj.angle    = parseFloat(itemJson.angle);
             obj.color    = { 
                 r : parseFloat(colorStr[0]) / 255,
