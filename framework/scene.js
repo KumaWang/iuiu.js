@@ -11,3 +11,6 @@ Scene.prototype.draw = function(gl) {
     }
 }
 
+function Battle() {
+    
+}

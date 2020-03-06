@@ -5,7 +5,7 @@
  * Copyright 2018 KumaWang
  * Released under the MIT license
  */
-var IUIU = (function() {
+control((function() {
 
 // src/collide.js
 function CreateBody(object) {
@@ -7252,4 +7252,4 @@ WebSound._normalizeSource = function(source){
     return result;
 }
 return IUIU;
-})();
+})());

@@ -1,0 +1,17 @@
+﻿{
+    "framerate": 24.0,
+    "loop": true,
+    "states": [
+        {
+            "name": "aaa",
+            "frame": 0.0,
+            "length": 0.0
+        },
+        {
+            "name": "新状态222",
+            "frame": 0.0,
+            "length": 0.0
+        }
+    ],
+    "items": {}
+}

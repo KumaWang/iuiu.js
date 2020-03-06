@@ -1,4 +1,4 @@
-<Project ProjectName="iuiu.js" GuidToken="ff350852-5d7b-4f27-9002-ce50b82bf074" Version="0.0" Startup="index.html" PropertyGroup="Debug">
+<Project ProjectName="iuiu.js" GuidToken="ff350852-5d7b-4f27-9002-ce50b82bf074" Version="0.0" Startup="demo\demo0-5.js" PropertyGroup="Debug">
   <PropertyGroups>
     <PropertyGroup Condition="Debug">
       <OutputPath>E:\git\iuiu.js\iuiu.js\bin</OutputPath>
@@ -49,17 +49,20 @@
     <Content Include="res\demo0-5.map" />
     <Content Include="res\a.font" />
     <Content Include="res\simhei.font" />
-    <Content Include="res\test.obj" />
     <Content Include="res\test.img" />
     <Folder Include="res\config">
       <Folder Include="res\config\character" />
     </Folder>
     <Folder Include="res\object">
-      <Folder Include="res\object\character" />
+      <Folder Include="res\object\character">
+        <Content Include="res\object\character\character_0_1.img" />
+      </Folder>
+      <Folder Include="res\object\scene" />
     </Folder>
     <Content Include="res\test.map" />
+    <Content Include="res\run.obj" />
     <Content Include="res\base.img" />
-    <Content Include="res\base.obj" />
+    <Content Include="res\ob.obj" />
   </Folder>
   <Folder Include="test">
     <Compile Include="test\statement.js" />
@@ -73,5 +76,10 @@
     <Compile Include="framework\character.js" />
     <Compile Include="framework\equip.js" />
     <Compile Include="framework\scene.js" />
+  </Folder>
+  <Folder Include="libs">
+    <Compile Include="libs\lz4.js" />
+    <Compile Include="libs\poly2tri.js" />
+    <Compile Include="libs\using.js" />
   </Folder>
 </Project>

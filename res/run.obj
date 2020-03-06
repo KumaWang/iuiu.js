@@ -1,0 +1,4968 @@
+﻿{
+    "framerate": 24.0,
+    "loop": true,
+    "states": [
+        {
+            "name": "idle",
+            "frame": 0.0
+        }
+    ],
+    "items": [
+        {
+            "name": "新切片9",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&yuoda 2",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 23.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 22.0,
+                    "key": 23.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-154.6375,173.6096",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片4",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&图层 5 2 副本 3",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 23.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 24.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 25.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 26.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 27.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 28.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 29.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 30.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 31.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 32.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 33.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 34.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 35.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 18.0,
+                    "key": 36.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-113.7642,238.2888",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片3",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&yuoxiao 2",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 13.0,
+                    "key": 20.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-104.4488,87.39095",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片1",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&st",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 39.0,
+                    "bone": 16.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 39.0,
+                    "bone": 16.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 39.0,
+                    "bone": 16.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 39.0,
+                    "bone": 16.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 23.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 24.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 25.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 26.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 27.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 28.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 29.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 10.0,
+                    "key": 30.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 31.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 32.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 33.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 34.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 35.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 36.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 12.0,
+                    "key": 37.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 37.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 12.0,
+                    "key": 38.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 38.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 12.0,
+                    "key": 39.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 16.0,
+                    "key": 39.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 12.0,
+                    "key": 40.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 16.0,
+                    "key": 40.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 12.0,
+                    "key": 41.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 16.0,
+                    "key": 41.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 12.0,
+                    "key": 42.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 16.0,
+                    "key": 42.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 11.0,
+                    "key": 43.0
+                },
+                {
+                    "value": 39.0,
+                    "bone": 16.0,
+                    "key": 43.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-88.23381,68.58635",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&tou",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 23.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 24.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 25.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 26.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 27.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 28.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 29.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 30.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 31.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 32.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 33.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 34.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 35.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 36.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 37.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 38.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 39.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 40.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 41.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 42.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 43.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 44.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 45.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 46.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 47.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 48.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 49.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 50.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 51.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 52.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 53.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 54.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 55.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 56.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 57.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 58.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 59.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 60.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 61.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 62.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 63.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 64.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 65.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 66.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 67.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 68.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 69.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 70.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 71.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 72.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 73.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 74.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 75.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 76.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 77.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 78.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 79.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 80.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 81.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 82.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 83.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 84.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 85.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 86.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 87.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 88.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 89.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 90.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 91.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 92.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 93.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 94.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 95.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 96.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 97.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 98.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 99.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 100.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 101.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 102.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 103.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 104.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 105.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 106.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 107.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 108.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 109.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 110.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 111.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 112.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 113.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 114.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 115.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 116.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 117.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 118.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 119.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 120.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 121.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 122.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 123.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 124.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 125.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 17.0,
+                    "key": 126.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-123.7475,-163.0101",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片2",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&zuoxiao",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 15.0,
+                    "key": 21.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "4.193188,87.39093",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片6",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&图层 5 2 副本 2",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 23.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 24.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 25.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 26.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 27.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 28.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 29.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 19.0,
+                    "key": 30.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-151.6413,387.3824",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片7",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&yuoxiao",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 20.0,
+                    "key": 23.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-17.62616,246.2401",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片5",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&yuoda",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 23.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 24.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 25.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 26.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 27.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 28.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 29.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 30.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 31.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 32.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 33.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 34.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 35.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 36.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 21.0,
+                    "key": 37.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "-5.585846,373.1434",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新切片8",
+            "visual": "true",
+            "locked": "false",
+            "type": "mesh",
+            "inculde": "res\\base.img&zuoda",
+            "weights": [
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 0.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 1.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 2.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 3.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 4.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 5.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 6.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 7.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 8.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 9.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 10.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 11.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 12.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 13.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 14.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 25.0,
+                    "key": 15.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 16.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 17.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 18.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 19.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 20.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 21.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 22.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 23.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 24.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 25.0
+                },
+                {
+                    "value": 100.0,
+                    "bone": 24.0,
+                    "key": 26.0
+                }
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "scale": "1,1",
+                    "origin": "0,0",
+                    "angle": 0.0,
+                    "control": "0,0",
+                    "color": "255,255,255,255",
+                    "smooth": "true"
+                }
+            ],
+            "position": "50.69583,176.2762",
+            "origin": "0,0",
+            "scale": "1,1",
+            "angle": 0.0
+        },
+        {
+            "name": "新骨骼",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 65.30765,
+            "parent": -1.0,
+            "childrens": [
+                11.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "7.407406,-48.14815",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "14.81481,-29.83748",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "14.81481,-29.83748",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "10.12731,-45.46246",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "4.999105,-1.46785",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "14.81481,-92.59259",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "14.81481,-92.59259",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "7.563208,-104.4368",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "7.563208,-104.4368",
+                    "angle": 351.6319,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-47.7304,291.7368",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 1.84765625
+        },
+        {
+            "name": "新骨骼1",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 132.70961,
+            "parent": 10.0,
+            "childrens": [
+                12.0,
+                14.0,
+                16.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 359.5055,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-45.62474,226.4631",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 10.8113527
+        },
+        {
+            "name": "新骨骼2",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 22.9196129,
+            "parent": 11.0,
+            "childrens": {},
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 259.7933,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-20.73161,96.10906",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 273.2664
+        },
+        {
+            "name": "新骨骼3",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 109.652649,
+            "parent": 12.0,
+            "childrens": [
+                22.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 175.853027,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 130.185135,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 130.185135,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 199.755981,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 209.379837,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 214.076569,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 175.853027,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 130.185135,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 130.185135,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 214.076569,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 214.076569,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-43.61399,94.80314",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 203.078217
+        },
+        {
+            "name": "新骨骼5",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 28.9015446,
+            "parent": 11.0,
+            "childrens": [
+                15.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 445.651733,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-20.73161,96.10906",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 87.41021
+        },
+        {
+            "name": "新骨骼12",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 113.416,
+            "parent": 14.0,
+            "childrens": [
+                24.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 154.35376,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 219.479492,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 203.815826,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 155.054352,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -229.820709,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -244.472534,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 154.35376,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 150.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -222.1629,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 159.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -214.426086,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 226.630249,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 226.630249,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -244.472534,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -244.472534,
+                    "smooth": "true"
+                }
+            ],
+            "position": "8.14041,94.80315",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 151.8493
+        },
+        {
+            "name": "bozi",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 29.9122448,
+            "parent": 11.0,
+            "childrens": [
+                17.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 370.959625,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-20.73161,96.10906",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 14.8537769
+        },
+        {
+            "name": "head",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 147.345779,
+            "parent": 16.0,
+            "childrens": {},
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -10.0,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 0.0,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -10.0,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 360.9356,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-13.06352,67.19639",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 358.958374
+        },
+        {
+            "name": "新骨骼8",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 144.88797,
+            "parent": -1.0,
+            "childrens": [
+                19.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 190.4335,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,-27.77777",
+                    "angle": 205.691483,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "1.804606,4.865849",
+                    "angle": 193.68808,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "21.44746,8.43729",
+                    "angle": 173.497162,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "24.1129,-13.34582",
+                    "angle": 153.33725,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "16.4206,14.85932",
+                    "angle": 156.4663,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 190.4335,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "14.81482,-85.18518",
+                    "angle": 225.7497,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "14.81482,-85.18518",
+                    "angle": 225.7497,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "21.5488,-80.0125",
+                    "angle": 139.74559,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "21.5488,-80.0125",
+                    "angle": 139.74559,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-68.05915,282.6666",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 187.59465
+        },
+        {
+            "name": "新骨骼9",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 188.691162,
+            "parent": 18.0,
+            "childrens": {},
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 106.832947,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 126.8651,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 189.457687,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 160.266357,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 160.266357,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 65.75321,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 106.832947,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 187.623581,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 187.623581,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 125.415176,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 125.415176,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-87.2081,426.2836",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 187.125015
+        },
+        {
+            "name": "新骨骼10",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 161.485031,
+            "parent": -1.0,
+            "childrens": [
+                21.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 191.623642,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,-50",
+                    "angle": 172.873184,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "7.596373,-37.03704",
+                    "angle": 169.335327,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "7.596373,-37.03704",
+                    "angle": 201.179535,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "-0.2161274,-60.47454",
+                    "angle": 201.179535,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "-7.975912,-6.088585",
+                    "angle": 196.11734,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 191.623642,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "5.555556,-87.03703",
+                    "angle": 160.549149,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "5.555556,-87.03703",
+                    "angle": 160.549149,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "2.347975,-114.3207",
+                    "angle": 226.111038,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "2.347975,-114.3207",
+                    "angle": 226.111038,
+                    "smooth": "true"
+                }
+            ],
+            "position": "3.217436,275.2198",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 168.98616
+        },
+        {
+            "name": "新骨骼11",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 190.125183,
+            "parent": 20.0,
+            "childrens": {},
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 166.178162,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 166.178162,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 78.625946,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 124.495834,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 124.495834,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 195.055328,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 166.178162,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 139.550934,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 139.550934,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 191.651459,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 191.651459,
+                    "smooth": "true"
+                }
+            ],
+            "position": "34.06852,433.7304",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 174.863632
+        },
+        {
+            "name": "新骨骼4",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 68.72365,
+            "parent": 13.0,
+            "childrens": [
+                23.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 207.151489,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 169.487976,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 130.722092,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 190.192673,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 206.52681,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 225.453415,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 207.151489,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 143.656738,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 143.656738,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 225.453415,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 225.453415,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-86.59644,195.6804",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 207.151489
+        },
+        {
+            "name": "新骨骼6",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 57.21824,
+            "parent": 22.0,
+            "childrens": {},
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 214.99205,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 189.725052,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 94.0937958,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 188.222229,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 210.716827,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -115.5408,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 214.99205,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 94.0937958,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 94.0937958,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -115.5408,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -115.5408,
+                    "smooth": "true"
+                }
+            ],
+            "position": "-117.9581,256.8309",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 214.992035
+        },
+        {
+            "name": "新骨骼7",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 67.39554,
+            "parent": 15.0,
+            "childrens": [
+                25.0
+            ],
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 138.018478,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 203.593292,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 249.233673,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 159.807358,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 143.032669,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 123.635345,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 138.018478,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 249.233673,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 249.233673,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 123.635345,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 123.635345,
+                    "smooth": "true"
+                }
+            ],
+            "position": "61.6492,194.8031",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 153.788467
+        },
+        {
+            "name": "新骨骼13",
+            "visual": "true",
+            "locked": "false",
+            "type": "bone",
+            "minLimiter": -3.14159274,
+            "maxLimiter": 3.14159274,
+            "length": 50.0244026,
+            "parent": 24.0,
+            "childrens": {},
+            "modules": {},
+            "keyframes": [
+                {
+                    "frame": 0.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 123.376465,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 20.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 192.109253,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 60.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -92.35367,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 80.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -191.919678,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 100.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -214.48468,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 140.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 116.28717,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 160.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 123.376465,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 35.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -92.35367,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 45.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": -92.35367,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 115.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 116.28717,
+                    "smooth": "true"
+                },
+                {
+                    "frame": 125.0,
+                    "value": 1.0,
+                    "position": "0,0",
+                    "angle": 116.28717,
+                    "smooth": "true"
+                }
+            ],
+            "position": "91.41689,255.2684",
+            "origin": "0,0",
+            "scale": "0,0",
+            "angle": 141.3402
+        }
+    ]
+}

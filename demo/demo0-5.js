@@ -1,8 +1,11 @@
-// 新建渲染器
-var gl = IUIU.create(null, { hittest : false, useGL : true });
+// 调用iuiu文件
+var iuiu = using("iuiu.js");
 
-var state = IUIU.Loader.load("res/base.obj").newState();
-state.state = "idea";
+// 新建渲染器
+var gl = iuiu.create(null, { hittest : false, useGL : true });
+
+var state = IUIU.Loader.load("res/ob.obj");
+
 // 设置每帧更新
 gl.onupdate = function(inv) 
 {   
@@ -10,7 +13,6 @@ gl.onupdate = function(inv)
     
     gl.state(state, new IUIU.Vector(400, 600));
     //state.update(gl, inv);
-    
     gl.end();
 };
 
@@ -18,4 +20,4 @@ gl.onupdate = function(inv)
 gl.fullscreen();
 
 // 设置循环
-gl.loop();
+gl.loop(); 
